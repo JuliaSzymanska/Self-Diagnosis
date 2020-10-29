@@ -36,29 +36,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!--    <Button-->
-<!--        android:id="@+id/chooseProfile"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:text="@string/choose_profile"-->
-<!--        android:layout_marginTop="100dp"-->
-<!--        android:layout_below="@+id/selfDiagnose"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/createProfile"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        android:layout_below="@+id/chooseProfile"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:text="@string/create_new_profile"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"/>-->
-
-
     <Button
         android:id="@+id/diagnose"
         android:layout_width="wrap_content"
