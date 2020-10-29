@@ -6,13 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include layout="@layout/toolbar"  android:id="@+id/toolbar"/>
-
     <TextView
         android:id="@+id/selfDiagnose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
         android:text="@string/self_diagnosis"
@@ -47,6 +44,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="diagnoseOnClick"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!--    <Button-->
+    <!--        android:id="@+id/chooseProfile"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:text="@string/choose_profile"-->
+    <!--        android:layout_marginTop="100dp"-->
+    <!--        android:layout_below="@+id/selfDiagnose"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/createProfile"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="50dp"-->
+    <!--        android:layout_below="@+id/chooseProfile"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:text="@string/create_new_profile"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"/>-->
+
 
 
 </RelativeLayout>
