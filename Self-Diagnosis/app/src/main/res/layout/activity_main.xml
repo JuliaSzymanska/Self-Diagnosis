@@ -45,6 +45,7 @@
         android:text="@string/let_s_diagnose"
         android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="diagnoseOnClick"
         app:layout_constraintStart_toStartOf="parent" />
 
 
