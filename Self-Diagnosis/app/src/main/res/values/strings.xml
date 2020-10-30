@@ -7,4 +7,7 @@
     <string name="hello_tom">Hello Tom!</string>
     <string name="edoctor">eDoctor</string>
     <string name="profile_name">Profile name:</string>
+    <string name="sex">Sex:</string>
+    <string name="birth_date">Birth date:</string>
+    <string name="dd_mm_yyyy">DD/MM/YYYY</string>
 </resources>

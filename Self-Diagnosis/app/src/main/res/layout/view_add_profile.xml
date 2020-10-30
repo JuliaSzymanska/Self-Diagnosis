@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="70dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addUserImageView">
 
@@ -55,10 +56,10 @@
 
 
         <LinearLayout
+            android:id="@+id/sex_linear_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
@@ -66,21 +67,58 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5sp"
-                android:text="@string/profile_name"
+                android:text="@string/sex"
                 android:textColor="#19444F"
                 android:textSize="15sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/back" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName2"
+            <ImageButton
+                android:id="@+id/female"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="transparent"
+                android:layout_marginStart="60dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/female" />
+
+            <ImageButton
+                android:id="@+id/male"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="transparent"
+                android:layout_marginStart="60dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/male" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/birth_date_linear_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/birth_date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text=""
-                tools:layout_editor_absoluteX="38dp"
-                tools:layout_editor_absoluteY="347dp" />
+                android:padding="5sp"
+                android:text="@string/birth_date"
+                android:textColor="#19444F"
+                android:textSize="15sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/back" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="transparent"
+                android:textColor="@color/black"
+                android:text="@string/dd_mm_yyyy"/>
+
+
 
         </LinearLayout>
 
