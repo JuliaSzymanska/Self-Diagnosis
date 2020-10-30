@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -77,8 +78,8 @@
                 android:id="@+id/female"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="transparent"
                 android:layout_marginStart="60dp"
+                android:background="transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/female" />
 
@@ -86,8 +87,8 @@
                 android:id="@+id/male"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="transparent"
                 android:layout_marginStart="60dp"
+                android:background="transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/male" />
 
@@ -115,13 +116,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="transparent"
-                android:textColor="@color/black"
-                android:text="@string/dd_mm_yyyy"/>
-
-
+                android:text="@string/dd_mm_yyyy"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
