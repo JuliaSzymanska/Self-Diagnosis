@@ -79,7 +79,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="60dp"
-                android:background="transparent"
+                android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/female" />
 
@@ -88,7 +88,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="60dp"
-                android:background="transparent"
+                android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/male" />
 
@@ -115,7 +115,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="transparent"
+                android:background="@android:color/transparent"
                 android:text="@string/dd_mm_yyyy"
                 android:textColor="@color/black" />
 
