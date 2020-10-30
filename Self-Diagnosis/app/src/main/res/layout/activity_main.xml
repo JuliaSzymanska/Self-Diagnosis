@@ -44,9 +44,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="91dp"
-        android:layout_marginTop="29dp"
-        android:layout_toEndOf="@+id/back"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/doctor"
+        android:textColor="#19444F"
+        android:textSize="20sp"
         android:text="@string/edoctor" />
+
+    <ImageView
+        android:id="@+id/doctor"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/back"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@drawable/doctor" />
 
 </RelativeLayout>
