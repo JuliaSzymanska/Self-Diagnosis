@@ -1,5 +1,6 @@
 package tech.szymanskazdrzalik.self_diagnosis.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
@@ -45,5 +46,11 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + USER_PROFILE_TABLE_NAME);
         onCreate(db);
+    }
+
+    public static void saveUserDataToDB(Context context) {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
     }
 }
