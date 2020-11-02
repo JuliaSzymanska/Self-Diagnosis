@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "user_profiles";
     public static final String USER_PROFILE_TABLE_NAME = "users";
@@ -26,6 +29,16 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 
     }
 
+    public static void saveUserDataToDB(Context context, String name, @NonNull Date birthDate, String gender) {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_COLUMN_NAME, name);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(birthDate);
+        contentValues.put(USER_COLUMN_BIRTH_DATE, date);
+        contentValues.put(USER_COLUMN_GENDER, gender);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -35,7 +48,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 USER_COLUMN_NAME + " TEXT," +
                 USER_COLUMN_BIRTH_DATE + " DATE," +
-                USER_COLUMN_GENDER + " TEXT " + ")");
+                USER_COLUMN_GENDER + " TEXT check(" + USER_COLUMN_GENDER + " = 'f' or " + USER_COLUMN_GENDER + ")" + ")");
 
     }
 
@@ -46,11 +59,5 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + USER_PROFILE_TABLE_NAME);
         onCreate(db);
-    }
-
-    public static void saveUserDataToDB(Context context) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
     }
 }
