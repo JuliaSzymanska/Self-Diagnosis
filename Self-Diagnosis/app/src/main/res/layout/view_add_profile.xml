@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFE9C8">
+    android:background="@color/background">
 
     <Button
-
         android:id="@+id/addUserImageView"
         android:layout_width="158dp"
         android:layout_height="167dp"
@@ -39,7 +38,6 @@
                 android:layout_height="wrap_content"
                 android:padding="5sp"
                 android:text="@string/profile_name"
-                android:textColor="#19444F"
                 android:textSize="15sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/back" />
@@ -70,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:padding="5sp"
                 android:text="@string/sex"
-                android:textColor="#19444F"
                 android:textSize="15sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/back" />
@@ -108,7 +105,6 @@
                 android:layout_height="wrap_content"
                 android:padding="5sp"
                 android:text="@string/birth_date"
-                android:textColor="#19444F"
                 android:textSize="15sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/back" />
@@ -118,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="@string/dd_mm_yyyy"
-                android:textColor="@color/black" />
+                android:textColor="@color/text_color" />
 
         </LinearLayout>
 
@@ -129,6 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="@string/add"
+        android:textColor="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
