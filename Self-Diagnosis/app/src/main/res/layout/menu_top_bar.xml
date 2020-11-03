@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,12 +21,12 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/diagnosis"
-        android:textSize="26sp" />
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="10dp"
