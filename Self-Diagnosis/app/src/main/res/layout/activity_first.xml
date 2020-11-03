@@ -6,8 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".FirstActivity">
 
-    <tech.szymanskazdrzalik.self_diagnosis.AddProfileView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+<!--    <include layout="@layout/fragment_add_profile"-->
+<!--        android:id="@+id/fragmentAddProfile"/>-->
+
+<!--    <tech.szymanskazdrzalik.self_diagnosis.AddProfileView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
 
 </RelativeLayout>
