@@ -17,12 +17,13 @@
 
     <ImageView
         android:id="@+id/doctor"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
+        android:layout_width="45sp"
+        android:layout_height="45sp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:padding="2dp"
         android:layout_marginEnd="9dp"
-        app:srcCompat="@drawable/doctor" />
+        app:srcCompat="@drawable/doctor_2" />
 
     <TextView
         android:id="@+id/chat_name"
