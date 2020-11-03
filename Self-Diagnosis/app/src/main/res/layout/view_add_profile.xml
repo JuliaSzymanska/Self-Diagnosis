@@ -7,6 +7,7 @@
     android:background="#FFE9C8">
 
     <Button
+
         android:id="@+id/addUserImageView"
         android:layout_width="158dp"
         android:layout_height="167dp"
