@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragmentAddProfile"
     android:background="@color/background"
-    tools:context=".AddProfile">
+    tools:context=".AddProfile"
+
+    android:id="@+id/fg_add_profile">
 
     <LinearLayout
         android:layout_width="match_parent"
