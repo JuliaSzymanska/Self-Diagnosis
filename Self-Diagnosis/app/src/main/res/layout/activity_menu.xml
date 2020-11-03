@@ -6,29 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".Menu">
 
+    <include layout="@layout/menu_top_bar"
+        android:id="@+id/menuTopBar"/>
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
+        android:layout_below="@+id/menuTopBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:gravity="center"
-        android:layout_marginTop="200dp">
+        android:paddingStart="15dp"
+        android:orientation="vertical">
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:textColor="@color/orange"
-            android:text="@string/create_new_profile"/>
+            android:orientation="vertical">
 
-        <Button
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="28.11.2019"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:textColor="@color/orange"
-            android:text="@string/choose_profile"/>
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="15.10.2019"
+                android:textSize="25sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>
