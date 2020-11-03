@@ -8,25 +8,15 @@
     tools:context=".MainActivity">
 
 
-    <!--    <Button-->
-    <!--        android:id="@+id/menu"-->
-    <!--        android:layout_width="40dp"-->
-    <!--        android:layout_height="40dp"-->
-    <!--        android:layout_alignParentEnd="true"-->
-    <!--        android:layout_marginEnd="15dp"-->
-    <!--        android:layout_marginTop="15dp"-->
-    <!--        android:background="@drawable/menu"-->
-    <!--        android:text="" />-->
     <TextView
         android:id="@+id/chosen_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15sp"
         android:layout_marginTop="100dp"
-        android:background="#51D2F3"
+        android:background="@color/orange"
         android:padding="15sp"
         android:text="@string/hello_tom"
-        android:textColor="#19444F"
         android:textSize="15sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topPanelChat" />
