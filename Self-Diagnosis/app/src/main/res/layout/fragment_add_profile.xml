@@ -116,13 +116,11 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/backArrow" />
 
-                <EditText
+                <Button
                     android:id="@+id/dateEditTextFragmentAddProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:inputType="none"
-                    android:clickable="true"
                     android:text="@string/dd_mm_yyyy"
                     android:textColor="@color/text_color"
                     android:focusable="true" />
@@ -131,6 +129,7 @@
 
         </LinearLayout>
 
+<!--        TODO: zmieniac tekst buttonu w zaleznosci czy zmiana usera czy nie (binding najlepiej) -->
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

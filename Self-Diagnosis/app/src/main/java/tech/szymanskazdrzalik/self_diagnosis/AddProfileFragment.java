@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.db.User;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -42,7 +44,7 @@ public class AddProfileFragment extends Fragment {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private final Calendar myCalendar = Calendar.getInstance();
-    View.OnClickListener addProfileImageListener = v -> openImagePicker();
+    private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
     private ImageButton addProfileImage;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -98,6 +100,20 @@ public class AddProfileFragment extends Fragment {
         }
     }
 
+    private View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userGender = "F";
+        }
+    };
+
+    private View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userGender = "M";
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -135,6 +151,16 @@ public class AddProfileFragment extends Fragment {
     private void updateLabel() {
         binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_FORMAT.format(myCalendar.getTime()));
         this.userBirthDate = myCalendar.getTime();
+    }
+
+    private void addButtonOnClick() {
+        // TODO: 04.11.2020 ustawiać ID
+        // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
+        this.userName = binding.editProfileName.getText().toString();
+        int id = 0;
+        User user = new User(id, userName, userBirthDate, userGender, userPicture);
+        // TODO: 04.11.2020 update database
+        GlobalVariables.getInstance().setCurrentUser(user);
     }
 
     @Override
