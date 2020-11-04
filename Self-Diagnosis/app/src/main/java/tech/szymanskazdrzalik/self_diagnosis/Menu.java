@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 
-import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 
 public class Menu extends AppCompatActivity {
@@ -28,7 +27,10 @@ public class Menu extends AppCompatActivity {
 
     // TODO: 04.11.2020 Sprawić żeby z tad po przejsciu do fragmentu nie tworzyl sie nowy user a byl modyfikowany aktualny
     public void onProfilePictureClick(View v) {
-        Fragment fragment = new AddProfile();
+        Fragment fragment = new AddProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("is_new_user", false);
+        fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment)

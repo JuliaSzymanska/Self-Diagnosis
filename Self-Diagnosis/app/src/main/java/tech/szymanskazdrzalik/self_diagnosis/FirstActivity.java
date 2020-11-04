@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.View;
 
 public class FirstActivity extends AppCompatActivity {
     // TODO: 02.11.2020 https://developer.android.com/topic/libraries/view-binding#java
@@ -13,7 +12,7 @@ public class FirstActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        Fragment fragment = new AddProfile();
+        Fragment fragment = new AddProfileFragment();
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, fragment)
