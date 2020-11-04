@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (GlobalVariables.getInstance().getCurrentUser() != null && GlobalVariables.getInstance().getCurrentUser().getPicture() != null) {
-            binding.topPanelChat.doctor.setBackground(new BitmapDrawable(getResources(), GlobalVariables.getInstance().getCurrentUser().getPicture()));
-        }
     }
 
 

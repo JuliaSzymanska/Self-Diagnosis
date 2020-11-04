@@ -4,17 +4,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 
+import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
+import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
+
 public class Menu extends AppCompatActivity {
+
+    ActivityMenuBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        binding = ActivityMenuBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        if (GlobalVariables.getInstance().getCurrentUser() != null && GlobalVariables.getInstance().getCurrentUser().getPicture() != null) {
+            binding.menuTop1Bar.imageView.setBackground(new BitmapDrawable(getResources(), GlobalVariables.getInstance().getCurrentUser().getPicture()));
+        }
     }
 
+    // TODO: 04.11.2020 Sprawić żeby z tad po przejsciu do fragmentu nie tworzyl sie nowy user a byl modyfikowany aktualny
     public void onProfilePictureClick(View v) {
         Fragment fragment = new AddProfile();
         FragmentTransaction transaction = getSupportFragmentManager()
