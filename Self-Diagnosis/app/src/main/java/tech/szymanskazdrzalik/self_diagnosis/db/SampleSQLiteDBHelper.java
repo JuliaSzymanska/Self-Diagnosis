@@ -22,7 +22,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String USER_COLUMN_GENDER = "gender";
     public static final String USER_COLUMN_BIRTH_DATE = "birth_date";
     public static final String USER_COLUMN_NAME = "user_name";
-    private static final int DATABASE_VERSION = 1;
+    public static final String USER_COLUMN_PICTURE = "user_picture";
+    private static final int DATABASE_VERSION = 2;
 
     /**
      * {@inheritDoc}
@@ -39,6 +40,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         String date = DB_DATE_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
+        contentValues.put(USER_COLUMN_PICTURE, user.getPicture());
     }
 
     public static Cursor getAllUsersFromDB(Context context) {
@@ -48,7 +50,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_ID,
                 USER_COLUMN_NAME,
                 USER_COLUMN_BIRTH_DATE,
-                USER_COLUMN_GENDER
+                USER_COLUMN_GENDER,
+                USER_COLUMN_PICTURE
         };
 
         return database.query(
@@ -71,6 +74,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 USER_COLUMN_NAME + " TEXT," +
                 USER_COLUMN_BIRTH_DATE + " DATE," +
+                USER_COLUMN_PICTURE + " BLOB," +
                 USER_COLUMN_GENDER + " TEXT check(" + USER_COLUMN_GENDER + " = 'f' or " + USER_COLUMN_GENDER + ")" + ")");
 
     }
