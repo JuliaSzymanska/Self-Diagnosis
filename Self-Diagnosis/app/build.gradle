@@ -8,7 +8,8 @@ android {
 
     defaultConfig {
         applicationId "tech.szymanskazdrzalik.self_diagnosis"
-        minSdkVersion 21
+        // todo: bylo 21, potrzebuje do kalendarza
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"

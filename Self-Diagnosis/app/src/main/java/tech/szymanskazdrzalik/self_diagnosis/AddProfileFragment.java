@@ -1,8 +1,10 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -22,6 +24,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
+import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -38,19 +41,31 @@ public class AddProfileFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
+    private final Calendar myCalendar = Calendar.getInstance();
     View.OnClickListener addProfileImageListener = v -> openImagePicker();
     private ImageButton addProfileImage;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private FragmentAddProfileBinding binding;
-
     private boolean isNewUser = false;
-
     private String userName;
-    private Date userAge;
+    private Date userBirthDate;
     private String userGender;
     private Bitmap userPicture;
+    private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
+        // TODO Auto-generated method stub
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateLabel();
+    };
+    private final View.OnClickListener dateEditTextFragmentAddProfileOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        }
+    };
 
     public AddProfileFragment() {
         // Required empty public constructor
@@ -89,6 +104,7 @@ public class AddProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAddProfileBinding.inflate(inflater, container, false);
         binding.addUserImage.setOnClickListener(this.addProfileImageListener);
+        binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
@@ -114,6 +130,11 @@ public class AddProfileFragment extends Fragment {
             }
             addProfileImage.setImageURI(selected);
         }
+    }
+
+    private void updateLabel() {
+        binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_FORMAT.format(myCalendar.getTime()));
+        this.userBirthDate = myCalendar.getTime();
     }
 
     @Override
