@@ -62,12 +62,8 @@ public class AddProfileFragment extends Fragment {
         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         updateLabel();
     };
-    private final View.OnClickListener dateEditTextFragmentAddProfileOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-        }
-    };
+    private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
+            v -> new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
     public AddProfileFragment() {
         // Required empty public constructor
@@ -100,14 +96,14 @@ public class AddProfileFragment extends Fragment {
         }
     }
 
-    private View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
+    private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             userGender = "F";
         }
     };
 
-    private View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
+    private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             userGender = "M";
@@ -120,7 +116,10 @@ public class AddProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAddProfileBinding.inflate(inflater, container, false);
         binding.addUserImage.setOnClickListener(this.addProfileImageListener);
+        binding.male.setOnClickListener(genderMaleOnClick);
+        binding.female.setOnClickListener(genderFemaleOnClick);
         binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
+        binding.fgAddButton.setOnClickListener(addButtonOnClick);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
@@ -153,15 +152,21 @@ public class AddProfileFragment extends Fragment {
         this.userBirthDate = myCalendar.getTime();
     }
 
-    private void addButtonOnClick() {
-        // TODO: 04.11.2020 ustawiać ID
-        // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
-        this.userName = binding.editProfileName.getText().toString();
-        int id = 0;
-        User user = new User(id, userName, userBirthDate, userGender, userPicture);
-        // TODO: 04.11.2020 update database
-        GlobalVariables.getInstance().setCurrentUser(user);
-    }
+    View.OnClickListener addButtonOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // TODO: 04.11.2020 ustawiać ID
+            // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
+            userName = binding.editProfileName.getText().toString();
+            int id = 0;
+            User user = new User(id, userName, userBirthDate, userGender, userPicture);
+            // TODO: 04.11.2020 update database
+            GlobalVariables.getInstance().setCurrentUser(user);
+            // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
+            getActivity().onBackPressed();
+        }
+    };
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
