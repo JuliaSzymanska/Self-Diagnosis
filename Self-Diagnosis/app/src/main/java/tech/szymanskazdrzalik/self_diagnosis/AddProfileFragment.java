@@ -45,6 +45,8 @@ public class AddProfileFragment extends Fragment {
     private String mParam2;
     private FragmentAddProfileBinding binding;
 
+    private boolean isNewUser = false;
+
     private String userName;
     private Date userAge;
     private String userGender;
@@ -87,6 +89,10 @@ public class AddProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAddProfileBinding.inflate(inflater, container, false);
         binding.addUserImage.setOnClickListener(this.addProfileImageListener);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            this.isNewUser = bundle.getBoolean("is_new_user");
+        }
         return binding.getRoot();
     }
 
@@ -107,7 +113,6 @@ public class AddProfileFragment extends Fragment {
                 e.printStackTrace();
             }
             addProfileImage.setImageURI(selected);
-//            addProfileImage.setBackground(Drawable.createFromPath(String.valueOf(selected)));
         }
     }
 
