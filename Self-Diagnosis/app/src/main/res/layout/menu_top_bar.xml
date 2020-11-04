@@ -11,6 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onProfilePictureClick"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/female" />
 
