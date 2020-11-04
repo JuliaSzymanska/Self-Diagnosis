@@ -76,8 +76,8 @@ public class AddProfile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        addProfileImage = this.getView().findViewById(R.id.addUserImage);
-//        addProfileImage.setOnClickListener(addProfileImageListener);
+        addProfileImage = this.getView().findViewById(R.id.addUserImage);
+        addProfileImage.setOnClickListener(addProfileImageListener);
         return inflater.inflate(R.layout.fragment_add_profile, container, false);
     }
 

@@ -13,19 +13,21 @@ public class FirstActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-//        ft.replace(R.id.fragmentAddProfile, fragment);
-//        ft.commit();
-
-    }
-
-    public void onC(View v){
         Fragment fragment = new AddProfile();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fg_add_profile, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null);
+        transaction.commit();
     }
+
+//    public void onC(View v) {
+//        Fragment fragment = new AddProfile();
+//        FragmentTransaction transaction = getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.container, fragment)
+//                .addToBackStack(null);
+//        transaction.commit();
+//    }
 
 }
