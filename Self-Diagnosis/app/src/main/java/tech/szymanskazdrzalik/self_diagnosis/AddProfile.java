@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -15,7 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -35,9 +39,9 @@ public class AddProfile extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    Button addProfileImage;
+    ImageButton addProfileImage;
     private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
 
 
     public AddProfile() {
@@ -76,23 +80,27 @@ public class AddProfile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        addProfileImage = this.getView().findViewById(R.id.addUserImage);
+
+        View v = inflater.inflate(R.layout.fragment_add_profile, container, false);
+        addProfileImage = v.findViewById(R.id.addUserImage);
         addProfileImage.setOnClickListener(addProfileImageListener);
-        return inflater.inflate(R.layout.fragment_add_profile, container, false);
+        return v;
     }
 
     View.OnClickListener addProfileImageListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-
-                } else {
-                    openImagePicker();
-                }
-            } else {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                if (getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+//                    System.out.println("nie Udało się");
+//                } else {
+//                    System.out.println("Udało się");
+//                    openImagePicker();
+//                }
+//            } else {
+//                System.out.println("Mniejszy android");
                 openImagePicker();
-            }
+//            }
         }
     };
 
@@ -105,7 +113,9 @@ public class AddProfile extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            addProfileImage.setBackground(Drawable.createFromPath(String.valueOf(data)));
+            Uri selected = Objects.requireNonNull(data).getData();
+            addProfileImage.setImageURI(selected);
+//            addProfileImage.setBackground(Drawable.createFromPath(String.valueOf(selected)));
         }
     }
 

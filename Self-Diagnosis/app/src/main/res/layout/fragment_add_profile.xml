@@ -15,7 +15,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <Button
+        <ImageButton
             android:id="@+id/addUserImage"
             android:layout_width="158dp"
             android:layout_height="167dp"
