@@ -6,10 +6,13 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,6 +36,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 
     }
 
+
     public static void saveUserDataToDB(Context context, User user) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -40,7 +44,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         String date = DB_DATE_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
-        contentValues.put(USER_COLUMN_PICTURE, user.getPicture());
+        contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
+        database.insert(USER_PROFILE_TABLE_NAME, null, contentValues);
     }
 
     public static Cursor getAllUsersFromDB(Context context) {
