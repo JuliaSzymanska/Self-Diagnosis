@@ -47,7 +47,7 @@
                     android:text="@string/profile_name"
                     android:textSize="15sp"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/back" />
+                    app:layout_constraintTop_toBottomOf="@+id/backArrow" />
 
                 <EditText
                     android:id="@+id/edit_profile_name"
@@ -77,7 +77,7 @@
                     android:text="@string/sex"
                     android:textSize="15sp"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/back" />
+                    app:layout_constraintTop_toBottomOf="@+id/backArrow" />
 
                 <ImageButton
                     android:id="@+id/female"
@@ -114,7 +114,7 @@
                     android:text="@string/birth_date"
                     android:textSize="15sp"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/back" />
+                    app:layout_constraintTop_toBottomOf="@+id/backArrow" />
 
                 <Button
                     android:layout_width="wrap_content"
