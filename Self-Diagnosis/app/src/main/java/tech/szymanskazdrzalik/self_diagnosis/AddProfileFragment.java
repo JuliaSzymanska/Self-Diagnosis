@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
@@ -114,6 +117,12 @@ public class AddProfileFragment extends Fragment {
         @Override
         public void onClick(View v) {
             userGender = "F";
+            binding.female.clearColorFilter();
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            binding.male.setColorFilter(filter);
+
         }
     };
 
@@ -121,6 +130,11 @@ public class AddProfileFragment extends Fragment {
         @Override
         public void onClick(View v) {
             userGender = "M";
+            binding.male.clearColorFilter();
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            binding.female.setColorFilter(filter);
         }
     };
 
