@@ -30,15 +30,23 @@ public class Menu extends AppCompatActivity {
         }
 
         if (GlobalVariables.getInstance().getCurrentUser() != null && GlobalVariables.getInstance().getCurrentUser().getPicture() != null) {
-            binding.menuTop1Bar.imageView.setBackground(new BitmapDrawable(getResources(), GlobalVariables.getInstance().getCurrentUser().getPicture()));
+            binding.menuTop1Bar.profileImage.setBackground(new BitmapDrawable(getResources(), GlobalVariables.getInstance().getCurrentUser().getPicture()));
         }
     }
 
     // TODO: 04.11.2020 Sprawić żeby z tad po przejsciu do fragmentu nie tworzyl sie nowy user a byl modyfikowany aktualny
     public void onProfilePictureClick(View v) {
+        runAddProfileFragment(false);
+    }
+
+    public void onCreateNewProfileClick(View v){
+        runAddProfileFragment(true);
+    }
+
+    private void runAddProfileFragment(boolean isNewUser){
         Fragment fragment = new AddProfileFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("is_new_user", false);
+        bundle.putBoolean("is_new_user", isNewUser);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
