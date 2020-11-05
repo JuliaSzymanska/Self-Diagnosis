@@ -167,6 +167,9 @@ public class AddProfileFragment extends Fragment {
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
         }
+        if (!this.isNewUser){
+            binding.editProfileName.setText(GlobalVariables.getInstance().getCurrentUser().getName());
+        }
         binding.female.setColorFilter(getBlackAndWhiteFilter());
         binding.male.setColorFilter(getBlackAndWhiteFilter());
         ((Menu)getActivity()).setPicture();

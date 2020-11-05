@@ -32,7 +32,7 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="5dp"
         android:onClick="onCreateNewProfileClick"
-        android:background="@drawable/add_user" />
+        android:background="@drawable/add_user_black" />
 
     <Button
         android:id="@+id/changeProfileButton"
