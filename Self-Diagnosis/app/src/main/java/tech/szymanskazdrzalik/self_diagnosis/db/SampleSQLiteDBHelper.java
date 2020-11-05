@@ -32,6 +32,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 
 
     public static void saveUserDataToDB(Context context, User user) {
+        // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();

@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +40,20 @@ import static android.app.Activity.RESULT_OK;
  */
 public class AddProfileFragment extends Fragment {
 
+    // TODO: 02.11.2020 - koniecznie przed prezentacją
+    //  Menu po cofnięciu się w czacie z botem - Zmiana użytkownika, dodanie nowego użytkownika, historia leczenia użytkownika
+    //  Dodać pokazowe przyciski do odpowiedzi do bota (nie powiązane z api, na rzecz prezentacji)
+
+    // TODO: 02.11.2020 Mieszane odczucia co do kiedy
+    //  Pierwsze uruchomienie aplikacj - utworzenie uzytkownika ewentualnie pokaz możliwości aplikacji
+
+    // TODO: 02.11.2020 - raczej po prezentacji
+    //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
+    //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
+    //  Interakcja z api
+    //  Dodawanie zdj profilowego (dodać do bazy danych)
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,7 +62,6 @@ public class AddProfileFragment extends Fragment {
     private static final int PERMISSION_CODE = 1001;
     private final Calendar myCalendar = Calendar.getInstance();
     private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
-    private ImageButton addProfileImage;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -64,18 +80,6 @@ public class AddProfileFragment extends Fragment {
             v -> new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
     private String userGender;
-    private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            userGender = "F";
-        }
-    };
-    private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            userGender = "M";
-        }
-    };
     private Bitmap userPicture;
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
@@ -124,6 +128,31 @@ public class AddProfileFragment extends Fragment {
         }
     }
 
+    private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userGender = "F";
+            binding.female.clearColorFilter();
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            binding.male.setColorFilter(filter);
+
+        }
+    };
+
+    private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userGender = "M";
+            binding.male.clearColorFilter();
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            binding.female.setColorFilter(filter);
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -157,7 +186,7 @@ public class AddProfileFragment extends Fragment {
                 // TODO: 04.11.2020
                 e.printStackTrace();
             }
-            addProfileImage.setImageURI(selected);
+            binding.addUserImage.setImageURI(selected);
         }
     }
 
