@@ -37,6 +37,20 @@ import static android.app.Activity.RESULT_OK;
  */
 public class AddProfileFragment extends Fragment {
 
+    // TODO: 02.11.2020 - koniecznie przed prezentacją
+    //  Menu po cofnięciu się w czacie z botem - Zmiana użytkownika, dodanie nowego użytkownika, historia leczenia użytkownika
+    //  Dodać pokazowe przyciski do odpowiedzi do bota (nie powiązane z api, na rzecz prezentacji)
+
+    // TODO: 02.11.2020 Mieszane odczucia co do kiedy
+    //  Pierwsze uruchomienie aplikacj - utworzenie uzytkownika ewentualnie pokaz możliwości aplikacji
+
+    // TODO: 02.11.2020 - raczej po prezentacji
+    //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
+    //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
+    //  Interakcja z api
+    //  Dodawanie zdj profilowego (dodać do bazy danych)
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
