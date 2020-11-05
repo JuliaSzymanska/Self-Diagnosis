@@ -133,23 +133,23 @@ public class AddProfileFragment extends Fragment {
         public void onClick(View v) {
             userGender = "F";
             binding.female.clearColorFilter();
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.setSaturation(0);
-            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-            binding.male.setColorFilter(filter);
+            binding.male.setColorFilter(getBlackAndWhiteFilter());
 
         }
     };
+
+    private ColorMatrixColorFilter getBlackAndWhiteFilter() {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        return new ColorMatrixColorFilter(matrix);
+    }
 
     private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             userGender = "M";
             binding.male.clearColorFilter();
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.setSaturation(0);
-            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-            binding.female.setColorFilter(filter);
+            binding.female.setColorFilter(getBlackAndWhiteFilter());
         }
     };
 
@@ -167,6 +167,8 @@ public class AddProfileFragment extends Fragment {
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
         }
+        binding.female.setColorFilter(getBlackAndWhiteFilter());
+        binding.male.setColorFilter(getBlackAndWhiteFilter());
         return binding.getRoot();
     }
 
