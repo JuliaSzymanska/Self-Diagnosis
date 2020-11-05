@@ -10,6 +10,7 @@
 
     <color name="background">#FBF3E7</color>
     <color name="light_orange">#F1DEC1</color>
+    <color name="light_orange_border">#EDD3AC</color>
     <color name="text_color">#19444F</color>
     <color name="orange">#EA9A52</color>
     <color name="orange_dark">#ED811F</color>
