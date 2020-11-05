@@ -10,6 +10,7 @@ import android.view.View;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
 public class Menu extends AppCompatActivity {
 
@@ -20,6 +21,9 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        if (GlobalVariables.getInstance().getCurrentUser() == null) {
+            SharedPreferencesHelper.loadUser(this);
+        }
 
         if (GlobalVariables.getInstance().getCurrentUser() != null && GlobalVariables.getInstance().getCurrentUser().getPicture() != null) {
             binding.menuTop1Bar.imageView.setBackground(new BitmapDrawable(getResources(), GlobalVariables.getInstance().getCurrentUser().getPicture()));

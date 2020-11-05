@@ -1,14 +1,14 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+
 
     }
 

@@ -20,7 +20,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String USER_COLUMN_BIRTH_DATE = "birth_date";
     public static final String USER_COLUMN_NAME = "user_name";
     public static final String USER_COLUMN_PICTURE = "user_picture";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     /**
      * {@inheritDoc}
@@ -32,6 +32,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 
 
     public static void saveUserDataToDB(Context context, User user) {
+        // TODO: 05.11.2020 sprawdzic
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_NAME, user.getName());
@@ -66,6 +67,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 
     // TODO: 05.11.2020 TEST ME
     public static User getUserByID(Context context, int id) {
+        // TODO: 05.11.2020 make it not break when id not exists
 
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
@@ -114,7 +116,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_NAME + " TEXT," +
                 USER_COLUMN_BIRTH_DATE + " DATE," +
                 USER_COLUMN_PICTURE + " BLOB," +
-                USER_COLUMN_GENDER + " TEXT check(" + USER_COLUMN_GENDER + " = 'f' or " + USER_COLUMN_GENDER + ")" + ")");
+                USER_COLUMN_GENDER + " TEXT check(" + USER_COLUMN_GENDER + " in ('M', 'm', 'F', 'f'))" + ")");
 
     }
 
