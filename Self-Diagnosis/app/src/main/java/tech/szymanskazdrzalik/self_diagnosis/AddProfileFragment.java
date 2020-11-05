@@ -72,6 +72,8 @@ public class AddProfileFragment extends Fragment {
     private Date userBirthDate;
     private String userGender;
     private Bitmap userPicture;
+    ColorMatrixColorFilter filter;
+
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
         // TODO Auto-generated method stub
         myCalendar.set(Calendar.YEAR, year);
@@ -118,11 +120,7 @@ public class AddProfileFragment extends Fragment {
         public void onClick(View v) {
             userGender = "F";
             binding.female.clearColorFilter();
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.setSaturation(0);
-            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             binding.male.setColorFilter(filter);
-
         }
     };
 
@@ -131,9 +129,6 @@ public class AddProfileFragment extends Fragment {
         public void onClick(View v) {
             userGender = "M";
             binding.male.clearColorFilter();
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.setSaturation(0);
-            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             binding.female.setColorFilter(filter);
         }
     };
@@ -148,6 +143,9 @@ public class AddProfileFragment extends Fragment {
         binding.female.setOnClickListener(genderFemaleOnClick);
         binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
         binding.fgAddButton.setOnClickListener(addButtonOnClick);
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        filter = new ColorMatrixColorFilter(matrix);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
