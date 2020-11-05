@@ -3,7 +3,6 @@ package tech.szymanskazdrzalik.self_diagnosis.db;
 import android.graphics.Bitmap;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class User {

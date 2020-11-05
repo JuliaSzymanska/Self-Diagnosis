@@ -14,6 +14,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private GlobalVariables globalVariables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
+        globalVariables = GlobalVariables.getInstance();
     }
 
 
