@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class Menu extends AppCompatActivity {
 

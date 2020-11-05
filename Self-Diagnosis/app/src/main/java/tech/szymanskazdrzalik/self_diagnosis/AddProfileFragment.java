@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,7 @@ import java.util.Objects;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 import static android.app.Activity.RESULT_OK;
 
