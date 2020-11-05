@@ -9,19 +9,19 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.icu.util.Calendar;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 import java.io.IOException;
 import java.util.Date;
@@ -30,6 +30,8 @@ import java.util.Objects;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -38,6 +40,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link AddProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddProfileFragment extends Fragment {
 
     // TODO: 02.11.2020 - koniecznie przed prezentacją
@@ -62,7 +65,6 @@ public class AddProfileFragment extends Fragment {
     private static final int PERMISSION_CODE = 1001;
     private final Calendar myCalendar = Calendar.getInstance();
     private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
-    private ImageButton addProfileImage;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -70,10 +72,6 @@ public class AddProfileFragment extends Fragment {
     private boolean isNewUser = false;
     private String userName;
     private Date userBirthDate;
-    private String userGender;
-    private Bitmap userPicture;
-    ColorMatrixColorFilter filter;
-
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
         // TODO Auto-generated method stub
         myCalendar.set(Calendar.YEAR, year);
@@ -83,6 +81,24 @@ public class AddProfileFragment extends Fragment {
     };
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
             v -> new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+    private String userGender;
+    private Bitmap userPicture;
+    private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // TODO: 04.11.2020 ustawiać ID
+            // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
+            userName = binding.editProfileName.getText().toString();
+            int id = 0;
+            User user = new User(id, userName, userBirthDate, userGender, userPicture);
+            GlobalVariables.getInstance().setCurrentUser(user);
+            SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
+            SharedPreferencesHelper.saveUserId(getContext(), id);
+            // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
+            getActivity().onBackPressed();
+        }
+    };
 
     public AddProfileFragment() {
         // Required empty public constructor
@@ -120,16 +136,22 @@ public class AddProfileFragment extends Fragment {
         public void onClick(View v) {
             userGender = "F";
             binding.female.clearColorFilter();
-            binding.male.setColorFilter(filter);
+            binding.male.setColorFilter(getBlackAndWhiteFilter());
         }
     };
+
+    private ColorMatrixColorFilter getBlackAndWhiteFilter() {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        return new ColorMatrixColorFilter(matrix);
+    }
 
     private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             userGender = "M";
             binding.male.clearColorFilter();
-            binding.female.setColorFilter(filter);
+            binding.female.setColorFilter(getBlackAndWhiteFilter());
         }
     };
 
@@ -143,13 +165,13 @@ public class AddProfileFragment extends Fragment {
         binding.female.setOnClickListener(genderFemaleOnClick);
         binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
         binding.fgAddButton.setOnClickListener(addButtonOnClick);
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-        filter = new ColorMatrixColorFilter(matrix);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
         }
+        binding.female.setColorFilter(getBlackAndWhiteFilter());
+        binding.male.setColorFilter(getBlackAndWhiteFilter());
+        ((Menu)getActivity()).setPicture();
         return binding.getRoot();
     }
 
@@ -169,7 +191,7 @@ public class AddProfileFragment extends Fragment {
                 // TODO: 04.11.2020
                 e.printStackTrace();
             }
-            addProfileImage.setImageURI(selected);
+            binding.addUserImage.setImageURI(selected);
         }
     }
 
@@ -177,22 +199,6 @@ public class AddProfileFragment extends Fragment {
         binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_FORMAT.format(myCalendar.getTime()));
         this.userBirthDate = myCalendar.getTime();
     }
-
-    View.OnClickListener addButtonOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // TODO: 04.11.2020 ustawiać ID
-            // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
-            userName = binding.editProfileName.getText().toString();
-            int id = 0;
-            User user = new User(id, userName, userBirthDate, userGender, userPicture);
-            // TODO: 04.11.2020 update database
-            GlobalVariables.getInstance().setCurrentUser(user);
-            // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
-            getActivity().onBackPressed();
-        }
-    };
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

@@ -1,4 +1,4 @@
-package tech.szymanskazdrzalik.self_diagnosis;
+package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 
