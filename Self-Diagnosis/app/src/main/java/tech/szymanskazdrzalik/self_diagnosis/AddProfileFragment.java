@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -82,6 +83,7 @@ public class AddProfileFragment extends Fragment {
 
     private String userGender;
     private Bitmap userPicture;
+    GlobalVariables globalVariables;
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -164,16 +166,35 @@ public class AddProfileFragment extends Fragment {
         binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
         binding.fgAddButton.setOnClickListener(addButtonOnClick);
         Bundle bundle = this.getArguments();
+        binding.female.setColorFilter(getBlackAndWhiteFilter());
+        binding.male.setColorFilter(getBlackAndWhiteFilter());
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
         }
-        if (!this.isNewUser){
-            binding.editProfileName.setText(GlobalVariables.getInstance().getCurrentUser().getName());
+        globalVariables = GlobalVariables.getInstance();
+        if (!this.isNewUser) {
+            setCurrentUser();
         }
-        binding.female.setColorFilter(getBlackAndWhiteFilter());
-        binding.male.setColorFilter(getBlackAndWhiteFilter());
-        ((Menu)getActivity()).setPicture();
+        ((Menu) getActivity()).setPicture();
         return binding.getRoot();
+    }
+
+    private void setCurrentUser(){
+        if (globalVariables.getCurrentUser() != null) {
+            userName = globalVariables.getCurrentUser().getName();
+            binding.editProfileName.setText(userName);
+            userBirthDate = globalVariables.getCurrentUser().getBirthDate();
+            String birthString = new SimpleDateFormat("yyyy-MM-dd").format(userBirthDate);
+            binding.dateEditTextFragmentAddProfile.setText(birthString);
+            userGender = globalVariables.getCurrentUser().getGender();
+            System.out.println(userGender);
+            if (userGender.equals("M")) {
+                binding.male.clearColorFilter();
+            } else if (userGender.equals("F")) {
+                binding.female.clearColorFilter();
+            }
+            binding.fgAddButton.setText("Update");
+        }
     }
 
     private void openImagePicker() {
