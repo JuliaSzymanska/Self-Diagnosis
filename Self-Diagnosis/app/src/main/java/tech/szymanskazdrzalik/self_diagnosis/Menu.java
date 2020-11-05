@@ -21,6 +21,10 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setPicture();
+    }
+
+    public void setPicture() {
         if (GlobalVariables.getInstance().getCurrentUser() == null) {
             SharedPreferencesHelper.loadUser(this);
         }

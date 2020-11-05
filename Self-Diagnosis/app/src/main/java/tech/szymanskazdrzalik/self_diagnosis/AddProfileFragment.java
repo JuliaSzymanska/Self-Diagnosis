@@ -169,6 +169,7 @@ public class AddProfileFragment extends Fragment {
         }
         binding.female.setColorFilter(getBlackAndWhiteFilter());
         binding.male.setColorFilter(getBlackAndWhiteFilter());
+        ((Menu)getActivity()).setPicture();
         return binding.getRoot();
     }
 
