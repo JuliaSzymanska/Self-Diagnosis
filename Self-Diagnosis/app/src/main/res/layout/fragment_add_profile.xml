@@ -56,6 +56,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:text=""
+                    android:textColor="@color/text_color"
                     tools:layout_editor_absoluteX="38dp"
                     tools:layout_editor_absoluteY="347dp" />
 

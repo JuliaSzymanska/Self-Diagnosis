@@ -36,6 +36,8 @@
         android:maxLines="6"
         android:minLines="2"
         android:scrollbars="vertical"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color"
         android:layout_marginHorizontal="10dp"
         android:hint="@string/type_your_symptoms"
         android:autofillHints="Type Your symptoms..." />
