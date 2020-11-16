@@ -22,18 +22,15 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        if(getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                .getBoolean("isFirstRun", true)){
-            Toast.makeText(MainActivity.this, "First Run", Toast.LENGTH_LONG)
-                    .show();
+        if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean(getResources().getString(R.string.is_first_run), true)) {
             runFragment();
-            
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                    .putBoolean("isFirstRun", false).apply();
+                    .putBoolean(getResources().getString(R.string.is_first_run), false).apply();
         }
     }
 
-    private void runFragment(){
+    private void runFragment() {
         Fragment fragment = new AddProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("is_new_user", true);
