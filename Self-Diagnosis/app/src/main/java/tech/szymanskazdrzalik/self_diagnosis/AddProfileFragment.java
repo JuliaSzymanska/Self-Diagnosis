@@ -86,14 +86,17 @@ public class AddProfileFragment extends Fragment {
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: 04.11.2020 ustawiać ID
-            // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
             userName = binding.editProfileName.getText().toString();
             User user = new User(nextAvailableId, userName, userBirthDate, userGender, userPicture);
             GlobalVariables.getInstance().setCurrentUser(user);
-            SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
-            SharedPreferencesHelper.saveUserId(getContext(), nextAvailableId);
-            nextAvailableId += 1;
+            if (isNewUser) {
+                // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
+                SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
+                SharedPreferencesHelper.saveUserId(getContext(), nextAvailableId);
+                nextAvailableId += 1;
+            } else {
+                SampleSQLiteDBHelper.updateUserDataToDB(getContext(), user);
+            }
             // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
             getActivity().onBackPressed();
         }
@@ -177,7 +180,7 @@ public class AddProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void setCurrentUser(){
+    private void setCurrentUser() {
         if (globalVariables.getCurrentUser() != null) {
             userName = globalVariables.getCurrentUser().getName();
             binding.editProfileName.setText(userName);

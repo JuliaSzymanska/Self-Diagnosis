@@ -34,7 +34,7 @@ public class Menu extends AppCompatActivity {
         }
     }
 
-    // TODO: 04.11.2020 Sprawić żeby z tad po przejsciu do fragmentu nie tworzyl sie nowy user a byl modyfikowany aktualny
+    // TODO: 04.11.2020 Sprawić żeby stad po przejsciu do fragmentu nie tworzyl sie nowy user a byl modyfikowany aktualny
     public void onProfilePictureClick(View v) {
         runAddProfileFragment(false);
     }

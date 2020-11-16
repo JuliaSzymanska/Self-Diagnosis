@@ -44,6 +44,19 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         database.insert(USER_PROFILE_TABLE_NAME, null, contentValues);
     }
 
+    public static void updateUserDataToDB(Context context, User user) {
+        // TODO: 05.11.2020 make not break with null date
+        // TODO: 05.11.2020 sprawdzic
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_COLUMN_NAME, user.getName());
+        String date = DB_DATE_FORMAT.format(user.getBirthDate());
+        contentValues.put(USER_COLUMN_BIRTH_DATE, date);
+        contentValues.put(USER_COLUMN_GENDER, user.getGender());
+        contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
+        database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID + "=" + user.getId(), null);
+    }
+
     public static Cursor getAllUsersFromDB(Context context) {
 
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
@@ -118,7 +131,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_BIRTH_DATE + " DATE," +
                 USER_COLUMN_PICTURE + " BLOB," +
                 USER_COLUMN_GENDER + " TEXT check(" + USER_COLUMN_GENDER + " in ('M', 'm', 'F', 'f'))" + ")");
-
     }
 
     /**
