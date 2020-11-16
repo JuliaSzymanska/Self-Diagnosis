@@ -15,17 +15,34 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/addUserImage"
-            android:layout_width="158dp"
-            android:layout_height="167dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/orange_dark"
-            android:background="@color/background"
-            android:src="@drawable/add_user_black" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/beforeAddUserImage"
+                android:layout_width="158dp"
+                android:layout_height="167dp"
+                android:background="@drawable/add_user_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/addUserImage"
+                android:layout_width="158dp"
+                android:layout_height="167dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/orange_dark"
+                android:background="@android:color/transparent"
+                />
+
+        </RelativeLayout>
+
+
 
         <LinearLayout
             android:id="@+id/linearLayout"

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.icu.util.Calendar;
@@ -229,6 +230,7 @@ public class AddProfileFragment extends Fragment {
                 e.printStackTrace();
             }
             binding.addUserImage.setImageURI(selected);
+            binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
