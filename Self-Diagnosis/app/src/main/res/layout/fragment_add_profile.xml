@@ -15,15 +15,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/addUserImage"-->
-<!--            android:layout_width="158dp"-->
-<!--            android:layout_height="167dp"-->
-<!--            android:background="@drawable/add_user_black"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/addUserImage"
             android:layout_width="158dp"
