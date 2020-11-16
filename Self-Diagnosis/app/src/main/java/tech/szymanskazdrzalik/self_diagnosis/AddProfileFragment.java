@@ -46,9 +46,6 @@ public class AddProfileFragment extends Fragment {
     //  Menu po cofnięciu się w czacie z botem - Zmiana użytkownika, dodanie nowego użytkownika, historia leczenia użytkownika
     //  Dodać pokazowe przyciski do odpowiedzi do bota (nie powiązane z api, na rzecz prezentacji)
 
-    // TODO: 02.11.2020 Mieszane odczucia co do kiedy
-    //  Pierwsze uruchomienie aplikacj - utworzenie uzytkownika ewentualnie pokaz możliwości aplikacji
-
     // TODO: 02.11.2020 - raczej po prezentacji
     //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
     //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
@@ -57,7 +54,6 @@ public class AddProfileFragment extends Fragment {
 
 
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final int IMAGE_PICK_CODE = 1000;
@@ -131,6 +127,12 @@ public class AddProfileFragment extends Fragment {
         }
     }
 
+    private ColorMatrixColorFilter getBlackAndWhiteFilter() {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        return new ColorMatrixColorFilter(matrix);
+    }
+
     private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -139,12 +141,6 @@ public class AddProfileFragment extends Fragment {
             binding.male.setColorFilter(getBlackAndWhiteFilter());
         }
     };
-
-    private ColorMatrixColorFilter getBlackAndWhiteFilter() {
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-        return new ColorMatrixColorFilter(matrix);
-    }
 
     private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
         @Override
@@ -158,7 +154,6 @@ public class AddProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentAddProfileBinding.inflate(inflater, container, false);
         binding.addUserImage.setOnClickListener(this.addProfileImageListener);
         binding.male.setOnClickListener(genderMaleOnClick);
@@ -187,13 +182,12 @@ public class AddProfileFragment extends Fragment {
             String birthString = new SimpleDateFormat("yyyy-MM-dd").format(userBirthDate);
             binding.dateEditTextFragmentAddProfile.setText(birthString);
             userGender = globalVariables.getCurrentUser().getGender();
-            System.out.println(userGender);
             if (userGender.equals("M")) {
                 binding.male.clearColorFilter();
             } else if (userGender.equals("F")) {
                 binding.female.clearColorFilter();
             }
-            binding.fgAddButton.setText("Update");
+            binding.fgAddButton.setText(getString(R.string.update_string));
         }
     }
 
