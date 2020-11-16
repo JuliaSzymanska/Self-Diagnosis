@@ -7,40 +7,48 @@
     android:background="@color/background"
     tools:context=".MainActivity">
 
-
-    <TextView
-        android:id="@+id/chosen_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15sp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/border"
-        android:padding="18sp"
-        android:text="@string/hello_tom"
-        android:textSize="15sp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topPanelChat" />
-
-    <include
-        android:id="@+id/topPanelChat"
-        layout="@layout/top_of_chat" />
-
-    <EditText
-        android:id="@+id/inputSymptoms"
+    <FrameLayout
+        android:id="@+id/layoutToBeReplacedWithFragmentInMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:lines="4"
-        android:maxLines="6"
-        android:minLines="2"
-        android:scrollbars="vertical"
-        android:textColor="@color/text_color"
-        android:textColorHint="@color/text_color"
-        android:layout_marginHorizontal="10dp"
-        android:hint="@string/type_your_symptoms"
-        android:autofillHints="Type Your symptoms..." />
+        android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/chosen_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15sp"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/border"
+                android:padding="18sp"
+                android:text="@string/hello_tom"
+                android:textSize="15sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topPanelChat" />
+
+            <include
+                android:id="@+id/topPanelChat"
+                layout="@layout/top_of_chat" />
+
+            <EditText
+                android:id="@+id/inputSymptoms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="10dp"
+                android:autofillHints="Type Your symptoms..."
+                android:ems="10"
+                android:hint="@string/type_your_symptoms"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:maxLines="6"
+                android:minLines="2"
+                android:scrollbars="vertical"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/text_color" />
+        </RelativeLayout>
+    </FrameLayout>
 </RelativeLayout>

@@ -175,7 +175,7 @@ public class AddProfileFragment extends Fragment {
         if (!this.isNewUser) {
             setCurrentUser();
         }
-        ((Menu) getActivity()).setPicture();
+//        ((Menu) getActivity()).setPicture();
         return binding.getRoot();
     }
 
