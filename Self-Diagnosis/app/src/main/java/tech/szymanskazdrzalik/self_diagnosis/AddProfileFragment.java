@@ -79,6 +79,7 @@ public class AddProfileFragment extends Fragment {
 
     private String userGender;
     private Bitmap userPicture;
+    private static int nextAvailableId = 0;
     GlobalVariables globalVariables;
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
@@ -86,11 +87,11 @@ public class AddProfileFragment extends Fragment {
             // TODO: 04.11.2020 ustawiać ID
             // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
             userName = binding.editProfileName.getText().toString();
-            int id = 0;
-            User user = new User(id, userName, userBirthDate, userGender, userPicture);
+            User user = new User(nextAvailableId, userName, userBirthDate, userGender, userPicture);
             GlobalVariables.getInstance().setCurrentUser(user);
             SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
-            SharedPreferencesHelper.saveUserId(getContext(), id);
+            SharedPreferencesHelper.saveUserId(getContext(), nextAvailableId);
+            nextAvailableId += 1;
             // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
             getActivity().onBackPressed();
         }
