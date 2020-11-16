@@ -79,7 +79,7 @@ public class AddProfileFragment extends Fragment {
 
     private String userGender;
     private Bitmap userPicture;
-    private static int nextAvailableId = 0;
+    private static int nextAvailableId = 1000;
     GlobalVariables globalVariables;
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
