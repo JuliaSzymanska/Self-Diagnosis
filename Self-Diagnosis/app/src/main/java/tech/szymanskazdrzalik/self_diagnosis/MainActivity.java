@@ -10,8 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddProfileFragment.ReloadInterface  {
 
     private ActivityMainBinding binding;
 
@@ -47,4 +49,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void reload() {
+
+    }
 }

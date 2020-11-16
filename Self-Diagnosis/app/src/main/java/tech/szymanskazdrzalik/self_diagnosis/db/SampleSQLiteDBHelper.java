@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,6 +54,10 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         String date = DB_DATE_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        Bitmap bitmap = user.getPicture();
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+//        byte[] img = stream.toByteArray();
         contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
         database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID + "=" + user.getId(), null);
     }

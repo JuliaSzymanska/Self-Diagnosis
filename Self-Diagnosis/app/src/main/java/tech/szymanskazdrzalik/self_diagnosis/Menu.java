@@ -12,7 +12,7 @@ import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
-public class Menu extends AppCompatActivity {
+public class Menu extends AppCompatActivity implements AddProfileFragment.ReloadInterface {
 
     ActivityMenuBinding binding;
 
@@ -30,7 +30,7 @@ public class Menu extends AppCompatActivity {
         }
 
         if (GlobalVariables.getInstance().getCurrentUser() != null && GlobalVariables.getInstance().getCurrentUser().getPicture() != null) {
-            binding.menuTop1Bar.profileImage.setBackground(new BitmapDrawable(getResources(), GlobalVariables.getInstance().getCurrentUser().getPicture()));
+            binding.menuTop1Bar.profileImage.setImageBitmap(GlobalVariables.getInstance().getCurrentUser().getPicture());
         }
     }
 
@@ -55,4 +55,8 @@ public class Menu extends AppCompatActivity {
         transaction.commit();
     }
 
+    @Override
+    public void reload() {
+        setPicture();
+    }
 }

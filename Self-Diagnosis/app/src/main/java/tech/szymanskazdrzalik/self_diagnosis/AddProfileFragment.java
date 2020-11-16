@@ -1,6 +1,7 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -98,9 +99,23 @@ public class AddProfileFragment extends Fragment {
                 SampleSQLiteDBHelper.updateUserDataToDB(getContext(), user);
             }
             // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
+            if(mListener != null){
+                mListener.reload();
+            }
             getActivity().onBackPressed();
         }
     };
+
+    public interface ReloadInterface{
+        void reload();
+    }
+    private ReloadInterface mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (ReloadInterface) context;
+    }
 
     public AddProfileFragment() {
         // Required empty public constructor
