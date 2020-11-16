@@ -14,9 +14,9 @@
 <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
         <item name="colorPrimary">@color/orange</item>
         <item name="colorOnPrimary">@color/text_color</item>
-        <item name="colorPrimaryVariant">@color/background</item>
+        <item name="colorPrimaryVariant">@color/text_color</item>
         <item name="colorSecondary">@color/orange_dark</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/text_color</item>
         <item name="colorSecondaryVariant">@color/orange</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:background">@color/background</item>
