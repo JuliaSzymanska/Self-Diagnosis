@@ -52,6 +52,7 @@ public class AddProfileFragment extends Fragment {
     //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
     //  Interakcja z api
     //  Dodawanie zdj profilowego (dodać do bazy danych)
+    //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
 
 
     // TODO: Rename parameter arguments, choose names that match
