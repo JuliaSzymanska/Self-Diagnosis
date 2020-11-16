@@ -15,14 +15,26 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageButton
+<!--        <ImageButton-->
+<!--            android:id="@+id/addUserImage"-->
+<!--            android:layout_width="158dp"-->
+<!--            android:layout_height="167dp"-->
+<!--            android:background="@drawable/add_user_black"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/addUserImage"
             android:layout_width="158dp"
             android:layout_height="167dp"
-            android:background="@drawable/add_user_black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/orange_dark"
+            android:background="@color/background"
+            android:src="@drawable/add_user_black" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

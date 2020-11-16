@@ -15,15 +15,17 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:srcCompat="@drawable/female" />-->
 
-    <com.mikhaellopez.circularimageview.CircularImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="onProfilePictureClick"
-        app:civ_border_width="0dp"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/orange_dark"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/female" />
 
@@ -40,6 +42,7 @@
         android:id="@+id/addNewProfileButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="5dp"
@@ -50,6 +53,7 @@
         android:id="@+id/changeProfileButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="65dp"
