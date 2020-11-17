@@ -81,10 +81,13 @@ public class AddProfileFragment extends Fragment {
     private Bitmap userPicture;
     private static int nextAvailableId = 1000;
     GlobalVariables globalVariables;
+
+
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             userName = binding.editProfileName.getText().toString();
+            if(areInputsEmpty()) return;
             User user = new User(nextAvailableId, userName, userBirthDate, userGender, userPicture);
             GlobalVariables.getInstance().setCurrentUser(user);
             if (isNewUser) {
@@ -102,6 +105,15 @@ public class AddProfileFragment extends Fragment {
             getActivity().onBackPressed();
         }
     };
+
+    private boolean areInputsEmpty(){
+        System.out.println(userName + userBirthDate + userGender + userPicture);
+        if(userName == null || userBirthDate == null || userGender == null || userPicture == null){
+            Toast.makeText(getContext(), "Fill all the inputs", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
 
     public interface ReloadInterface{
         void reload();
@@ -187,7 +199,6 @@ public class AddProfileFragment extends Fragment {
         if (!this.isNewUser) {
             setCurrentUser();
         }
-//        ((Menu) getActivity()).setPicture();
         return binding.getRoot();
     }
 
