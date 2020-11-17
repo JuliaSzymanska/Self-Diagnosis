@@ -54,6 +54,7 @@ public class AddProfileFragment extends Fragment {
     //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
     //  Interakcja z api
     //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
+    //  wybór użytkownika - nowy fragment ze zdjeciami i nazwami urzytkownika
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
