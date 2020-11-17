@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 
@@ -26,7 +25,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.Reload
 
     public void setPicture() {
         if (GlobalVariables.getInstance().getCurrentUser() == null) {
-            SharedPreferencesHelper.loadUser(this);
+        SharedPreferencesHelper.loadUser(this);
         }
 
         if (GlobalVariables.getInstance().getCurrentUser() != null && GlobalVariables.getInstance().getCurrentUser().getPicture() != null) {
@@ -39,11 +38,11 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.Reload
         runAddProfileFragment(false);
     }
 
-    public void onCreateNewProfileClick(View v){
+    public void onCreateNewProfileClick(View v) {
         runAddProfileFragment(true);
     }
 
-    private void runAddProfileFragment(boolean isNewUser){
+    private void runAddProfileFragment(boolean isNewUser) {
         Fragment fragment = new AddProfileFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("is_new_user", isNewUser);

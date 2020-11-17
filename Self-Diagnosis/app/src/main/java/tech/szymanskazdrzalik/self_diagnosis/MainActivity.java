@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
-import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
 public class MainActivity extends AppCompatActivity implements AddProfileFragment.ReloadInterface  {
 
@@ -51,6 +50,6 @@ public class MainActivity extends AppCompatActivity implements AddProfileFragmen
 
     @Override
     public void reload() {
-
+        binding.firstChatMessage.setText("Hello " + GlobalVariables.getInstance().getCurrentUser().getName() + "!");
     }
 }

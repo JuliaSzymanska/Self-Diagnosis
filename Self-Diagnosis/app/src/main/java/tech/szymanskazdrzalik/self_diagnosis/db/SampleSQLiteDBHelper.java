@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
-import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +20,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String USER_COLUMN_BIRTH_DATE = "birth_date";
     public static final String USER_COLUMN_NAME = "user_name";
     public static final String USER_COLUMN_PICTURE = "user_picture";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 7;
 
     /**
      * {@inheritDoc}
@@ -37,6 +36,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         // TODO: 05.11.2020 sprawdzic
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_COLUMN_ID, user.getId());
         contentValues.put(USER_COLUMN_NAME, user.getName());
         String date = DB_DATE_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
@@ -54,10 +54,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         String date = DB_DATE_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        Bitmap bitmap = user.getPicture();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-//        byte[] img = stream.toByteArray();
         contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
         database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID + "=" + user.getId(), null);
     }
@@ -87,30 +83,9 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     // TODO: 05.11.2020 TEST ME
     public static User getUserByID(Context context, int id) {
         // TODO: 05.11.2020 make it not break when id not exists
-
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
-        String[] projection = {
-                USER_COLUMN_ID,
-                USER_COLUMN_NAME,
-                USER_COLUMN_BIRTH_DATE,
-                USER_COLUMN_GENDER,
-                USER_COLUMN_PICTURE
-        };
-
-        String selection = SampleSQLiteDBHelper.USER_COLUMN_ID + " like ?";
-
-        String[] selectionArgs = {"%" + id + "%"};
-
-        Cursor cursor = database.query(
-                SampleSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
-                projection,                                        // The columns to return
-                selection,                                     // The columns for the WHERE clause
-                selectionArgs,                                 // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                      // don't filter by row groups
-                null                                      // don't sort
-        );
-
+        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_PROFILE_TABLE_NAME + " WHERE " + USER_COLUMN_ID + " = '" + id + "'", null);
+        cursor.moveToFirst();
         int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
         String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
         String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
@@ -131,7 +106,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + USER_PROFILE_TABLE_NAME + " (" +
-                USER_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                USER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 USER_COLUMN_NAME + " TEXT," +
                 USER_COLUMN_BIRTH_DATE + " DATE," +
                 USER_COLUMN_PICTURE + " BLOB," +

@@ -56,15 +56,12 @@ public class AddProfileFragment extends Fragment {
     //  Dodawanie zdj profilowego (dodać do bazy danych)
     //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
 
-
-    // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private final Calendar myCalendar = Calendar.getInstance();
     private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private FragmentAddProfileBinding binding;
@@ -72,7 +69,6 @@ public class AddProfileFragment extends Fragment {
     private String userName;
     private Date userBirthDate;
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
-        // TODO Auto-generated method stub
         myCalendar.set(Calendar.YEAR, year);
         myCalendar.set(Calendar.MONTH, monthOfYear);
         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -130,7 +126,6 @@ public class AddProfileFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment AddProfile.
      */
-    // TODO: Rename and change types and number of parameters
     public static AddProfileFragment newInstance(String param1, String param2) {
         AddProfileFragment fragment = new AddProfileFragment();
         Bundle args = new Bundle();
