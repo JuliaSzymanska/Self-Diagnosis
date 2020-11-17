@@ -34,6 +34,10 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static void saveUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
+        if(isExist(context, user)){
+            updateUserDataToDB(context, user);
+            return;
+        }
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_ID, user.getId());
@@ -48,6 +52,10 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static void updateUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
+        if(!isExist(context, user)){
+            saveUserDataToDB(context, user);
+            return;
+        }
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_NAME, user.getName());
@@ -56,6 +64,15 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
         contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
         database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID + "=" + user.getId(), null);
+    }
+
+    private static boolean isExist(Context context, User user){
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        String checkQuery = "SELECT " + USER_COLUMN_ID + " FROM " + USER_PROFILE_TABLE_NAME + " WHERE " + USER_COLUMN_ID + " = '"+user.getId() + "'";
+        Cursor cursor= database.rawQuery(checkQuery,null);
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
     }
 
     public static Cursor getAllUsersFromDB(Context context) {
