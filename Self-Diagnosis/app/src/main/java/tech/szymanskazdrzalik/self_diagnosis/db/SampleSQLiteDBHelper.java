@@ -36,7 +36,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static void saveUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
-        if(isExist(context, user)){
+        if (isExist(context, user)) {
             updateUserDataToDB(context, user);
             return;
         }
@@ -54,7 +54,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static void updateUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
-        if(!isExist(context, user)){
+        if (!isExist(context, user)) {
             saveUserDataToDB(context, user);
             return;
         }
@@ -68,10 +68,10 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID + "=" + user.getId(), null);
     }
 
-    private static boolean isExist(Context context, User user){
+    private static boolean isExist(Context context, User user) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
-        String checkQuery = "SELECT " + USER_COLUMN_ID + " FROM " + USER_PROFILE_TABLE_NAME + " WHERE " + USER_COLUMN_ID + " = '"+user.getId() + "'";
-        Cursor cursor= database.rawQuery(checkQuery,null);
+        String checkQuery = "SELECT " + USER_COLUMN_ID + " FROM " + USER_PROFILE_TABLE_NAME + " WHERE " + USER_COLUMN_ID + " = '" + user.getId() + "'";
+        Cursor cursor = database.rawQuery(checkQuery, null);
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;
@@ -99,7 +99,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 //        );
 //    }
 
-    public static List<User> getAllUsersFromDB(Context context){
+    public static List<User> getAllUsersFromDB(Context context) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 USER_COLUMN_ID,
@@ -109,24 +109,25 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_PICTURE
         };
 
-        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_PROFILE_TABLE_NAME,null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_PROFILE_TABLE_NAME, null);
         List<User> usersList = new ArrayList<>();
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
-            String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
-            String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
-            String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
-            Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
+        if (cursor.moveToFirst()) {
+            do {
+                int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
+                String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
+                String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
+                String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
+                Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
 
-            try {
-                usersList.add(new User(retId, retName, retBirthDate, retGender, retBitmap));
-            } catch (ParseException e) {
-                e.printStackTrace();
-                // FIXME: 05.11.2020
-                return null;
-            }
-            cursor.moveToNext();
+                try {
+                    usersList.add(new User(retId, retName, retBirthDate, retGender, retBitmap));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    // FIXME: 05.11.2020
+                    return null;
+                }
+            } while (cursor.moveToNext());
         }
         return usersList;
     }

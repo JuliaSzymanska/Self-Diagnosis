@@ -92,11 +92,13 @@ public class AddProfileFragment extends Fragment {
             User user = new User(nextAvailableId, userName, userBirthDate, userGender, userPicture);
             GlobalVariables.getInstance().setCurrentUser(user);
             if (isNewUser) {
+                System.out.println("NOOOOWYYYYYYYYYYYYYY");
                 // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
                 SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
                 SharedPreferencesHelper.saveUserId(getContext(), nextAvailableId);
                 nextAvailableId += 1;
             } else {
+                System.out.println("UPDATE!!!!!!!!!!!!!!!");
                 SampleSQLiteDBHelper.updateUserDataToDB(getContext(), user);
             }
             // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
