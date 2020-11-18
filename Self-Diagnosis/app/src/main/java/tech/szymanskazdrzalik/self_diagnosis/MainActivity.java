@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
-public class MainActivity extends AppCompatActivity implements AddProfileFragment.ReloadInterface  {
+public class MainActivity extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
     private ActivityMainBinding binding;
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements AddProfileFragmen
     }
 
     @Override
-    public void reload() {
+    public void callback(String result) {
         binding.firstChatMessage.setText("Hello " + GlobalVariables.getInstance().getCurrentUser().getName() + "!");
     }
 }

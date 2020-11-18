@@ -18,4 +18,5 @@
     <string name="is_first_run">isFirstRun</string>
     <string name="update_string">Update</string>
     <string name="choose_you_profile">Choose you profile</string>
+    <string name="reload">reload</string>
 </resources>

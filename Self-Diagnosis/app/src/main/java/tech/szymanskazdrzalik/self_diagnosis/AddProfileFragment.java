@@ -50,7 +50,6 @@ public class AddProfileFragment extends Fragment {
     //  Dodać pokazowe przyciski do odpowiedzi do bota (nie powiązane z api, na rzecz prezentacji)
 
     // TODO: 02.11.2020 - raczej po prezentacji
-
     //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
     //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
     //  Interakcja z api
@@ -103,7 +102,7 @@ public class AddProfileFragment extends Fragment {
             }
             // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
             if (mListener != null) {
-                mListener.reload();
+                mListener.callback(getString(R.string.reload));
             }
             getActivity().onBackPressed();
         }
@@ -118,20 +117,19 @@ public class AddProfileFragment extends Fragment {
         return false;
     }
 
-    public interface ReloadInterface {
-        void reload();
+    public interface AddProfileFragmentListener {
+        void callback(String result);
     }
 
-    private ReloadInterface mListener;
+    private AddProfileFragmentListener mListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (ReloadInterface) context;
+        mListener = (AddProfileFragmentListener) context;
     }
 
     public AddProfileFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -180,32 +178,45 @@ public class AddProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAddProfileBinding.inflate(inflater, container, false);
+        binding.female.setColorFilter(getBlackAndWhiteFilter());
+        binding.male.setColorFilter(getBlackAndWhiteFilter());
+
+        globalVariables = GlobalVariables.getInstance();
+
+        if (!this.isNewUser) {
+            setInputsToCurrentUser();
+        }
+
+        setListeners();
+        getArgumentsFromBundle();
+
+        return binding.getRoot();
+    }
+
+    private void setListeners() {
         binding.addUserImage.setOnClickListener(this.addProfileImageListener);
         binding.male.setOnClickListener(genderMaleOnClick);
         binding.female.setOnClickListener(genderFemaleOnClick);
         binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
         binding.fgAddButton.setOnClickListener(addButtonOnClick);
+    }
+
+    private void getArgumentsFromBundle() {
         Bundle bundle = this.getArguments();
-        binding.female.setColorFilter(getBlackAndWhiteFilter());
-        binding.male.setColorFilter(getBlackAndWhiteFilter());
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
         }
-        globalVariables = GlobalVariables.getInstance();
-        if (!this.isNewUser) {
-            setInputsToCurrentUser();
-        }
-        return binding.getRoot();
     }
 
     private void setInputsToCurrentUser() {
         if (globalVariables.getCurrentUser() != null) {
-            userName = globalVariables.getCurrentUser().getName();
+            setFieldsFromGlobalVariable();
+
             binding.editProfileName.setText(userName);
-            userBirthDate = globalVariables.getCurrentUser().getBirthDate();
+
             String birthString = new SimpleDateFormat("yyyy-MM-dd").format(userBirthDate);
             binding.dateEditTextFragmentAddProfile.setText(birthString);
-            userGender = globalVariables.getCurrentUser().getGender();
+
             if (userGender.equals("M")) {
                 binding.male.clearColorFilter();
             } else if (userGender.equals("F")) {
@@ -214,6 +225,12 @@ public class AddProfileFragment extends Fragment {
             binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().getPicture());
             binding.fgAddButton.setText(getString(R.string.update_string));
         }
+    }
+
+    private void setFieldsFromGlobalVariable() {
+        this.userName = globalVariables.getCurrentUser().getName();
+        this.userBirthDate = globalVariables.getCurrentUser().getBirthDate();
+        this.userGender = globalVariables.getCurrentUser().getGender();
     }
 
     private void openImagePicker() {

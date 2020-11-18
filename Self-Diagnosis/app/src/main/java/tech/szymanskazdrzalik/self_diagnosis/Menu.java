@@ -11,7 +11,7 @@ import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
-public class Menu extends AppCompatActivity implements AddProfileFragment.ReloadInterface {
+public class Menu extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
     ActivityMenuBinding binding;
 
@@ -64,9 +64,11 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.Reload
         transaction.commit();
     }
 
-
     @Override
-    public void reload() {
-        setPicture();
+    public void callback(String result) {
+        if(result.equals(getString(R.string.reload))) {
+            setPicture();
+        }
     }
+
 }
