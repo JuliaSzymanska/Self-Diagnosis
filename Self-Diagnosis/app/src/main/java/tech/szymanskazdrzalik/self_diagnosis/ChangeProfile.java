@@ -67,6 +67,7 @@ public class ChangeProfile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentChangeProfileBinding.inflate(inflater, container, false);
+        binding.changeProfileTopBar.backArrow.setOnClickListener(onBackArrowClicked);
         loadUsers();
         return binding.getRoot();
     }
@@ -78,14 +79,14 @@ public class ChangeProfile extends Fragment {
             names[i] = usersList.get(i).getName();
         }
         UsersAdapter usersAdapter = new UsersAdapter(getContext(), usersList);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-//                android.R.layout.simple_list_item_1, names);
         binding.usersList.setAdapter(usersAdapter);
     }
 
-    public void backArrowOnClick(View v) {
-        Intent intent = new Intent(getContext(), Menu.class);
-        startActivity(intent);
-    }
+    private View.OnClickListener onBackArrowClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            getActivity().onBackPressed();
+        }
+    };
 
 }

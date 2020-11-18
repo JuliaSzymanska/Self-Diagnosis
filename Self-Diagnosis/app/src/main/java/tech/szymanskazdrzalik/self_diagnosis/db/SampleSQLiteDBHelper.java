@@ -150,4 +150,11 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + USER_PROFILE_TABLE_NAME);
         onCreate(db);
     }
+
+    public int getMaxId(Context context){
+
+
+        return 0;
+    }
+
 }
