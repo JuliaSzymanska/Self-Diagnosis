@@ -11,11 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentChangeProfileBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.UsersAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,13 +74,14 @@ public class ChangeProfile extends Fragment {
     }
 
     private void loadUsers() {
-        List<User> usersList = SampleSQLiteDBHelper.getAllUsersFromDB(getContext());
+        ArrayList<User> usersList = (ArrayList<User>) SampleSQLiteDBHelper.getAllUsersFromDB(getContext());
         String[] names = new String[usersList.size()];
         for (int i = 0; i < usersList.size(); i++) {
             names[i] = usersList.get(i).getName();
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1, names);
-        binding.usersList.setAdapter(adapter);
+        UsersAdapter usersAdapter = new UsersAdapter(getContext(), usersList);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+//                android.R.layout.simple_list_item_1, names);
+        binding.usersList.setAdapter(usersAdapter);
     }
 }
