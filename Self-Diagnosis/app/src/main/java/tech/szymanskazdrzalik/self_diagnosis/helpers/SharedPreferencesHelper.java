@@ -12,9 +12,7 @@ public class SharedPreferencesHelper {
     public static void loadUser(@NonNull Context context) {
         int id = context.getSharedPreferences("user_settings", Context.MODE_PRIVATE).getInt("user_id", 1000);
         // TODO: 05.11.2020 Remove after fixing inner method
-//        try {
             GlobalVariables.getInstance().setCurrentUser(SampleSQLiteDBHelper.getUserByID(context, id));
-//        } catch (Throwable ignore) {}
     }
 
     public static void saveUserId(@NonNull Context context, int userId) {

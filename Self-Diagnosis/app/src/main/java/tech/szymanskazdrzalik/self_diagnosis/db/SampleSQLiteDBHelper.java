@@ -87,9 +87,18 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_PICTURE
         };
 
-        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_PROFILE_TABLE_NAME, null);
+        Cursor cursor = database.query(
+                SampleSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
+                projection,                                        // The columns to return
+                null,                                     // The columns for the WHERE clause
+                null,                                 // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                      // don't filter by row groups
+                null                                      // don't sort
+        );
+
         List<User> usersList = new ArrayList<>();
-        cursor.moveToFirst();
+//        cursor.moveToFirst();
         if (cursor.moveToFirst()) {
             do {
                 int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
@@ -114,19 +123,21 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         // TODO: 05.11.2020 make it not break when id not exists
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM " + USER_PROFILE_TABLE_NAME + " WHERE " + USER_COLUMN_ID + " = '" + id + "'", null);
-        cursor.moveToFirst();
-        int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
-        String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
-        String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
-        String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
-        Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
-        try {
-            return new User(retId, retName, retBirthDate, retGender, retBitmap);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            // FIXME: 05.11.2020
-            return null;
+        if (cursor.moveToFirst()) {
+            int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
+            String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
+            String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
+            String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
+            Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
+            try {
+                return new User(retId, retName, retBirthDate, retGender, retBitmap);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                // FIXME: 05.11.2020
+                return null;
+            }
         }
+        return null;
     }
 
     /**
@@ -151,10 +162,25 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public int getMaxId(Context context){
+    public static int getNextIdAvailable(Context context){
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        String[] projection = {
+                USER_COLUMN_ID
+        };
 
-
-        return 0;
+        Cursor cursor = database.query(
+                SampleSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
+                projection,                                        // The columns to return
+                null,                                     // The columns for the WHERE clause
+                null,                                 // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                      // don't filter by row groups
+                USER_COLUMN_ID + " DESC"                   // don't sort
+        );
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID)) + 1;
+        }
+        return 1000;
     }
 
 }

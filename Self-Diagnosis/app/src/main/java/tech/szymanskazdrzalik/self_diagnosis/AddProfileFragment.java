@@ -57,14 +57,10 @@ public class AddProfileFragment extends Fragment {
     //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
     //  wybór użytkownika - nowy fragment ze zdjeciami i nazwami urzytkownika
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private final Calendar myCalendar = Calendar.getInstance();
     private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
-    private String mParam1;
-    private String mParam2;
     private FragmentAddProfileBinding binding;
     private boolean isNewUser = false;
     private String userName;
@@ -80,7 +76,6 @@ public class AddProfileFragment extends Fragment {
 
     private String userGender;
     private Bitmap userPicture;
-    private static int nextAvailableId = 1000;
     GlobalVariables globalVariables;
 
 
@@ -88,37 +83,45 @@ public class AddProfileFragment extends Fragment {
         @Override
         public void onClick(View v) {
             userName = binding.editProfileName.getText().toString();
-            if(areInputsEmpty()) return;
-            User user = new User(nextAvailableId, userName, userBirthDate, userGender, userPicture);
+            if (areInputsEmpty()) {
+                return;
+            }
+            int currentID;
+            if (isNewUser) {
+                currentID = SampleSQLiteDBHelper.getNextIdAvailable(getContext());
+            } else {
+                currentID = globalVariables.getCurrentUser().getId();
+            }
+            User user = new User(currentID, userName, userBirthDate, userGender, userPicture);
             GlobalVariables.getInstance().setCurrentUser(user);
             if (isNewUser) {
                 // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
                 SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
-                SharedPreferencesHelper.saveUserId(getContext(), nextAvailableId);
-                nextAvailableId += 1;
+                SharedPreferencesHelper.saveUserId(getContext(), currentID);
             } else {
                 SampleSQLiteDBHelper.updateUserDataToDB(getContext(), user);
             }
             // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
-            if(mListener != null){
+            if (mListener != null) {
                 mListener.reload();
             }
             getActivity().onBackPressed();
         }
     };
 
-    private boolean areInputsEmpty(){
+    private boolean areInputsEmpty() {
         System.out.println(userName + userBirthDate + userGender + userPicture);
-        if(userName == null || userBirthDate == null || userGender == null || userPicture == null){
+        if (userName == null || userBirthDate == null || userGender == null || userPicture == null) {
             Toast.makeText(getContext(), "Fill all the inputs", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
     }
 
-    public interface ReloadInterface{
+    public interface ReloadInterface {
         void reload();
     }
+
     private ReloadInterface mListener;
 
     @Override
@@ -135,15 +138,11 @@ public class AddProfileFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment AddProfile.
      */
-    public static AddProfileFragment newInstance(String param1, String param2) {
+    public static AddProfileFragment newInstance() {
         AddProfileFragment fragment = new AddProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -151,10 +150,6 @@ public class AddProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     private ColorMatrixColorFilter getBlackAndWhiteFilter() {
@@ -198,12 +193,12 @@ public class AddProfileFragment extends Fragment {
         }
         globalVariables = GlobalVariables.getInstance();
         if (!this.isNewUser) {
-            setCurrentUser();
+            setInputsToCurrentUser();
         }
         return binding.getRoot();
     }
 
-    private void setCurrentUser() {
+    private void setInputsToCurrentUser() {
         if (globalVariables.getCurrentUser() != null) {
             userName = globalVariables.getCurrentUser().getName();
             binding.editProfileName.setText(userName);
@@ -216,6 +211,7 @@ public class AddProfileFragment extends Fragment {
             } else if (userGender.equals("F")) {
                 binding.female.clearColorFilter();
             }
+            binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().getPicture());
             binding.fgAddButton.setText(getString(R.string.update_string));
         }
     }
