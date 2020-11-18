@@ -65,9 +65,7 @@ public class AddProfileFragment extends Fragment {
     private String userName;
     private Date userBirthDate;
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
-        myCalendar.set(Calendar.YEAR, year);
-        myCalendar.set(Calendar.MONTH, monthOfYear);
-        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
     };
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
@@ -76,6 +74,12 @@ public class AddProfileFragment extends Fragment {
     private String userGender;
     private Bitmap userPicture;
     GlobalVariables globalVariables;
+
+    private void setCalendarDate(int year, int monthOfYear, int dayOfMonth) {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    }
 
 
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
@@ -219,6 +223,7 @@ public class AddProfileFragment extends Fragment {
                 binding.female.clearColorFilter();
             }
             binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().getPicture());
+            binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
             binding.fgAddButton.setText(getString(R.string.update_string));
         }
     }
@@ -227,6 +232,9 @@ public class AddProfileFragment extends Fragment {
         this.userName = globalVariables.getCurrentUser().getName();
         this.userBirthDate = globalVariables.getCurrentUser().getBirthDate();
         this.userGender = globalVariables.getCurrentUser().getGender();
+        setCalendarDate(globalVariables.getCurrentUser().getBirthDate().getYear(),
+                globalVariables.getCurrentUser().getBirthDate().getMonth(),
+                globalVariables.getCurrentUser().getBirthDate().getDay());
     }
 
     private void openImagePicker() {
