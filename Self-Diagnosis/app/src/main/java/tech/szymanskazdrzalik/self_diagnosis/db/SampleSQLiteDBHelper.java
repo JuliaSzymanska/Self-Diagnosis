@@ -51,13 +51,9 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         database.insert(USER_PROFILE_TABLE_NAME, null, contentValues);
     }
 
-    public static void updateUserDataToDB(Context context, User user) {
+    private static void updateUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
-        if (!isExist(context, user)) {
-            saveUserDataToDB(context, user);
-            return;
-        }
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_NAME, user.getName());
@@ -98,7 +94,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         );
 
         List<User> usersList = new ArrayList<>();
-//        cursor.moveToFirst();
         if (cursor.moveToFirst()) {
             do {
                 int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
