@@ -1,5 +1,6 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -84,4 +85,10 @@ public class ChangeProfile extends Fragment {
 //                android.R.layout.simple_list_item_1, names);
         binding.usersList.setAdapter(usersAdapter);
     }
+
+    public void backArrowOnClick(View v) {
+        Intent intent = new Intent(getContext(), Menu.class);
+        startActivity(intent);
+    }
+
 }

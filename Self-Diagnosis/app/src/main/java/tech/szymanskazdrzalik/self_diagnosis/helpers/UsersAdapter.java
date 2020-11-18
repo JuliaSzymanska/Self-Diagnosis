@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import tech.szymanskazdrzalik.self_diagnosis.R;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 
@@ -25,9 +26,9 @@ public class UsersAdapter extends ArrayAdapter<User> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_user, parent, false);
         }
         TextView tvName = convertView.findViewById(R.id.userName);
-        TextView tvId = convertView.findViewById(R.id.userId);
+        CircleImageView tvId = convertView.findViewById(R.id.userImage);
         tvName.setText(user.getName());
-        tvId.setText(user.getGender());
+        tvId.setImageBitmap(user.getPicture());
         return convertView;
     }
 

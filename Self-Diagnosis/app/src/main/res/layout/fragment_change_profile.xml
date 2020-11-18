@@ -5,8 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".ChangeProfile">
 
+    <include
+        android:id="@+id/changeProfileTopBar"
+        layout="@layout/change_profile_top_bar" />
+
     <ListView
         android:id="@+id/usersList"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/changeProfileTopBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
