@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
+import tech.szymanskazdrzalik.self_diagnosis.db.DbBitmapUtility;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
@@ -65,17 +66,20 @@ public class AddProfileFragment extends Fragment {
     private String userName;
     private Date userBirthDate;
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
-        myCalendar.set(Calendar.YEAR, year);
-        myCalendar.set(Calendar.MONTH, monthOfYear);
-        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
     };
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
             v -> new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
     private String userGender;
-    private Bitmap userPicture;
     GlobalVariables globalVariables;
+
+    private void setCalendarDate(int year, int monthOfYear, int dayOfMonth) {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    }
 
 
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
@@ -85,6 +89,7 @@ public class AddProfileFragment extends Fragment {
             if (areInputsEmpty()) {
                 return;
             }
+            Bitmap userPicture = DbBitmapUtility.getBitmapFromDrawable(binding.addUserImage.getDrawable());
             int currentID;
             if (isNewUser) {
                 currentID = SampleSQLiteDBHelper.getNextIdAvailable(getContext());
@@ -105,8 +110,8 @@ public class AddProfileFragment extends Fragment {
     };
 
     private boolean areInputsEmpty() {
-        System.out.println(userName + userBirthDate + userGender + userPicture);
-        if (userName == null || userBirthDate == null || userGender == null || userPicture == null) {
+        System.out.println(userName + userBirthDate + userGender);
+        if (userName == null || userBirthDate == null || userGender == null) {
             Toast.makeText(getContext(), "Fill all the inputs", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -177,14 +182,16 @@ public class AddProfileFragment extends Fragment {
         binding.female.setColorFilter(getBlackAndWhiteFilter());
         binding.male.setColorFilter(getBlackAndWhiteFilter());
 
-        globalVariables = GlobalVariables.getInstance();
+        getArgumentsFromBundle();
 
+        globalVariables = GlobalVariables.getInstance();
+        System.out.println(isNewUser + "!!!!!!!!!!!!!!!!!!!");
         if (!this.isNewUser) {
+
             setInputsToCurrentUser();
         }
 
         setListeners();
-        getArgumentsFromBundle();
 
         return binding.getRoot();
     }
@@ -219,6 +226,7 @@ public class AddProfileFragment extends Fragment {
                 binding.female.clearColorFilter();
             }
             binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().getPicture());
+            binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
             binding.fgAddButton.setText(getString(R.string.update_string));
         }
     }
@@ -227,6 +235,9 @@ public class AddProfileFragment extends Fragment {
         this.userName = globalVariables.getCurrentUser().getName();
         this.userBirthDate = globalVariables.getCurrentUser().getBirthDate();
         this.userGender = globalVariables.getCurrentUser().getGender();
+        setCalendarDate(globalVariables.getCurrentUser().getBirthDate().getYear(),
+                globalVariables.getCurrentUser().getBirthDate().getMonth(),
+                globalVariables.getCurrentUser().getBirthDate().getDay());
     }
 
     private void openImagePicker() {
@@ -239,12 +250,6 @@ public class AddProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             Uri selected = Objects.requireNonNull(data).getData();
-            try {
-                userPicture = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), selected);
-            } catch (IOException e) {
-                // TODO: 04.11.2020
-                e.printStackTrace();
-            }
             binding.addUserImage.setImageURI(selected);
             binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
         }
