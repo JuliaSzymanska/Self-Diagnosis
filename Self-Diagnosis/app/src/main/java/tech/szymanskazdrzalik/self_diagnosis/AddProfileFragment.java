@@ -46,11 +46,6 @@ import static android.app.Activity.RESULT_OK;
 public class AddProfileFragment extends Fragment {
 
     // TODO: 02.11.2020 https://developer.android.com/topic/libraries/view-binding#java
-
-    // TODO: 02.11.2020 - koniecznie przed prezentacją
-    //  Dodać pokazowe przyciski do odpowiedzi do bota (nie powiązane z api, na rzecz prezentacji)
-
-    // TODO: 02.11.2020 - raczej po prezentacji
     //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
     //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
     //  Interakcja z api
@@ -86,16 +81,20 @@ public class AddProfileFragment extends Fragment {
         @Override
         public void onClick(View v) {
             userName = binding.editProfileName.getText().toString();
+
             if (areInputsEmpty()) {
                 return;
             }
+
             Bitmap userPicture = DbBitmapUtility.getBitmapFromDrawable(binding.addUserImage.getDrawable());
             int currentID;
+
             if (isNewUser) {
                 currentID = SampleSQLiteDBHelper.getNextIdAvailable(getContext());
             } else {
                 currentID = globalVariables.getCurrentUser().getId();
             }
+
             User user = new User(currentID, userName, userBirthDate, userGender, userPicture);
             GlobalVariables.getInstance().setCurrentUser(user);
             SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
@@ -185,9 +184,8 @@ public class AddProfileFragment extends Fragment {
         getArgumentsFromBundle();
 
         globalVariables = GlobalVariables.getInstance();
-        System.out.println(isNewUser + "!!!!!!!!!!!!!!!!!!!");
-        if (!this.isNewUser) {
 
+        if (!this.isNewUser) {
             setInputsToCurrentUser();
         }
 
