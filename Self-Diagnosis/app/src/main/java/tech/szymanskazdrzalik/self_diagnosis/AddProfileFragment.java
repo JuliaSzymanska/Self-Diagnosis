@@ -13,6 +13,7 @@ import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,9 +67,13 @@ public class AddProfileFragment extends Fragment {
             v -> new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
     private String userGender;
-    GlobalVariables globalVariables;
+    GlobalVariables globalVariables = GlobalVariables.getInstance();;
 
     private void setCalendarDate(int year, int monthOfYear, int dayOfMonth) {
+        System.out.println(globalVariables.getCurrentUser().getBirthDate());
+        System.out.println(year + " YEAR");
+        System.out.println(monthOfYear + " month");
+        System.out.println(dayOfMonth + " day");
         myCalendar.set(Calendar.YEAR, year);
         myCalendar.set(Calendar.MONTH, monthOfYear);
         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -194,7 +199,6 @@ public class AddProfileFragment extends Fragment {
 
         getArgumentsFromBundle();
 
-        globalVariables = GlobalVariables.getInstance();
 
         if (!this.isNewUser) {
             setInputsToCurrentUser();
@@ -217,6 +221,9 @@ public class AddProfileFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
+            if (globalVariables.getCurrentUser() == null) {
+                this.isNewUser = true;
+            }
         }
     }
 
@@ -242,9 +249,11 @@ public class AddProfileFragment extends Fragment {
 
     private void setFieldsFromGlobalVariable() {
         this.userGender = globalVariables.getCurrentUser().getGender();
-        setCalendarDate(globalVariables.getCurrentUser().getBirthDate().getYear(),
-                globalVariables.getCurrentUser().getBirthDate().getMonth(),
-                globalVariables.getCurrentUser().getBirthDate().getDay());
+        Calendar callendar = Calendar.getInstance();
+        callendar.setTime(globalVariables.getCurrentUser().getBirthDate());
+        setCalendarDate(callendar.get(Calendar.YEAR),
+                        callendar.get(Calendar.MONTH),
+                        callendar.get(Calendar.DAY_OF_MONTH));
     }
 
     private void openImagePicker() {
