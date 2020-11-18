@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final DateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
@@ -75,8 +77,29 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    public static Cursor getAllUsersFromDB(Context context) {
+//    public static Cursor getAllUsersFromDB(Context context) {
+//
+//        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+//        String[] projection = {
+//                USER_COLUMN_ID,
+//                USER_COLUMN_NAME,
+//                USER_COLUMN_BIRTH_DATE,
+//                USER_COLUMN_GENDER,
+//                USER_COLUMN_PICTURE
+//        };
+//
+//        return database.query(
+//                SampleSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
+//                projection,                                        // The columns to return
+//                null,                                     // The columns for the WHERE clause
+//                null,                                 // The values for the WHERE clause
+//                null,                                     // don't group the rows
+//                null,                                      // don't filter by row groups
+//                null                                      // don't sort
+//        );
+//    }
 
+    public static List<User> getAllUsersFromDB(Context context){
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 USER_COLUMN_ID,
@@ -86,15 +109,25 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_PICTURE
         };
 
-        return database.query(
-                SampleSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
-                projection,                                        // The columns to return
-                null,                                     // The columns for the WHERE clause
-                null,                                 // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                      // don't filter by row groups
-                null                                      // don't sort
-        );
+        Cursor cursor = database.rawQuery("SELECT * FROM " + USER_PROFILE_TABLE_NAME,null);
+        List<User> usersList = new ArrayList<>();
+        while (!cursor.isAfterLast()) {
+            int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
+            String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
+            String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
+            String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
+            Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
+
+            try {
+                usersList.add(new User(retId, retName, retBirthDate, retGender, retBitmap));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                // FIXME: 05.11.2020
+                return null;
+            }
+            cursor.moveToNext();
+        }
+        return usersList;
     }
 
     // TODO: 05.11.2020 TEST ME
