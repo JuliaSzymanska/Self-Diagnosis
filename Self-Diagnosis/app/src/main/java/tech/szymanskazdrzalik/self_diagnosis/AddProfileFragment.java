@@ -50,6 +50,7 @@ public class AddProfileFragment extends Fragment {
     //  Dodać pokazowe przyciski do odpowiedzi do bota (nie powiązane z api, na rzecz prezentacji)
 
     // TODO: 02.11.2020 - raczej po prezentacji
+
     //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
     //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
     //  Interakcja z api
