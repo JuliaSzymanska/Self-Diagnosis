@@ -77,28 +77,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-//    public static Cursor getAllUsersFromDB(Context context) {
-//
-//        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
-//        String[] projection = {
-//                USER_COLUMN_ID,
-//                USER_COLUMN_NAME,
-//                USER_COLUMN_BIRTH_DATE,
-//                USER_COLUMN_GENDER,
-//                USER_COLUMN_PICTURE
-//        };
-//
-//        return database.query(
-//                SampleSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
-//                projection,                                        // The columns to return
-//                null,                                     // The columns for the WHERE clause
-//                null,                                 // The values for the WHERE clause
-//                null,                                     // don't group the rows
-//                null,                                      // don't filter by row groups
-//                null                                      // don't sort
-//        );
-//    }
-
     public static List<User> getAllUsersFromDB(Context context) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
@@ -125,7 +103,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 } catch (ParseException e) {
                     e.printStackTrace();
                     // FIXME: 05.11.2020
-                    return null;
                 }
             } while (cursor.moveToNext());
         }

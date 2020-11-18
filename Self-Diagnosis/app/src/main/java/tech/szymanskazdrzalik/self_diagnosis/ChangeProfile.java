@@ -1,19 +1,12 @@
 package tech.szymanskazdrzalik.self_diagnosis;
-
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentChangeProfileBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
