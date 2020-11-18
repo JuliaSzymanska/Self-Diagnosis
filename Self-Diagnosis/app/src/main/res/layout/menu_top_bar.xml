@@ -11,12 +11,12 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:onClick="onProfilePictureClick"
-        app:civ_border_width="1dp"
+        android:src="@drawable/female"
         app:civ_border_color="@color/orange_dark"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/female" />
+        app:civ_border_width="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -31,21 +31,22 @@
         android:id="@+id/addNewProfileButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
-        android:onClick="onCreateNewProfileClick"
-        android:background="@drawable/add_user_black" />
+        android:background="@drawable/add_user_black"
+        android:onClick="onCreateNewProfileClick" />
 
     <Button
         android:id="@+id/changeProfileButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="65dp"
-        android:background="@drawable/change_user" />
+        android:background="@drawable/change_user"
+        android:onClick="onChangeProfileClick" />
 
 </RelativeLayout>

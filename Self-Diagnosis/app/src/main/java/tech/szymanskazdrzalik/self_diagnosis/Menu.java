@@ -53,6 +53,18 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.Reload
         transaction.commit();
     }
 
+    public void onChangeProfileClick(View v){
+        Fragment fragment = new ChangeProfile();
+        Bundle bundle = new Bundle();
+        fragment.setArguments(bundle);
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment)
+                .addToBackStack(null);
+        transaction.commit();
+    }
+
+
     @Override
     public void reload() {
         setPicture();

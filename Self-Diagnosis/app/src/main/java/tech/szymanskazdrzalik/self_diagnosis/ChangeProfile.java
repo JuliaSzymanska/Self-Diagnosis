@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class ChangeProfile extends Fragment {
     private String mParam2;
 
     private FragmentChangeProfileBinding binding;
-    private LinearLayout linearLayout;
+    private ListView listView;
 
     public ChangeProfile() {
         // Required empty public constructor
@@ -69,7 +71,14 @@ public class ChangeProfile extends Fragment {
         return binding.getRoot();
     }
 
-    private void loadUsers(){
+    private void loadUsers() {
         List<User> usersList = SampleSQLiteDBHelper.getAllUsersFromDB(getContext());
+        String[] names = new String[usersList.size()];
+        for (int i = 0; i < usersList.size(); i++) {
+            names[i] = usersList.get(i).getName();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_1, names);
+        binding.usersList.setAdapter(adapter);
     }
 }

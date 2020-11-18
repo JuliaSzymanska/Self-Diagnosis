@@ -111,6 +111,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 
         Cursor cursor = database.rawQuery("SELECT * FROM " + USER_PROFILE_TABLE_NAME,null);
         List<User> usersList = new ArrayList<>();
+        cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
             String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
