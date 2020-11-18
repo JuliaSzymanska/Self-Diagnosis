@@ -22,6 +22,7 @@ public class DbBitmapUtility {
     }
 
     // convert from byte array to bitmap
+    @Nullable
     public static Bitmap getImage(byte[] image) {
         if(Arrays.equals(image, new byte[0])) {
             return null;
@@ -29,6 +30,7 @@ public class DbBitmapUtility {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
+    @Nullable
     public static Bitmap getBitmapFromDrawable(@Nullable Drawable drawable) {
         if (drawable == null) {
             return null;

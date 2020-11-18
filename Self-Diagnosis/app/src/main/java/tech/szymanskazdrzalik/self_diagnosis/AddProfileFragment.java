@@ -1,5 +1,6 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +13,6 @@ import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +21,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -58,8 +58,6 @@ public class AddProfileFragment extends Fragment {
     private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
     private FragmentAddProfileBinding binding;
     private boolean isNewUser = false;
-    private String userName;
-    private Date userBirthDate;
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
         setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
@@ -80,13 +78,18 @@ public class AddProfileFragment extends Fragment {
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            userName = binding.editProfileName.getText().toString();
-
             if (areInputsEmpty()) {
                 return;
             }
 
+            String userName = binding.editProfileName.getText().toString();
+            Date userBirthDate = myCalendar.getTime();
+
             Bitmap userPicture = DbBitmapUtility.getBitmapFromDrawable(binding.addUserImage.getDrawable());
+            if (userPicture == null) {
+                userPicture = getDefaultImage(userGender);
+            }
+
             int currentID;
 
             if (isNewUser) {
@@ -109,12 +112,20 @@ public class AddProfileFragment extends Fragment {
     };
 
     private boolean areInputsEmpty() {
-        System.out.println(userName + userBirthDate + userGender);
+        String userName = binding.editProfileName.getText().toString();
+        Date userBirthDate = myCalendar.getTime();
         if (userName == null || userBirthDate == null || userGender == null) {
             Toast.makeText(getContext(), "Fill all the inputs", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
+    }
+
+    private Bitmap getDefaultImage(String gender) {
+        if (gender.equals("F")) {
+            return DbBitmapUtility.getBitmapFromDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.female));
+        }
+        return DbBitmapUtility.getBitmapFromDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.male));
     }
 
     public interface AddProfileFragmentListener {
@@ -213,9 +224,9 @@ public class AddProfileFragment extends Fragment {
         if (globalVariables.getCurrentUser() != null) {
             setFieldsFromGlobalVariable();
 
-            binding.editProfileName.setText(userName);
+            binding.editProfileName.setText(globalVariables.getCurrentUser().getName());
 
-            String birthString = new SimpleDateFormat("yyyy-MM-dd").format(userBirthDate);
+            String birthString = new SimpleDateFormat("yyyy-MM-dd").format(globalVariables.getCurrentUser().getBirthDate());
             binding.dateEditTextFragmentAddProfile.setText(birthString);
 
             if (userGender.equals("M")) {
@@ -230,8 +241,6 @@ public class AddProfileFragment extends Fragment {
     }
 
     private void setFieldsFromGlobalVariable() {
-        this.userName = globalVariables.getCurrentUser().getName();
-        this.userBirthDate = globalVariables.getCurrentUser().getBirthDate();
         this.userGender = globalVariables.getCurrentUser().getGender();
         setCalendarDate(globalVariables.getCurrentUser().getBirthDate().getYear(),
                 globalVariables.getCurrentUser().getBirthDate().getMonth(),
@@ -255,7 +264,6 @@ public class AddProfileFragment extends Fragment {
 
     private void updateLabel() {
         binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_FORMAT.format(myCalendar.getTime()));
-        this.userBirthDate = myCalendar.getTime();
     }
 
     @Override
