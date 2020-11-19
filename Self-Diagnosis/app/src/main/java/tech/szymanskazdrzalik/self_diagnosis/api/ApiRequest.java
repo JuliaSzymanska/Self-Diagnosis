@@ -12,24 +12,27 @@ import com.google.gson.JsonSyntaxException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-public class ApiRequest<T> extends Request<T> {
-    private final Gson gson = new Gson();
-    private final Class<T> clazz;
+public class ApiRequest extends Request<String> {
     private final Map<String, String> headers;
-    private final Response.Listener<T> listener;
+    private final Response.Listener<String> listener;
 
     /**
      * Make a GET request and return a parsed object from JSON.
      *
      * @param url URL of the request to make
-     * @param clazz Relevant class object, for Gson's reflection
      * @param headers Map of request headers
      */
-    public ApiRequest(String url, Class<T> clazz, Map<String, String> headers,
-                       Response.Listener<T> listener, Response.ErrorListener errorListener) {
+    public ApiRequest(String url, Map<String, String> headers,
+                       Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
-        this.clazz = clazz;
+        System.out.println("HEJAK");
+        System.out.println(headers);
         this.headers = headers;
+        try {
+            System.out.println(getHeaders());
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
         this.listener = listener;
     }
 
@@ -39,18 +42,19 @@ public class ApiRequest<T> extends Request<T> {
     }
 
     @Override
-    protected void deliverResponse(T response) {
+    protected void deliverResponse(String response) {
         listener.onResponse(response);
     }
 
     @Override
-    protected Response<T> parseNetworkResponse(NetworkResponse response) {
+    protected Response<String> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(
                     response.data,
                     HttpHeaderParser.parseCharset(response.headers));
+            System.out.println("COS SIE UDALO : D" + json);
             return Response.success(
-                    gson.fromJson(json, clazz),
+                    json,
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JsonSyntaxException e) {
             return Response.error(new ParseError(e));

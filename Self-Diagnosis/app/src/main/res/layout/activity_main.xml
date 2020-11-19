@@ -35,6 +35,16 @@
                     app:layout_constraintRight_toRightOf="parent" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/PrzyciskMocy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topPanelChat"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="189dp"
+                android:layout_marginTop="279dp"
+                android:onClick="przyciskMocyOnClick" />
+
             <include
                 android:id="@+id/topPanelChat"
                 layout="@layout/top_of_chat" />

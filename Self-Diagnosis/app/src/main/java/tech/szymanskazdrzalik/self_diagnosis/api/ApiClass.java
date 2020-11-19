@@ -8,23 +8,37 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import tech.szymanskazdrzalik.self_diagnosis.R;
+
 public class ApiClass {
 
     private static final ApiClass INSTANCE = new ApiClass();
 
     private static final String url = "https://api.infermedica.com/v3";
-    private String id;
-    private String key;
+    private static String id;
+    private static String key;
 
     private ApiClass() {
     }
 
-    public ApiClass getInstance(Context context) {
+    public String getUrl() {
+        return url;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public static ApiClass getInstance(Context context) {
         loadApiInfo(context);
         return INSTANCE;
     }
 
-    public void loadApiInfo(Context context) {
+    public static void loadApiInfo(Context context) {
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset(context));
             id = (String) jsonObject.get("id");
@@ -34,10 +48,10 @@ public class ApiClass {
         }
     }
 
-    private String loadJSONFromAsset(Context context) {
+    private static String loadJSONFromAsset(Context context) {
         String jsonString = "";
         try {
-            InputStream is = context.getAssets().open("yourfilename.json");
+            InputStream is = context.getResources().openRawResource(R.raw.api_info);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
