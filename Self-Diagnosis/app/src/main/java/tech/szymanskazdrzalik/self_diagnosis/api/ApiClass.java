@@ -4,11 +4,9 @@ import android.content.Context;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class ApiClass {
 
@@ -21,11 +19,12 @@ public class ApiClass {
     private ApiClass() {
     }
 
-    public ApiClass getInstance() {
+    public ApiClass getInstance(Context context) {
+        loadApiInfo(context);
         return INSTANCE;
     }
 
-    private void loadApiInfo(Context context) {
+    public void loadApiInfo(Context context) {
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset(context));
             id = (String) jsonObject.get("id");
@@ -35,7 +34,7 @@ public class ApiClass {
         }
     }
 
-    public String loadJSONFromAsset(Context context) {
+    private String loadJSONFromAsset(Context context) {
         String jsonString = "";
         try {
             InputStream is = context.getAssets().open("yourfilename.json");
@@ -43,12 +42,13 @@ public class ApiClass {
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            jsonString = new String(buffer, "UTF-8");
+            jsonString = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
         }
         return jsonString;
     }
+
 
 }
