@@ -37,7 +37,7 @@ public class ApiClass {
     private String loadJSONFromAsset(Context context) {
         String jsonString = "";
         try {
-            InputStream is = context.getAssets().open("yourfilename.json");
+            InputStream is = context.getAssets().open("api_info.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
