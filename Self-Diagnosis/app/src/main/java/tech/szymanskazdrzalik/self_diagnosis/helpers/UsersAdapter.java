@@ -1,5 +1,6 @@
 package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import tech.szymanskazdrzalik.self_diagnosis.AddProfileFragment;
+import tech.szymanskazdrzalik.self_diagnosis.ChangeProfile;
 import tech.szymanskazdrzalik.self_diagnosis.R;
-import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentChangeProfileBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 
 public class UsersAdapter extends ArrayAdapter<User> {
 
+    Context context;
+
     public UsersAdapter(Context context, ArrayList<User> users) {
         super(context, 0, users);
+        this.context = context;
     }
 
     @Override
@@ -43,6 +48,11 @@ public class UsersAdapter extends ArrayAdapter<User> {
         User user = (User) v.getTag();
         GlobalVariables.getInstance().setCurrentUser(user);
         SharedPreferencesHelper.saveUserId(getContext(), user.getId());
+        AddProfileFragment.AddProfileFragmentListener mListener = (AddProfileFragment.AddProfileFragmentListener) context;
+        if (mListener != null) {
+            mListener.callback(context.getString(R.string.reload));
+        }
+        ((Activity) this.context).onBackPressed();
     };
 
 }
