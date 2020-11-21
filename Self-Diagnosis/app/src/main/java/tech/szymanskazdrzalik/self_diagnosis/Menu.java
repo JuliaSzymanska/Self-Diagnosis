@@ -40,8 +40,6 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
                  }
             }
         }
-
-
     }
 
     public void onProfilePictureClick(View v) {

@@ -1,11 +1,9 @@
 package tech.szymanskazdrzalik.self_diagnosis;
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import java.util.ArrayList;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentChangeProfileBinding;
@@ -30,7 +28,6 @@ public class ChangeProfile extends Fragment {
     private String mParam2;
 
     private FragmentChangeProfileBinding binding;
-    private ListView listView;
 
     public ChangeProfile() {
         // Required empty public constructor
@@ -74,15 +71,12 @@ public class ChangeProfile extends Fragment {
 
     private void loadUsers() {
         ArrayList<User> usersList = (ArrayList<User>) SampleSQLiteDBHelper.getAllUsersFromDB(getContext());
-        String[] names = new String[usersList.size()];
-        for (int i = 0; i < usersList.size(); i++) {
-            names[i] = usersList.get(i).getName();
-        }
         UsersAdapter usersAdapter = new UsersAdapter(getContext(), usersList);
         binding.usersList.setAdapter(usersAdapter);
     }
 
-    private View.OnClickListener onBackArrowClicked = new View.OnClickListener() {
+
+    private final View.OnClickListener onBackArrowClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             getActivity().onBackPressed();
