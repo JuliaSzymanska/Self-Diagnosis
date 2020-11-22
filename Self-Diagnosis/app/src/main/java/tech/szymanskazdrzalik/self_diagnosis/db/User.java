@@ -1,9 +1,16 @@
 package tech.szymanskazdrzalik.self_diagnosis.db;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.Year;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class User {
     private final int id;
@@ -46,5 +53,21 @@ public class User {
 
     public String getGender() {
         return gender;
+    }
+
+    public int getAge() {
+        Calendar now = new GregorianCalendar();
+        Calendar birth = new GregorianCalendar();
+        now.setTime(new Date());
+        now.setTime(this.birthDate);
+        int result = now.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+        if (birth.get(Calendar.MONTH) > now.get(Calendar.MONTH)) {
+            result--;
+        } else if (birth.get(Calendar.MONTH) == now.get(Calendar.MONTH)) {
+            if (birth.get(Calendar.DAY_OF_MONTH) > now.get(Calendar.DAY_OF_MONTH)) {
+                result--;
+            }
+        }
+        return result;
     }
 }

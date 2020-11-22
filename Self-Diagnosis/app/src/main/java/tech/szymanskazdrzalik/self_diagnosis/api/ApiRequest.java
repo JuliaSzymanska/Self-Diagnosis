@@ -16,6 +16,7 @@ public class ApiRequest<T> extends Request<T> {
     private final Gson gson = new Gson();
     private final Class<T> clazz;
     private final Map<String, String> headers;
+    private final Map<String, String> body;
     private final Response.Listener<T> listener;
 
     /**
@@ -25,11 +26,12 @@ public class ApiRequest<T> extends Request<T> {
      * @param clazz Relevant class object, for Gson's reflection
      * @param headers Map of request headers
      */
-    public ApiRequest(String url, Class<T> clazz, Map<String, String> headers,
+    public ApiRequest(String url, Class<T> clazz, Map<String, String> headers, Map<String, String> body,
                        Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
         this.clazz = clazz;
         this.headers = headers;
+        this.body = body;
         this.listener = listener;
     }
 
@@ -55,5 +57,10 @@ public class ApiRequest<T> extends Request<T> {
         } catch (UnsupportedEncodingException | JsonSyntaxException e) {
             return Response.error(new ParseError(e));
         }
+    }
+
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return body != null ? body : super.getParams();
     }
 }
