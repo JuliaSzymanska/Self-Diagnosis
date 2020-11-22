@@ -28,7 +28,7 @@ public class ApiRequest<T> extends Request<T> {
      */
     public ApiRequest(String url, Class<T> clazz, Map<String, String> headers, Map<String, String> body,
                        Response.Listener<T> listener, Response.ErrorListener errorListener) {
-        super(Method.GET, url, errorListener);
+        super(Method.POST, url, errorListener);
         this.clazz = clazz;
         this.headers = headers;
         this.body = body;

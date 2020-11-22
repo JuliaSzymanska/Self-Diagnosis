@@ -28,6 +28,7 @@ public class MakeFirstRequest {
         Map<String, String> headers = new HashMap<>();
         headers.put("App-Id", this.apiClass.getId());
         headers.put("App-Key", this.apiClass.getKey());
+        headers.put("Content-Type", "application/json");
 
         Map<String, String> body = new HashMap<>();
         body.put("sex", user.getFullGenderName());
