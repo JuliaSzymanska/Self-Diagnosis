@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
@@ -46,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements AddProfileFragmen
     public void backArrowOnClick(View v) {
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
+    }
+
+    public void przyciskMocyOnClick(View v) {
+//        new MakeFirstRequest(this, "it hurts when I pee, also, stomach ache");
+        new MakeParseRequest(this, "it hurts when I pee, also, stomach ache");
+//        new MakeNajprostszeZapytanie(this);
+//        new MakeNajprostszeJson(this);
     }
 
     @Override
