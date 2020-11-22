@@ -22,6 +22,6 @@ public class MakeNajprostszeZapytanie {
         headers.put("App-Key", this.apiClass.getKey());
         Response.Listener<JsonObject> listener = System.out::println;
         Response.ErrorListener errorListener = Throwable::printStackTrace;
-        this.apiRequestQueue.addToRequestQueue(new ApiRequest<>(this.apiClass.getUrl() + "/info", JsonObject.class, headers, listener, errorListener));
+//        this.apiRequestQueue.addToRequestQueue(new ApiRequest<>(this.apiClass.getUrl() + "/info", JsonObject.class, headers, listener, errorListener));
     }
 }

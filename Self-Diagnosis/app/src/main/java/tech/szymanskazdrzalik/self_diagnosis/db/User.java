@@ -59,7 +59,7 @@ public class User {
         Calendar now = new GregorianCalendar();
         Calendar birth = new GregorianCalendar();
         now.setTime(new Date());
-        now.setTime(this.birthDate);
+        birth.setTime(this.birthDate);
         int result = now.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
         if (birth.get(Calendar.MONTH) > now.get(Calendar.MONTH)) {
             result--;
@@ -70,4 +70,13 @@ public class User {
         }
         return result;
     }
+
+    public String getFullGenderName() {
+        if (this.getGender().equals("F")) {
+            return "female";
+        } else {
+            return "male";
+        }
+    }
+
 }

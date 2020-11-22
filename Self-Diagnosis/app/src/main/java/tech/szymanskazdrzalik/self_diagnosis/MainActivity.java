@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import tech.szymanskazdrzalik.self_diagnosis.api.MakeFirstRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeNajprostszeZapytanie;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements AddProfileFragmen
     }
 
     public void przyciskMocyOnClick(View v) {
-        new MakeNajprostszeZapytanie(this);
+        new MakeFirstRequest(this, "it hurts when I pee, also, stomach ache");
     }
 
     @Override
