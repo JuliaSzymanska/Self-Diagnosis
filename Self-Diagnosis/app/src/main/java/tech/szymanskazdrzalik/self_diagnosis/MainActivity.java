@@ -50,10 +50,7 @@ public class MainActivity extends AppCompatActivity implements AddProfileFragmen
     }
 
     public void przyciskMocyOnClick(View v) {
-//        new MakeFirstRequest(this, "it hurts when I pee, also, stomach ache");
         new MakeParseRequest(this, "it hurts when I pee, also, stomach ache");
-//        new MakeNajprostszeZapytanie(this);
-//        new MakeNajprostszeJson(this);
     }
 
     @Override
