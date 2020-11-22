@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import tech.szymanskazdrzalik.self_diagnosis.AddProfileFragment;
-import tech.szymanskazdrzalik.self_diagnosis.ChangeProfile;
 import tech.szymanskazdrzalik.self_diagnosis.R;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 
