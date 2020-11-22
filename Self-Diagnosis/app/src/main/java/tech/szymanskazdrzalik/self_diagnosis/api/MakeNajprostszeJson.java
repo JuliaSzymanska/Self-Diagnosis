@@ -3,25 +3,26 @@ package tech.szymanskazdrzalik.self_diagnosis.api;
 import android.content.Context;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MakeNajprostszeZapytanie {
+public class MakeNajprostszeJson {
 
     private ApiClass apiClass;
     private ApiRequestQueue apiRequestQueue;
 
-    public MakeNajprostszeZapytanie(Context context) {
+    public MakeNajprostszeJson(Context context) {
         this.apiClass = ApiClass.getInstance(context);
         this.apiRequestQueue = ApiRequestQueue.getInstance(context);
         Map<String, String> headers = new HashMap<>();
         headers.put("App-Id", this.apiClass.getId());
         headers.put("App-Key", this.apiClass.getKey());
-        Response.Listener<JsonObject> listener = System.out::println;
+        Response.Listener<JSONObject> listener = System.out::println;
         Response.ErrorListener errorListener = Throwable::printStackTrace;
-//        this.apiRequestQueue.addToRequestQueue(new ApiRequest<>(this.apiClass.getUrl() + "/info", JsonObject.class, headers, listener, errorListener));
+        this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(0, this.apiClass.getUrl() + "/info", headers, null, listener, errorListener));
     }
+
 }

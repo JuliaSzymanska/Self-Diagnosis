@@ -1,10 +1,13 @@
 package tech.szymanskazdrzalik.self_diagnosis.api;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import android.content.Context;
+
+import java.util.Arrays;
 
 public class ApiRequestQueue {
 
