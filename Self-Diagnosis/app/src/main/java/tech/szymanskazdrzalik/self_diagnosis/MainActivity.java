@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements AddProfileFragmen
         startActivity(intent);
     }
 
-    public void przyciskMocyOnClick(View v) {
+    public void sendSymptomsOnClick(View v) {
         new MakeParseRequest(this, "it hurts when I pee, also, stomach ache");
     }
 
