@@ -37,12 +37,14 @@
 
             <Button
                 android:id="@+id/PrzyciskMocy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/topPanelChat"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="189dp"
-                android:layout_marginTop="279dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignEnd="@id/inputSymptoms"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/send_message"
                 android:onClick="przyciskMocyOnClick" />
 
             <include
@@ -55,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginHorizontal="10dp"
+                android:layout_marginEnd="46dp"
                 android:autofillHints="Type Your symptoms..."
                 android:ems="10"
                 android:hint="@string/type_your_symptoms"
