@@ -101,7 +101,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
                 String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
                 Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
-
+                cursor.close();
                 try {
                     usersList.add(new User(retId, retName, retBirthDate, retGender, retBitmap));
                 } catch (ParseException e) {
@@ -124,6 +124,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
             String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
             String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
             Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
+            cursor.close();
             try {
                 return new User(retId, retName, retBirthDate, retGender, retBitmap);
             } catch (ParseException e) {
@@ -173,7 +174,9 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_ID + " DESC"                   // don't sort
         );
         if (cursor.moveToFirst()) {
-            return cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID)) + 1;
+            int retint = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID)) + 1;
+            cursor.close();
+            return retint;
         }
         return 1000;
     }

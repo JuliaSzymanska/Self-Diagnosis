@@ -140,7 +140,7 @@ public class AddProfileFragment extends Fragment {
     private AddProfileFragmentListener mListener;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mListener = (AddProfileFragmentListener) context;
     }
@@ -191,7 +191,7 @@ public class AddProfileFragment extends Fragment {
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAddProfileBinding.inflate(inflater, container, false);
         binding.female.setColorFilter(getBlackAndWhiteFilter());
