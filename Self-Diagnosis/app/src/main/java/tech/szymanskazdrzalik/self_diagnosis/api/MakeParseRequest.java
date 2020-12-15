@@ -45,25 +45,10 @@ public class MakeParseRequest {
 
         Response.Listener<JSONObject> listener = System.out::println;
         Response.ErrorListener errorListener = System.out::println;
+
+
         this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(1, this.url, headers, jsonObject, listener, errorListener));
     }
 
-    private String StringMapToString(Map<String, String> map) {
-        StringBuilder stringBuilder = new StringBuilder("{");
-        for (String key : map.keySet()) {
-            stringBuilder.append("\"").append(key).append("\": \"").append(map.get(key)).append("\", ");
-        }
-        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append("}");
-        return stringBuilder.toString();
-    }
-
-    private String IntegerMapToString(Map<String, Integer> map) {
-        StringBuilder stringBuilder = new StringBuilder("{");
-        for (String key : map.keySet()) {
-            stringBuilder.append("\"").append(key).append("\": ").append(map.get(key)).append(", ");
-        }
-        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append("}");
-        return stringBuilder.toString();
-    }
 
 }
