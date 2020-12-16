@@ -27,6 +27,23 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
     private ActivityChatBinding binding;
+    private final View.OnClickListener onEndDiagnoseClick = v -> {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Diagnosis:\n");
+        JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
+        try {
+            for (int i = 0; i < conditions.length(); i++) {
+
+                stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
+                stringBuilder.append("Probability: ").append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
+        binding.inputLayout.removeAllViews();
+        onDoctorMessage(stringBuilder.toString());
+    };
     private boolean didAskForEndDiagnose = false;
 
     @Override
@@ -132,11 +149,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 });
                 binding.inputLayout.addView(button);
             }
-
+            Button button = (Button) View.inflate(this, R.layout.answer_button, null);
+            button.setText("End diagnose");
+            button.setOnClickListener(onEndDiagnoseClick);
+            binding.inputLayout.addView(button);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         System.out.println(msg);
     }
 
@@ -151,9 +170,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         onDoctorMessage("I believe I know your diagnose. \nDo you want to finish?");
         Button buttonYes = (Button) View.inflate(this, R.layout.answer_button, null);
         buttonYes.setText("Yes");
-        buttonYes.setOnClickListener(v -> {
-
-        });
+        buttonYes.setOnClickListener(onEndDiagnoseClick);
 
         Button buttonNo = (Button) View.inflate(this, R.layout.answer_button, null);
         buttonNo.setText("No");
