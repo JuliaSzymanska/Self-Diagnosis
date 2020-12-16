@@ -3,9 +3,6 @@ package tech.szymanskazdrzalik.self_diagnosis.api;
 
 import android.content.Context;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +68,6 @@ public class RequestUtil {
         void addUserMessage(String msg);
         void hideMessageBox();
         void addErrorMessageFromDoctor(String msg);
-        void onDoctorQuestionReceived(JSONArray msg);
+        void onDoctorQuestionReceived(String id, JSONArray msg);
     }
 }
