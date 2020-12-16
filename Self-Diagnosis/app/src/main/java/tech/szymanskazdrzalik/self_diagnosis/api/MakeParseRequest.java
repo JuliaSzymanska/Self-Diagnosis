@@ -28,7 +28,11 @@ public class MakeParseRequest {
         this.context = context;
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
-        User user = globalVariables.getCurrentUser();
+        if (!globalVariables.getCurrentUser().isPresent()) {
+            // TODO: 16.12.2020 Add user not found exception
+            System.out.println("User not found");
+        }
+        User user = globalVariables.getCurrentUser().get();
 
         // TODO: 15.12.2020 Mozna wyrzucić do innej klasy jakiegoś helpera
         Map<String, String> headers = new HashMap<>();
