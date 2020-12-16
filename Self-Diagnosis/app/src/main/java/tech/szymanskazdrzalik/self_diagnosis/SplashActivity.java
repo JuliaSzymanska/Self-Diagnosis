@@ -15,7 +15,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
 public class SplashActivity extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
-    private final static int SPLASH_TIME_OUT = 1000;
+    private final static int SPLASH_TIME_OUT = 100;
     private final Runnable loadRunnable = () -> {
         SharedPreferencesHelper.loadUser(SplashActivity.this);
         // TODO: 16.12.2020 Jesli cos ladujemy to tutaj
