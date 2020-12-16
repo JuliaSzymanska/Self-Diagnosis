@@ -8,10 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeDiagnoseRequest {
@@ -25,20 +23,12 @@ public class MakeDiagnoseRequest {
             // TODO: 16.12.2020 dać tutaj wyjatek
             System.out.println("User not found!");
         }
-        User user = globalVariables.getCurrentUser().get();
 
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("App-Id", ApiClass.getInstance(context).getId());
-        headers.put("App-Key", ApiClass.getInstance(context).getKey());
-        headers.put("Content-Type", "application/json");
+        Map<String, String> headers = RequestUtil.getDefaultHeaders(context);
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("sex", user.getFullGenderName());
-            JSONObject ageJson = new JSONObject();
-            ageJson.put("value", user.getAge());
-            jsonObject.put("age", ageJson);
+            RequestUtil.addUserDataToJsonObject(jsonObject);
             jsonObject.put("evidence", jsonArray);
         } catch (JSONException e) {
             e.printStackTrace();
