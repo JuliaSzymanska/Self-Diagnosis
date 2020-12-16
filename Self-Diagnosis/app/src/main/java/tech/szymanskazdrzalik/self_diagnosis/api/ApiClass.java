@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.R;
 
@@ -40,7 +41,7 @@ public class ApiClass {
 
     public static void loadApiInfo(Context context) {
         try {
-            JSONObject jsonObject = new JSONObject(loadJSONFromAsset(context));
+            JSONObject jsonObject = new JSONObject(Objects.requireNonNull(loadJSONFromAsset(context)));
             id = (String) jsonObject.get("id");
             key = (String) jsonObject.get("key");
         } catch (JSONException e) {
@@ -51,6 +52,7 @@ public class ApiClass {
     private static String loadJSONFromAsset(Context context) {
         String jsonString = "";
         try {
+            System.out.println(context);
             InputStream is = context.getResources().openRawResource(R.raw.api_info);
             int size = is.available();
             byte[] buffer = new byte[size];

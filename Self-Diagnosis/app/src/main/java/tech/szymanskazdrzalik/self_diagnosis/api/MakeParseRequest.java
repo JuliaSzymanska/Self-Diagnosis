@@ -2,6 +2,7 @@ package tech.szymanskazdrzalik.self_diagnosis.api;
 
 import android.content.Context;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 
 import org.json.JSONArray;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-import tech.szymanskazdrzalik.self_diagnosis.db.User;
+import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeParseRequest {
@@ -18,8 +19,14 @@ public class MakeParseRequest {
     private final ApiClass apiClass;
     private final ApiRequestQueue apiRequestQueue;
     private final String url;
+    private final Response.ErrorListener errorListener = error -> {
+        System.out.println(error);
+        // TODO: 16.12.2020 Make show error message / show
+    };
     private Context context;
-    private final Response.Listener<JSONObject> listener = response -> {
+    private ChatActivity chatActivity;
+    private RequestUtil.ChatRequestListener chatRequestListener;
+    private final Response.Listener<JSONObject> successListener = response -> {
         try {
             JSONArray jsonArrayFromResponse = response.getJSONArray("mentions");
             JSONArray jsonArrayToRequest = new JSONArray();
@@ -32,17 +39,19 @@ public class MakeParseRequest {
                     jsonArrayToRequest.put(clearJsonObject);
                 }
             }
-            new MakeDiagnoseRequest(context, jsonArrayToRequest);
+            new MakeDiagnoseRequest(chatActivity, jsonArrayToRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     };
 
-    public MakeParseRequest(Context context, String text) {
+    public MakeParseRequest(ChatActivity chatActivity, String text) {
+        this.chatActivity = chatActivity;
+        this.chatRequestListener = chatActivity;
+        this.context = chatActivity;
         this.apiClass = ApiClass.getInstance(context);
         this.apiRequestQueue = ApiRequestQueue.getInstance(context);
         this.url = this.apiClass.getUrl() + "/parse";
-        this.context = context;
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         if (!globalVariables.getCurrentUser().isPresent()) {
@@ -60,7 +69,7 @@ public class MakeParseRequest {
             e.printStackTrace();
         }
 
-        this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(1, this.url, headers, jsonObject, this.listener, System.out::println));
+        this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.POST, this.url, headers, jsonObject, this.successListener, this.errorListener));
     }
 
 

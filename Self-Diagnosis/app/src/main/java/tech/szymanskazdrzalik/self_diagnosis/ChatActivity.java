@@ -11,10 +11,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
+import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
     private ActivityChatBinding binding;
 
@@ -39,13 +40,13 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setNameInChat() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-            addDoctorMessageToChat("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
+            generateNewDoctorMessageFromString("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
         else {
-            addDoctorMessageToChat("Hello !");
+            generateNewDoctorMessageFromString("Hello !");
         }
     }
 
-    private void addUserMessageToChat(String text) {
+    private void generateNewUserMessageFromString(String text) {
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.user_message, null);
         TextView valueTV = linearLayout.findViewById(R.id.userMessage);
         valueTV.setText(text);
@@ -53,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void addDoctorMessageToChat(String text) {
+    private void generateNewDoctorMessageFromString(String text) {
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.doctor_message, null);
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
@@ -65,11 +66,29 @@ public class ChatActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private int id = 0;
 
     public void sendSymptomsOnClick(View v) {
         new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
-        addUserMessageToChat(binding.inputSymptoms.getText().toString() + " " + id);
+        addUserMessage(binding.inputSymptoms.getText().toString());
     }
 
+    @Override
+    public void addDoctorMessage(String msg) {
+        generateNewDoctorMessageFromString(msg);
+    }
+
+    @Override
+    public void addUserMessage(String msg) {
+        generateNewUserMessageFromString(msg);
+    }
+
+    @Override
+    public void hideChat() {
+        // TODO: 16.12.2020
+    }
+
+    @Override
+    public void addErrorMessageFromDoctor(String msg) {
+        // TODO: 16.12.2020
+    }
 }

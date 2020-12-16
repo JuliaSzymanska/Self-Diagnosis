@@ -45,5 +45,6 @@ public class RequestUtil {
         void addDoctorMessage(String msg);
         void addUserMessage(String msg);
         void hideChat();
+        void addErrorMessageFromDoctor(String msg);
     }
 }
