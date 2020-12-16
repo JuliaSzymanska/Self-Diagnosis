@@ -41,39 +41,15 @@
                 android:layout_height="wrap_content"
                 layout="@layout/top_of_chat" />
 
-            <LinearLayout
+            <include
+                layout="@layout/msg_input_bar"
+                android:layout_alignParentBottom="true"
                 android:id="@+id/inputLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"/>
 
-                <EditText
-                    android:layout_marginStart="5dp"
-                    android:id="@+id/inputSymptoms"
-                    android:layout_width="360dp"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="Type Your symptoms..."
-                    android:ems="10"
-                    android:hint="@string/type_your_symptoms"
-                    android:inputType="textMultiLine"
-                    android:lines="4"
-                    android:maxLines="6"
-                    android:minLines="2"
-                    android:scrollbars="vertical"
-                    android:text="@string/default_message_delete_me"
-                    android:textColor="@color/text_color"
-                    android:textColorHint="@color/text_color" />
-
-                <Button
-                    android:id="@+id/sendSymptoms"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/send_message"
-                    android:onClick="sendSymptomsOnClick" />
-
-            </LinearLayout>
         </RelativeLayout>
+
+
     </FrameLayout>
 </RelativeLayout>

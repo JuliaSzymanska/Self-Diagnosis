@@ -41,7 +41,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             e.printStackTrace();
         }
         stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
-        binding.inputLayout.removeAllViews();
+        binding.inputLayout.inputsContainer.removeAllViews();
         onDoctorMessage(stringBuilder.toString());
     };
     private boolean didAskForEndDiagnose = false;
@@ -94,7 +94,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     public void sendSymptomsOnClick(View v) {
-        new MakeParseRequest(this, binding.inputSymptoms.getText().toString());
+        new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
+        this.hideMessageBox();
     }
 
     @Override
@@ -110,7 +111,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     public void hideMessageBox() {
         // TODO: 16.12.2020 add animation
-        binding.inputLayout.removeAllViews();
+        binding.inputLayout.inputsContainer.removeAllViews();
     }
 
     @Override
@@ -125,7 +126,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             jsonObject.put("choice_id", choice);
             RequestUtil.getInstance().addToEvidenceArray(jsonObject);
             new MakeDiagnoseRequest(this, userMessage);
-            binding.inputLayout.removeAllViews();
+            binding.inputLayout.inputsContainer.removeAllViews();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -133,8 +134,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
-        binding.inputLayout.removeAllViews();
-        binding.inputLayout.setBackgroundColor(Color.TRANSPARENT);
+        binding.inputLayout.inputsContainer.removeAllViews();
+        binding.inputLayout.inputsContainer.setBackgroundColor(Color.TRANSPARENT);
         try {
             for (int i = 0; i < msg.length(); i++) {
                 Button button = (Button) View.inflate(this, R.layout.answer_button, null);
@@ -147,12 +148,12 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                         e.printStackTrace();
                     }
                 });
-                binding.inputLayout.addView(button);
+                binding.inputLayout.inputsContainer.addView(button);
             }
             Button button = (Button) View.inflate(this, R.layout.answer_button, null);
             button.setText("End diagnose");
             button.setOnClickListener(onEndDiagnoseClick);
-            binding.inputLayout.addView(button);
+            binding.inputLayout.inputsContainer.addView(button);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -178,8 +179,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             new MakeDiagnoseRequest(this, "No");
         });
 
-        binding.inputLayout.addView(buttonYes);
-        binding.inputLayout.addView(buttonNo);
+        binding.inputLayout.inputsContainer.addView(buttonYes);
+        binding.inputLayout.inputsContainer.addView(buttonNo);
         return true;
     }
 }

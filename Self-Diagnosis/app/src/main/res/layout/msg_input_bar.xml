@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inputs_container"
+    android:layout_width="wrap_content"
+    android:padding="5dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/inputSymptoms"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:autofillHints="Type Your symptoms..."
+        android:ems="10"
+        android:hint="@string/type_your_symptoms"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:maxLines="6"
+        android:minLines="2"
+        android:scrollbars="vertical"
+        android:text="@string/default_message_delete_me"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color" />
+
+    <Button
+        android:id="@+id/sendSymptoms"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/send_message"
+        android:onClick="sendSymptomsOnClick" />
+
+</LinearLayout>
