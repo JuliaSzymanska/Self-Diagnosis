@@ -39,7 +39,6 @@ public class ChatActivity extends AppCompatActivity {
         TextView valueTV = linearLayout.findViewById(R.id.userMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
-//        binding.scrollViewChat.scrollTo(0, binding.scrollViewChat.getBottom());
         binding.scrollViewChat.fullScroll(View.FOCUS_DOWN);
 
     }
@@ -49,7 +48,6 @@ public class ChatActivity extends AppCompatActivity {
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
-//        binding.scrollViewChat.scrollTo(0, binding.scrollViewChat.getBottom());
         binding.scrollViewChat.fullScroll(View.FOCUS_DOWN);
     }
 
@@ -64,6 +62,7 @@ public class ChatActivity extends AppCompatActivity {
 //        new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
         addUserMessageToChat(binding.inputSymptoms.getText().toString() + " " + id);
         addDoctorMessageToChat("Hejka naklejka siemka tu lenka " + id);
+        binding.scrollViewChat.fullScroll(View.FOCUS_DOWN);
         id++;
     }
 
