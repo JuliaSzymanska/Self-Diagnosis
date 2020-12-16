@@ -28,22 +28,24 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setNameInChat() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-            addUserMessageToChat("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
+            addDoctorMessageToChat("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
         else {
-            addUserMessageToChat("Hello !");
+            addDoctorMessageToChat("Hello !");
         }
     }
 
     private void addUserMessageToChat(String text) {
-        TextView valueTV = (TextView) View.inflate(this, R.layout.user_message, null);
+        LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.user_message, null);
+        TextView valueTV = linearLayout.findViewById(R.id.userMessage);
         valueTV.setText(text);
-        binding.chatLayout.addView(valueTV);
+        binding.chatLayout.addView(linearLayout);
     }
 
     private void addDoctorMessageToChat(String text) {
-        TextView valueTV = (TextView) View.inflate(this, R.layout.doctor_message, null);
+        LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.doctor_message, null);
+        TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
-        binding.chatLayout.addView(valueTV);
+        binding.chatLayout.addView(linearLayout);
     }
 
     public void backArrowOnClick(View v) {
@@ -53,6 +55,7 @@ public class ChatActivity extends AppCompatActivity {
 
     public void sendSymptomsOnClick(View v) {
         new MakeParseRequest(this, "it hurts when I pee, also, stomach ache");
+        addUserMessageToChat("it hurts when I pee, also, stomach ache");
     }
 
 }
