@@ -39,7 +39,7 @@ public class MakeParseRequest {
                     jsonArrayToRequest.put(clearJsonObject);
                 }
             }
-            RequestUtil.addToEvidenceArray(jsonArrayToRequest);
+            RequestUtil.getInstance().addToEvidenceArray(jsonArrayToRequest);
             new MakeDiagnoseRequest(chatActivity);
         } catch (JSONException e) {
             e.printStackTrace();

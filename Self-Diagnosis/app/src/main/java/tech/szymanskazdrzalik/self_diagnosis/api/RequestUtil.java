@@ -15,32 +15,17 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class RequestUtil {
 
-    private static JSONArray evidenceArray;
+    private final static RequestUtil INSTANCE = new RequestUtil();
+    private JSONArray evidenceArray;
+    private JSONArray conditionsArray;
 
     private RequestUtil() {
         evidenceArray = new JSONArray();
+        conditionsArray = new JSONArray();
     }
 
-    public static JSONArray getEvidenceArray() {
-        return evidenceArray;
-    }
-    // TODO: 16.12.2020 Make singleton and not static
-
-    public static void addToEvidenceArray(JSONArray jsonArray) throws JSONException {
-        if (evidenceArray == null) {
-            resetEvidenceArray();
-        }
-        for (int i = 0; i < jsonArray.length(); i++) {
-            evidenceArray.put(jsonArray.getJSONObject(i));
-        }
-    }
-
-    public static void addToEvidenceArray(JSONObject jsonObject) {
-        evidenceArray.put(jsonObject);
-    }
-
-    public static void resetEvidenceArray() {
-        evidenceArray = new JSONArray();
+    public static RequestUtil getInstance() {
+        return INSTANCE;
     }
 
     public static void addUserDataToJsonObject(JSONObject jsonObject) throws JSONException {
@@ -67,11 +52,44 @@ public class RequestUtil {
         return headers;
     }
 
+    public JSONArray getConditionsArray() {
+        return conditionsArray;
+    }
+    // TODO: 16.12.2020 Make singleton and not static
+
+    public void setConditionsArray(JSONArray conditionsArray) {
+        this.conditionsArray = conditionsArray;
+    }
+
+    public JSONArray getEvidenceArray() {
+        return evidenceArray;
+    }
+
+    public void addToEvidenceArray(JSONArray jsonArray) throws JSONException {
+        for (int i = 0; i < jsonArray.length(); i++) {
+            evidenceArray.put(jsonArray.getJSONObject(i));
+        }
+    }
+
+    public void addToEvidenceArray(JSONObject jsonObject) {
+        evidenceArray.put(jsonObject);
+    }
+
+    public void resetEvidenceArray() {
+        evidenceArray = new JSONArray();
+    }
+
     public interface ChatRequestListener {
         void onDoctorMessage(String msg);
+
         void addUserMessage(String msg);
+
         void hideMessageBox();
+
         void addErrorMessageFromDoctor(String msg);
+
         void onDoctorQuestionReceived(String id, JSONArray msg);
+
+        void finishDiagnose();
     }
 }

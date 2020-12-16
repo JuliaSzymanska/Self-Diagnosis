@@ -23,11 +23,17 @@ public class MakeDiagnoseRequest {
         @Override
         public void onResponse(JSONObject response) {
             try {
-                JSONObject jsonObjectQuestion = response.getJSONObject("question");
-                listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
-                listener.hideMessageBox();
-                listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
-                        jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"));
+                boolean shouldStop = response.getBoolean("should_stop");
+                RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
+                if (shouldStop) {
+                    listener.finishDiagnose();
+                } else {
+                    JSONObject jsonObjectQuestion = response.getJSONObject("question");
+                    listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
+                    listener.hideMessageBox();
+                    listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
+                            jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -82,7 +88,7 @@ public class MakeDiagnoseRequest {
         JSONObject jsonObject = new JSONObject();
         try {
             RequestUtil.addUserDataToJsonObject(jsonObject);
-            jsonObject.put("evidence", RequestUtil.getEvidenceArray());
+            jsonObject.put("evidence", RequestUtil.getInstance().getEvidenceArray());
             JSONObject jsonObjectExtras = new JSONObject();
             jsonObjectExtras.put("disable_groups", "true");
             jsonObject.put("extras", jsonObjectExtras);
