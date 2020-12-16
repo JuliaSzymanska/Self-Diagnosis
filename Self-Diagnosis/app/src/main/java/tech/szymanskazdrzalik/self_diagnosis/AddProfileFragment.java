@@ -1,6 +1,5 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,25 +55,33 @@ public class AddProfileFragment extends Fragment {
     private static final int PERMISSION_CODE = 1001;
     private final Calendar myCalendar = Calendar.getInstance();
     private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
-    private FragmentAddProfileBinding binding;
-    private boolean isNewUser = false;
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
         setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
     };
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
             v -> new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-
+    GlobalVariables globalVariables = GlobalVariables.getInstance();
+    private FragmentAddProfileBinding binding;
+    private boolean isNewUser = false;
     private String userGender;
-    GlobalVariables globalVariables = GlobalVariables.getInstance();;
-
-    private void setCalendarDate(int year, int monthOfYear, int dayOfMonth) {
-        myCalendar.set(Calendar.YEAR, year);
-        myCalendar.set(Calendar.MONTH, monthOfYear);
-        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-    }
-
-
+    private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userGender = "F";
+            binding.female.clearColorFilter();
+            binding.male.setColorFilter(getBlackAndWhiteFilter());
+        }
+    };
+    private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userGender = "M";
+            binding.male.clearColorFilter();
+            binding.female.setColorFilter(getBlackAndWhiteFilter());
+        }
+    };
+    private AddProfileFragmentListener mListener;
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -112,6 +118,28 @@ public class AddProfileFragment extends Fragment {
         }
     };
 
+    public AddProfileFragment() {
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment AddProfile.
+     */
+    public static AddProfileFragment newInstance() {
+        AddProfileFragment fragment = new AddProfileFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    private void setCalendarDate(int year, int monthOfYear, int dayOfMonth) {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    }
+
     private boolean areInputsEmpty() {
         String userName = binding.editProfileName.getText().toString();
         Date userBirthDate = myCalendar.getTime();
@@ -129,32 +157,10 @@ public class AddProfileFragment extends Fragment {
         return DbBitmapUtility.getBitmapFromDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.male));
     }
 
-    public interface AddProfileFragmentListener {
-        void callback(String result);
-    }
-
-    private AddProfileFragmentListener mListener;
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mListener = (AddProfileFragmentListener) context;
-    }
-
-    public AddProfileFragment() {
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment AddProfile.
-     */
-    public static AddProfileFragment newInstance() {
-        AddProfileFragment fragment = new AddProfileFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -167,24 +173,6 @@ public class AddProfileFragment extends Fragment {
         matrix.setSaturation(0);
         return new ColorMatrixColorFilter(matrix);
     }
-
-    private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            userGender = "F";
-            binding.female.clearColorFilter();
-            binding.male.setColorFilter(getBlackAndWhiteFilter());
-        }
-    };
-
-    private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            userGender = "M";
-            binding.male.clearColorFilter();
-            binding.female.setColorFilter(getBlackAndWhiteFilter());
-        }
-    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -252,11 +240,9 @@ public class AddProfileFragment extends Fragment {
         Calendar callendar = Calendar.getInstance();
         callendar.setTime(globalVariables.getCurrentUser().get().getBirthDate());
         setCalendarDate(callendar.get(Calendar.YEAR),
-                        callendar.get(Calendar.MONTH),
-                        callendar.get(Calendar.DAY_OF_MONTH));
+                callendar.get(Calendar.MONTH),
+                callendar.get(Calendar.DAY_OF_MONTH));
     }
-
-
 
     private void openImagePicker() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -286,5 +272,9 @@ public class AddProfileFragment extends Fragment {
                 Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public interface AddProfileFragmentListener {
+        void callback(String result);
     }
 }

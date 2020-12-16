@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivitySplashBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
@@ -18,6 +17,7 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
 
     private final static int SPLASH_TIME_OUT = 1000;
     private final Runnable loadRunnable = () -> {
+        SharedPreferencesHelper.loadUser(SplashActivity.this);
         // TODO: 16.12.2020 Jesli cos ladujemy to tutaj
     };
     ActivitySplashBinding binding;
@@ -31,7 +31,6 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
                 e.printStackTrace();
             } finally {
                 runOnUiThread(() -> new Handler().postDelayed(() -> {
-                    SharedPreferencesHelper.loadUser(SplashActivity.this);
                     if (GlobalVariables.getInstance().getCurrentUser().isPresent()) {
                         startChatActivity();
                     } else {
@@ -77,7 +76,6 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
             startChatActivity();
         } else {
             // TODO: 16.12.2020 "moze jakies powiadomienie ze zle i powtórzyć?"
-            finish();
         }
     }
 
