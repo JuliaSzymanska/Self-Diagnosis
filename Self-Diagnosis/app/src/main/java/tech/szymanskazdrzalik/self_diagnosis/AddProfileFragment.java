@@ -88,7 +88,7 @@ public class AddProfileFragment extends Fragment {
             Date userBirthDate = myCalendar.getTime();
 
             Bitmap userPicture = DbBitmapUtility.getBitmapFromDrawable(binding.addUserImage.getDrawable());
-            if (userPicture == null) {
+            if (userPicture == null || userPicture.sameAs(getDefaultImage("F")) || userPicture.sameAs(getDefaultImage("M"))) {
                 userPicture = getDefaultImage(userGender);
             }
 
