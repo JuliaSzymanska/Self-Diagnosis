@@ -3,6 +3,9 @@ package tech.szymanskazdrzalik.self_diagnosis.api;
 
 import android.content.Context;
 
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,9 +45,10 @@ public class RequestUtil {
     }
 
     public interface ChatRequestListener {
-        void addDoctorMessage(String msg);
+        void onDoctorMessage(String msg);
         void addUserMessage(String msg);
-        void hideChat();
+        void hideMessageBox();
         void addErrorMessageFromDoctor(String msg);
+        void onDoctorQuestionReceived(JSONArray msg);
     }
 }

@@ -1,5 +1,6 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,11 +17,12 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
 public class SplashActivity extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
-    private final static int SPLASH_TIME_OUT = 2000;
+    private final static int SPLASH_TIME_OUT = 1500;
     private final Runnable loadRunnable = () -> {
         SharedPreferencesHelper.loadUser(SplashActivity.this);
         // TODO: 16.12.2020 Jesli cos ladujemy to tutaj
     };
+
     ActivitySplashScreenBinding binding;
     private Thread loadThread;
     private final Runnable waifForLoadRunnable = new Runnable() {

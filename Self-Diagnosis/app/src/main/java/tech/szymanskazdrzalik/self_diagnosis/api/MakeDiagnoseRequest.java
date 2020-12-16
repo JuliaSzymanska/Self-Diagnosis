@@ -1,7 +1,5 @@
 package tech.szymanskazdrzalik.self_diagnosis.api;
 
-import android.content.Context;
-
 import com.android.volley.Response;
 
 import org.json.JSONArray;
@@ -26,7 +24,9 @@ public class MakeDiagnoseRequest {
         public void onResponse(JSONObject response) {
             try {
                 JSONObject jsonObjectQuestion = response.getJSONObject("question");
-                listener.addDoctorMessage(jsonObjectQuestion.getString("text"));
+                listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
+                listener.hideMessageBox();
+                listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONArray;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
@@ -73,7 +76,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     @Override
-    public void addDoctorMessage(String msg) {
+    public void onDoctorMessage(String msg) {
         generateNewDoctorMessageFromString(msg);
     }
 
@@ -83,12 +86,20 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     @Override
-    public void hideChat() {
-        // TODO: 16.12.2020
+    public void hideMessageBox() {
+        // TODO: 16.12.2020 add animation
+        binding.inputLayout.removeAllViews();
     }
 
     @Override
     public void addErrorMessageFromDoctor(String msg) {
         // TODO: 16.12.2020
+    }
+
+    @Override
+    public void onDoctorQuestionReceived(JSONArray msg) {
+        binding.inputLayout.removeAllViews();
+        System.out.println(msg);
+        Toast.makeText(this, msg.toString(), Toast.LENGTH_LONG).show();
     }
 }
