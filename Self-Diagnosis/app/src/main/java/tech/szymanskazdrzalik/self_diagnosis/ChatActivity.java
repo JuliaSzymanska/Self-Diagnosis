@@ -5,13 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
@@ -71,7 +73,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
 
     public void sendSymptomsOnClick(View v) {
-        new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
+        new MakeParseRequest(this, binding.inputSymptoms.getText().toString());
         addUserMessage(binding.inputSymptoms.getText().toString());
     }
 
@@ -96,10 +98,38 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         // TODO: 16.12.2020
     }
 
+    private void questionButtonOnClick(String id, String choice) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("text", id);
+            jsonObject.put("choice_id", choice);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
-    public void onDoctorQuestionReceived(JSONArray msg) {
+    public void onDoctorQuestionReceived(String id, JSONArray msg) {
         binding.inputLayout.removeAllViews();
+        try {
+            for (int i = 0; i < msg.length(); i++) {
+                Button button = (Button) View.inflate(this, R.layout.answer_button, null);
+                button.setText(msg.getJSONObject(i).getString("label"));
+                int finalI = i;
+                    button.setOnClickListener(v -> {
+                        try {
+                            questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                binding.inputLayout.addView(button);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         System.out.println(msg);
-        Toast.makeText(this, msg.toString(), Toast.LENGTH_LONG).show();
     }
 }
