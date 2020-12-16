@@ -39,7 +39,9 @@ public class ChatActivity extends AppCompatActivity {
         TextView valueTV = linearLayout.findViewById(R.id.userMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
-        binding.scrollViewChat.scrollTo(0, binding.scrollViewChat.getBottom() + 100);
+//        binding.scrollViewChat.scrollTo(0, binding.scrollViewChat.getBottom());
+        binding.scrollViewChat.fullScroll(View.FOCUS_DOWN);
+
     }
 
     private void addDoctorMessageToChat(String text) {
@@ -47,17 +49,22 @@ public class ChatActivity extends AppCompatActivity {
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
-        binding.scrollViewChat.scrollTo(0, binding.scrollViewChat.getBottom() + 100);
+//        binding.scrollViewChat.scrollTo(0, binding.scrollViewChat.getBottom());
+        binding.scrollViewChat.fullScroll(View.FOCUS_DOWN);
     }
 
     public void backArrowOnClick(View v) {
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
     }
+    private int id = 0;
 
     public void sendSymptomsOnClick(View v) {
-        new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
-addUserMessageToChat(binding.inputSymptoms.getText().toString());
+        // TODO: 16.12.2020 ODKOMENTOWAC
+//        new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
+        addUserMessageToChat(binding.inputSymptoms.getText().toString() + " " + id);
+        addDoctorMessageToChat("Hejka naklejka siemka tu lenka " + id);
+        id++;
     }
 
 }

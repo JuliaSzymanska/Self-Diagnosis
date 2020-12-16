@@ -19,7 +19,9 @@
             <ScrollView
                 android:id="@+id/scrollViewChat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/inputLayout"
+                app:layout_constraintTop_toBottomOf="@id/topPanelChat">
 
                 <LinearLayout
                     android:id="@+id/chatLayout"
@@ -27,8 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="100dp"
                     android:orientation="vertical"
-                    android:scrollbars="vertical"
-                    app:layout_constraintTop_toBottomOf="@id/topPanelChat">
+                    android:scrollbars="vertical">
 
                 </LinearLayout>
 
@@ -39,6 +40,7 @@
                 layout="@layout/top_of_chat" />
 
             <LinearLayout
+                android:id="@+id/inputLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -56,9 +58,9 @@
                     android:maxLines="6"
                     android:minLines="2"
                     android:scrollbars="vertical"
+                    android:text="@string/default_message_delete_me"
                     android:textColor="@color/text_color"
-                    android:textColorHint="@color/text_color"
-                    android:text="@string/default_message_delete_me"/>
+                    android:textColorHint="@color/text_color" />
 
                 <Button
                     android:id="@+id/sendSymptoms"

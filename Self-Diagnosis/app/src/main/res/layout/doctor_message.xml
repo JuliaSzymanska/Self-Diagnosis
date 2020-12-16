@@ -3,8 +3,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
-    android:paddingTop="15dp"
-    android:orientation="vertical">
+    android:background="@color/text_color"
+    android:orientation="vertical"
+    android:paddingTop="15dp">
 
     <TextView
         android:id="@+id/doctorMessage"
