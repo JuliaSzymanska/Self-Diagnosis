@@ -10,17 +10,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
-import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMainBinding;
+import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
+
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
-public class MainActivity extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
+public class ChatActivity extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
-    private ActivityMainBinding binding;
+    private ActivityChatBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         if (getSharedPreferences("PREFERENCE", MODE_PRIVATE)

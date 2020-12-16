@@ -70,10 +70,6 @@ public class AddProfileFragment extends Fragment {
     GlobalVariables globalVariables = GlobalVariables.getInstance();;
 
     private void setCalendarDate(int year, int monthOfYear, int dayOfMonth) {
-        System.out.println(globalVariables.getCurrentUser().getBirthDate());
-        System.out.println(year + " YEAR");
-        System.out.println(monthOfYear + " month");
-        System.out.println(dayOfMonth + " day");
         myCalendar.set(Calendar.YEAR, year);
         myCalendar.set(Calendar.MONTH, monthOfYear);
         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);

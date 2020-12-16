@@ -27,6 +27,7 @@ public class MakeParseRequest {
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         User user = globalVariables.getCurrentUser();
 
+        // TODO: 15.12.2020 Mozna wyrzucić do innej klasy jakiegoś helpera
         Map<String, String> headers = new HashMap<>();
         headers.put("App-Id", this.apiClass.getId());
         headers.put("App-Key", this.apiClass.getKey());
