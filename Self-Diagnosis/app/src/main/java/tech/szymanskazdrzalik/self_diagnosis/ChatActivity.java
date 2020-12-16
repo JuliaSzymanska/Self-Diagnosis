@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -135,7 +136,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
         binding.inputLayout.inputsContainer.removeAllViews();
-        binding.inputLayout.inputsContainer.setBackgroundColor(Color.TRANSPARENT);
         try {
             for (int i = 0; i < msg.length(); i++) {
                 Button button = (Button) View.inflate(this, R.layout.answer_button, null);
@@ -149,9 +149,12 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                     }
                 });
                 binding.inputLayout.inputsContainer.addView(button);
+                Space space = new Space(this);
+                space.setLayoutParams(new LinearLayout.LayoutParams(12,8));
+                binding.inputLayout.inputsContainer.addView(space);
             }
             Button button = (Button) View.inflate(this, R.layout.answer_button, null);
-            button.setText("End diagnose");
+            button.setText("Finish");
             button.setOnClickListener(onEndDiagnoseClick);
             binding.inputLayout.inputsContainer.addView(button);
         } catch (JSONException e) {
@@ -180,6 +183,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         });
 
         binding.inputLayout.inputsContainer.addView(buttonYes);
+        Space space = new Space(this);
+        space.setLayoutParams(new LinearLayout.LayoutParams(12,8));
+        binding.inputLayout.inputsContainer.addView(space);
         binding.inputLayout.inputsContainer.addView(buttonNo);
         return true;
     }
