@@ -4,8 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
@@ -21,6 +28,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setPicture();
+        initCurrentDiagnosisTextDateHour();
     }
 
     public void setPicture() {
@@ -70,6 +78,20 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
                 .replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment)
                 .addToBackStack(null);
         transaction.commit();
+    }
+
+    private void initCurrentDiagnosisTextDateHour()  {
+        DateFormat dfDate = new SimpleDateFormat("dd.MM.yyyy");
+        DateFormat dfHour = new SimpleDateFormat("HH:mm");
+        binding.aktualnyChatData.setText(dfDate.format(Calendar.getInstance().getTime()));
+        binding.aktualnyChatGodzina.setText(dfHour.format(Calendar.getInstance().getTime()));
+    }
+
+    public void goToChatActivity(View v) {
+        Intent intent = new Intent(Menu.this, ChatActivity.class);
+        startActivity(intent);
+        // TODO: 16.12.2020 Override transition
+        finish();
     }
 
     @Override
