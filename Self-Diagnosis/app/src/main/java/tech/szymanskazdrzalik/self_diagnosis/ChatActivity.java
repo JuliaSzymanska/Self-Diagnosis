@@ -107,6 +107,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             jsonObject.put("choice_id", choice);
             RequestUtil.getInstance().addToEvidenceArray(jsonObject);
             new MakeDiagnoseRequest(this);
+            binding.inputLayout.removeAllViews();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -118,7 +119,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         binding.inputLayout.setBackgroundColor(Color.TRANSPARENT);
         try {
             for (int i = 0; i < msg.length(); i++) {
-                Button button = (Button) View.inflate(this, R.layout.answer_button, binding.inputLayout);
+                Button button = (Button) View.inflate(this, R.layout.answer_button, null);
                 button.setText(msg.getJSONObject(i).getString("label"));
                 int finalI = i;
                 button.setOnClickListener(v -> {
@@ -129,6 +130,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                         e.printStackTrace();
                     }
                 });
+                binding.inputLayout.addView(button);
             }
 
         } catch (JSONException e) {
@@ -142,7 +144,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void finishDiagnose() {
         // TODO: 16.12.2020 Lokalizacja
         onDoctorMessage("I believe I know your diagnose. \nDo you want to finish?");
-        Button buttonYes = (Button) View.inflate(this, R.layout.answer_button, binding.inputLayout);
+        Button buttonYes = (Button) View.inflate(this, R.layout.answer_button, null);
         buttonYes.setText("Yes");
         buttonYes.setOnClickListener(v -> {
 

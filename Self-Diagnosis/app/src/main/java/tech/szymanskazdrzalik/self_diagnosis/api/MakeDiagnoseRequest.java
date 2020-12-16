@@ -23,17 +23,18 @@ public class MakeDiagnoseRequest {
         @Override
         public void onResponse(JSONObject response) {
             try {
-                boolean shouldStop = response.getBoolean("should_stop");
-                RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
-                if (shouldStop) {
-                    listener.finishDiagnose();
-                } else {
-                    JSONObject jsonObjectQuestion = response.getJSONObject("question");
-                    listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
-                    listener.hideMessageBox();
-                    listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
-                            jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"));
-                }
+                System.out.println(response);
+//                boolean shouldStop = response.getBoolean("should_stop");
+//                RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
+//                if (shouldStop) {
+//                    listener.finishDiagnose();
+//                } else {
+                JSONObject jsonObjectQuestion = response.getJSONObject("question");
+                listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
+                listener.hideMessageBox();
+                listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
+                        jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"));
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
