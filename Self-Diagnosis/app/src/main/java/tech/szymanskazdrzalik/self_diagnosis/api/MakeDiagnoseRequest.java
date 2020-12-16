@@ -64,4 +64,35 @@ public class MakeDiagnoseRequest {
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
 
     }
+
+    public MakeDiagnoseRequest(ChatActivity chatActivity) {
+
+        listener = chatActivity;
+
+        String url = ApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
+
+        GlobalVariables globalVariables = GlobalVariables.getInstance();
+        if (!globalVariables.getCurrentUser().isPresent()) {
+            // TODO: 16.12.2020 dać tutaj wyjatek
+            System.out.println("User not found!");
+        }
+
+        Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            RequestUtil.addUserDataToJsonObject(jsonObject);
+            jsonObject.put("evidence", RequestUtil.getEvidenceArray());
+            JSONObject jsonObjectExtras = new JSONObject();
+            jsonObjectExtras.put("disable_groups", "true");
+            jsonObject.put("extras", jsonObjectExtras);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(jsonObject);
+
+        ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
+
+    }
 }

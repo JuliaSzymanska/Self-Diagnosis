@@ -4,6 +4,7 @@ package tech.szymanskazdrzalik.self_diagnosis.api;
 import android.content.Context;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,28 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class RequestUtil {
 
+    private static JSONArray evidenceArray;
+
     private RequestUtil() {
+        evidenceArray = new JSONArray();
+    }
+
+    public static JSONArray getEvidenceArray() {
+        return evidenceArray;
+    }
+
+    public static void addToEvidenceArray(JSONArray jsonArray) throws JSONException {
+        for (int i = 0; i < jsonArray.length(); i++) {
+            evidenceArray.put(jsonArray.getJSONObject(i));
+        }
+    }
+
+    public static void addToEvidenceArray(JSONObject jsonObject) {
+        evidenceArray.put(jsonObject);
+    }
+
+    public static void resetEvidenceArray() {
+        evidenceArray = new JSONArray();
     }
 
     public static void addUserDataToJsonObject(JSONObject jsonObject) throws JSONException {
