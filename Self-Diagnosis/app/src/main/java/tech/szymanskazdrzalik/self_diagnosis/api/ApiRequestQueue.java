@@ -7,8 +7,6 @@ import com.android.volley.toolbox.Volley;
 
 import android.content.Context;
 
-import java.util.Arrays;
-
 public class ApiRequestQueue {
 
     private static ApiRequestQueue INSTANCE;
