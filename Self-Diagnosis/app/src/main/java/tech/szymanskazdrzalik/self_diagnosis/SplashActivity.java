@@ -3,24 +3,25 @@ package tech.szymanskazdrzalik.self_diagnosis;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivitySplashBinding;
+import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivitySplashScreenBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
 public class SplashActivity extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
-    private final static int SPLASH_TIME_OUT = 100;
+    private final static int SPLASH_TIME_OUT = 2000;
     private final Runnable loadRunnable = () -> {
         SharedPreferencesHelper.loadUser(SplashActivity.this);
         // TODO: 16.12.2020 Jesli cos ladujemy to tutaj
     };
-    ActivitySplashBinding binding;
+    ActivitySplashScreenBinding binding;
     private Thread loadThread;
     private final Runnable waifForLoadRunnable = new Runnable() {
         @Override
@@ -63,8 +64,14 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySplashBinding.inflate(getLayoutInflater());
+        binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.ivLogo.setAnimation(AnimationUtils.loadAnimation(this, R.anim.from_top_animation));
+        binding.tvName.setAnimation(AnimationUtils.loadAnimation(this, R.anim.from_bottom_aniamtion));
+        binding.tvDesc.setAnimation(AnimationUtils.loadAnimation(this, R.anim.from_bottom_animation2));
+
+
         this.loadThread = new Thread(this.loadRunnable);
         this.loadThread.start();
         new Thread(this.waifForLoadRunnable).start();
