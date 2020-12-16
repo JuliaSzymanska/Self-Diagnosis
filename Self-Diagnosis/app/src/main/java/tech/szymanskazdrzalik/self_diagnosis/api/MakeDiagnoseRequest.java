@@ -22,19 +22,26 @@ public class MakeDiagnoseRequest {
     private final Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
+            boolean shouldStop = false;
             try {
                 System.out.println(response);
-//                boolean shouldStop = response.getBoolean("should_stop");
-//                RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
-//                if (shouldStop) {
-//                    listener.finishDiagnose();
-//                } else {
-                JSONObject jsonObjectQuestion = response.getJSONObject("question");
-                listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
-                listener.hideMessageBox();
-                listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
-                        jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"));
-//                }
+                try {
+                    shouldStop = response.getBoolean("should_stop");
+                    RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
+                    if (shouldStop) {
+                        listener.finishDiagnose();
+                    }
+                } catch (JSONException e) {
+                    // TODO: 16.12.2020 To znaczy że nie znaleziono pola should_stop, zrobić coś mądrego z tym
+                    e.printStackTrace();
+                }
+                 if (!shouldStop){
+                    JSONObject jsonObjectQuestion = response.getJSONObject("question");
+                    listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
+                    listener.hideMessageBox();
+                    listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
+                            jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
