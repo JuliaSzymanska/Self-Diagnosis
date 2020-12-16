@@ -1,6 +1,7 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             jsonObject.put("choice_id", choice);
             RequestUtil.addToEvidenceArray(jsonObject);
             new MakeDiagnoseRequest(this);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -115,6 +115,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
         binding.inputLayout.removeAllViews();
+        binding.inputLayout.setBackgroundColor(Color.TRANSPARENT);
         try {
             for (int i = 0; i < msg.length(); i++) {
                 Button button = (Button) View.inflate(this, R.layout.answer_button, null);
@@ -122,6 +123,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 int finalI = i;
                 button.setOnClickListener(v -> {
                     try {
+                        addUserMessage(msg.getJSONObject(finalI).getString("label"));
                         questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
