@@ -2,7 +2,9 @@ package tech.szymanskazdrzalik.self_diagnosis;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,6 +36,16 @@ public class SplashScreen extends AppCompatActivity {
         logo.setAnimation(top);
         name.setAnimation(bottom);
         description.setAnimation(bottom);
+
+        new Handler().postDelayed(new Runnable() {
+            // TODO: 12/16/20 dodać warunek odpowiedniego wyboru activity
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashScreen.this, ChatActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 3000);
 
     }
 
