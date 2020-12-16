@@ -22,6 +22,18 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String USER_COLUMN_BIRTH_DATE = "birth_date";
     public static final String USER_COLUMN_NAME = "user_name";
     public static final String USER_COLUMN_PICTURE = "user_picture";
+
+    public static final String MESSAGES_TABLE_NAME = "messages";
+    public static final String MESSAGES_COLUMN_CHAT_ID = "chat_id";
+    public static final String MESSAGES_COLUMN_MESSAGE_ID = "message_id";
+    public static final String MESSAGES_COLUMN_MESSAGE = "text";
+    public static final String MESSAGES_COLUMN_DATETIME = "message_date_time";
+
+    public static final String CHATS_TABLE_NAME = "chats";
+    public static final String CHATS_COLUMN_ID = "chat_id";
+    public static final String CHATS_COLUMN_USER_ID = "user_id";
+
+
     private static final int DATABASE_VERSION = 7;
 
     /**
@@ -136,29 +148,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + USER_PROFILE_TABLE_NAME + " (" +
-                USER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
-                USER_COLUMN_NAME + " TEXT," +
-                USER_COLUMN_BIRTH_DATE + " DATE," +
-                USER_COLUMN_PICTURE + " BLOB," +
-                USER_COLUMN_GENDER + " TEXT check(" + USER_COLUMN_GENDER + " in ('M', 'm', 'F', 'f'))" + ")");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + USER_PROFILE_TABLE_NAME);
-        onCreate(db);
-    }
-
-    public static int getNextIdAvailable(Context context){
+    public static int getNextIdAvailable(Context context) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 USER_COLUMN_ID
@@ -179,6 +169,43 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
             return retint;
         }
         return 1000;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + USER_PROFILE_TABLE_NAME + " (" +
+                USER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                USER_COLUMN_NAME + " TEXT," +
+                USER_COLUMN_BIRTH_DATE + " DATE," +
+                USER_COLUMN_PICTURE + " BLOB," +
+                USER_COLUMN_GENDER + " TEXT check(" + USER_COLUMN_GENDER + " in ('M', 'm', 'F', 'f'))" + ")");
+
+        db.execSQL("CREATE TABLE " + CHATS_TABLE_NAME + " (" +
+                CHATS_COLUMN_ID + " INTEGER PRIMARY KEY," +
+                CHATS_COLUMN_USER_ID + " INTEGER," +
+                " FOREIGN KEY (" + CHATS_COLUMN_USER_ID + ") REFERENCES " + USER_PROFILE_TABLE_NAME + "(" + USER_COLUMN_ID + ")" + ")"
+        );
+
+        db.execSQL("CREATE TABLE " + MESSAGES_TABLE_NAME + " (" +
+                MESSAGES_COLUMN_MESSAGE_ID + " INTEGER," +
+                MESSAGES_COLUMN_CHAT_ID + " INTEGER," +
+                MESSAGES_COLUMN_DATETIME + " DATETIME," +
+                MESSAGES_COLUMN_MESSAGE + " VARCHAR(1024)," +
+                " FOREIGN KEY (" + MESSAGES_COLUMN_CHAT_ID + ") REFERENCES " + CHATS_TABLE_NAME + "(" + CHATS_COLUMN_ID + ")," +
+                " PRIMARY KEY " + "(" + MESSAGES_COLUMN_MESSAGE_ID + ", " + MESSAGES_COLUMN_CHAT_ID + ")" + ")"
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + USER_PROFILE_TABLE_NAME);
+        onCreate(db);
     }
 
 }
