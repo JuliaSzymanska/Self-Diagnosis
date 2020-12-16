@@ -24,8 +24,12 @@ public class RequestUtil {
     public static JSONArray getEvidenceArray() {
         return evidenceArray;
     }
+    // TODO: 16.12.2020 Make singleton and not static
 
     public static void addToEvidenceArray(JSONArray jsonArray) throws JSONException {
+        if (evidenceArray == null) {
+            resetEvidenceArray();
+        }
         for (int i = 0; i < jsonArray.length(); i++) {
             evidenceArray.put(jsonArray.getJSONObject(i));
         }

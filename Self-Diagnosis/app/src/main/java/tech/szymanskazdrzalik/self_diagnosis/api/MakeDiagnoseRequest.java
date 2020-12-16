@@ -26,7 +26,7 @@ public class MakeDiagnoseRequest {
                 JSONObject jsonObjectQuestion = response.getJSONObject("question");
                 listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
                 listener.hideMessageBox();
-                listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("choices"),
+                listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
                         jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"));
             } catch (JSONException e) {
                 e.printStackTrace();

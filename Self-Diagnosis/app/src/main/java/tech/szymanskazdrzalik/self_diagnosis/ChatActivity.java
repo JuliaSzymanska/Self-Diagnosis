@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
@@ -101,8 +102,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private void questionButtonOnClick(String id, String choice) {
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("text", id);
+            jsonObject.put("id", id);
             jsonObject.put("choice_id", choice);
+            RequestUtil.addToEvidenceArray(jsonObject);
+            new MakeDiagnoseRequest(this);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -117,13 +120,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 Button button = (Button) View.inflate(this, R.layout.answer_button, null);
                 button.setText(msg.getJSONObject(i).getString("label"));
                 int finalI = i;
-                    button.setOnClickListener(v -> {
-                        try {
-                            questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                button.setOnClickListener(v -> {
+                    try {
+                        questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
                 binding.inputLayout.addView(button);
             }
         } catch (JSONException e) {
