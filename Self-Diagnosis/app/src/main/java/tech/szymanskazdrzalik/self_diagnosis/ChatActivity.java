@@ -3,6 +3,7 @@ package tech.szymanskazdrzalik.self_diagnosis;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,16 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setNameInChat();
+        binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+            @Override
+            public void onChildViewAdded(View parent, View child) {
+                binding.scrollViewChat.post(() -> binding.scrollViewChat.fullScroll(View.FOCUS_DOWN));
+            }
+
+            @Override
+            public void onChildViewRemoved(View parent, View child) {
+            }
+        });
     }
 
     private void setNameInChat() {
@@ -39,7 +50,6 @@ public class ChatActivity extends AppCompatActivity {
         TextView valueTV = linearLayout.findViewById(R.id.userMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
-        binding.scrollViewChat.fullScroll(View.FOCUS_DOWN);
 
     }
 
@@ -48,13 +58,13 @@ public class ChatActivity extends AppCompatActivity {
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
-        binding.scrollViewChat.fullScroll(View.FOCUS_DOWN);
     }
 
     public void backArrowOnClick(View v) {
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
     }
+
     private int id = 0;
 
     public void sendSymptomsOnClick(View v) {
@@ -62,7 +72,6 @@ public class ChatActivity extends AppCompatActivity {
 //        new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
         addUserMessageToChat(binding.inputSymptoms.getText().toString() + " " + id);
         addDoctorMessageToChat("Hejka naklejka siemka tu lenka " + id);
-        binding.scrollViewChat.fullScroll(View.FOCUS_DOWN);
         id++;
     }
 
