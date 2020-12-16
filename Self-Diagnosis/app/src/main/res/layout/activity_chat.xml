@@ -57,7 +57,8 @@
                     android:minLines="2"
                     android:scrollbars="vertical"
                     android:textColor="@color/text_color"
-                    android:textColorHint="@color/text_color" />
+                    android:textColorHint="@color/text_color"
+                    android:text="@string/default_message_delete_me"/>
 
                 <Button
                     android:id="@+id/sendSymptoms"

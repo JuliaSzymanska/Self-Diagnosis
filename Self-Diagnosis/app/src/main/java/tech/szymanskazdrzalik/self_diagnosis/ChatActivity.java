@@ -56,8 +56,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void sendSymptomsOnClick(View v) {
-        new MakeParseRequest(this, "it hurts when I pee, also, stomach ache");
-        addUserMessageToChat("it hurts when I pee, also, stomach ache");
+        new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
+addUserMessageToChat(binding.inputSymptoms.getText().toString());
     }
 
 }
