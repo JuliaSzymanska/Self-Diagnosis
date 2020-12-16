@@ -37,7 +37,7 @@ public class MakeDiagnoseRequest {
                     // TODO: 16.12.2020 To znaczy że nie znaleziono pola should_stop, zrobić coś mądrego z tym
                     e.printStackTrace();
                 }
-                 if (!shouldStop){
+                if (!shouldStop) {
                     JSONObject jsonObjectQuestion = response.getJSONObject("question");
                     listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
                     listener.hideMessageBox();

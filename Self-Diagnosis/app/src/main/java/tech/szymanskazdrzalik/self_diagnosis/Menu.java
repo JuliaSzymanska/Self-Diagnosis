@@ -1,18 +1,16 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
@@ -80,7 +78,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         transaction.commit();
     }
 
-    private void initCurrentDiagnosisTextDateHour()  {
+    private void initCurrentDiagnosisTextDateHour() {
         DateFormat dfDate = new SimpleDateFormat("dd.MM.yyyy");
         DateFormat dfHour = new SimpleDateFormat("HH:mm");
         binding.aktualnyChatData.setText(dfDate.format(Calendar.getInstance().getTime()));

@@ -1,9 +1,12 @@
 package tech.szymanskazdrzalik.self_diagnosis;
+
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+
 import java.util.ArrayList;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentChangeProfileBinding;
@@ -24,9 +27,14 @@ public class ChangeProfile extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final View.OnClickListener onBackArrowClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            getActivity().onBackPressed();
+        }
+    };
     private String mParam1;
     private String mParam2;
-
     private FragmentChangeProfileBinding binding;
 
     public ChangeProfile() {
@@ -74,13 +82,5 @@ public class ChangeProfile extends Fragment {
         UsersAdapter usersAdapter = new UsersAdapter(getContext(), usersList);
         binding.usersList.setAdapter(usersAdapter);
     }
-
-
-    private final View.OnClickListener onBackArrowClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            getActivity().onBackPressed();
-        }
-    };
 
 }

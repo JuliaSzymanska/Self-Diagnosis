@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -20,18 +21,6 @@ public class ApiClass {
     private static String key;
 
     private ApiClass() {
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getKey() {
-        return key;
     }
 
     public static ApiClass getInstance(Context context) {
@@ -64,6 +53,18 @@ public class ApiClass {
             return null;
         }
         return jsonString;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getKey() {
+        return key;
     }
 
 

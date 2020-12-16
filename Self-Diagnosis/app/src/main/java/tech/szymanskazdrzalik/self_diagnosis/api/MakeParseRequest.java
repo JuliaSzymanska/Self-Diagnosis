@@ -23,10 +23,9 @@ public class MakeParseRequest {
         System.out.println(error);
         // TODO: 16.12.2020 Make show error message / show
     };
-    private Context context;
-    private String userMessage;
+    private final Context context;
+    private final String userMessage;
     private ChatActivity chatActivity;
-    private RequestUtil.ChatRequestListener chatRequestListener;
     private final Response.Listener<JSONObject> successListener = response -> {
         try {
             JSONArray jsonArrayFromResponse = response.getJSONArray("mentions");
@@ -47,6 +46,7 @@ public class MakeParseRequest {
             e.printStackTrace();
         }
     };
+    private final RequestUtil.ChatRequestListener chatRequestListener;
 
     public MakeParseRequest(ChatActivity chatActivity, String text) {
         this.chatActivity = chatActivity;

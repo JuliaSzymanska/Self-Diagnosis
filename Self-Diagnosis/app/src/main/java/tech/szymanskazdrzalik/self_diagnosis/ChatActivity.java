@@ -1,7 +1,6 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     private ActivityChatBinding binding;
     private final View.OnClickListener onEndDiagnoseClick = v -> {
+        // TODO: 16.12.2020 lokalizacja
+        addUserMessage("Finish");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Diagnosis:\n");
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
@@ -150,7 +151,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 });
                 binding.inputLayout.inputsContainer.addView(button);
                 Space space = new Space(this);
-                space.setLayoutParams(new LinearLayout.LayoutParams(12,8));
+                space.setLayoutParams(new LinearLayout.LayoutParams(12, 8));
                 binding.inputLayout.inputsContainer.addView(space);
             }
             Button button = (Button) View.inflate(this, R.layout.answer_button, null);
@@ -184,7 +185,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
         binding.inputLayout.inputsContainer.addView(buttonYes);
         Space space = new Space(this);
-        space.setLayoutParams(new LinearLayout.LayoutParams(12,8));
+        space.setLayoutParams(new LinearLayout.LayoutParams(12, 8));
         binding.inputLayout.inputsContainer.addView(space);
         binding.inputLayout.inputsContainer.addView(buttonNo);
         return true;

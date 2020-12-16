@@ -10,7 +10,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.icu.util.Calendar;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -41,15 +39,12 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link AddProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddProfileFragment extends Fragment {
 
     // TODO: 02.11.2020 https://developer.android.com/topic/libraries/view-binding#java
     //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
     //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
-    //  Interakcja z api
     //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
-    //  wybór użytkownika - nowy fragment ze zdjeciami i nazwami urzytkownika
 
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;

@@ -2,12 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fg_add_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".AddProfileFragment"
 
-    android:id="@+id/fg_add_profile">
+    tools:context=".AddProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,16 +32,14 @@
                 android:id="@+id/addUserImage"
                 android:layout_width="158dp"
                 android:layout_height="167dp"
+                android:background="@android:color/transparent"
+                app:civ_border_color="@color/orange_dark"
+                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/orange_dark"
-                android:background="@android:color/transparent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </RelativeLayout>
-
 
 
         <LinearLayout
@@ -142,15 +140,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:focusable="true"
                     android:text="@string/yyyy_mm_dd"
-                    android:textColor="@color/text_color"
-                    android:focusable="true" />
+                    android:textColor="@color/text_color" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-<!--        TODO: zmieniac tekst buttonu w zaleznosci czy zmiana usera czy nie (binding najlepiej) -->
+        <!--        TODO: zmieniac tekst buttonu w zaleznosci czy zmiana usera czy nie (binding najlepiej) -->
         <Button
             android:id="@+id/fgAddButton"
             android:layout_width="wrap_content"

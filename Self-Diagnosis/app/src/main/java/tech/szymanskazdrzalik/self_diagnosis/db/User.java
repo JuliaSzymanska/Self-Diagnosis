@@ -1,13 +1,8 @@
 package tech.szymanskazdrzalik.self_diagnosis.db;
 
 import android.graphics.Bitmap;
-import android.os.Build;
 
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.Year;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -27,16 +22,16 @@ public class User {
         this.picture = picture;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public User(int id, String name, Date birthDate, String gender, Bitmap picture) {
         this.id = id;
         this.birthDate = birthDate;
         this.name = name;
         this.gender = gender;
         this.picture = picture;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Date getBirthDate() {
