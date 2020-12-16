@@ -14,23 +14,23 @@ import java.util.Map;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
-public class MakeFirstRequest {
+public class MakeDiagnoseRequest {
 
-    private ApiClass apiClass;
-    private ApiRequestQueue apiRequestQueue;
-    private String url;
 
-    public MakeFirstRequest(Context context, JSONArray jsonArray) {
-        this.apiClass = ApiClass.getInstance(context);
-        this.apiRequestQueue = ApiRequestQueue.getInstance(context);
-        this.url = this.apiClass.getUrl() + "/diagnosis";
+    public MakeDiagnoseRequest(Context context, JSONArray jsonArray) {
+        String url = ApiClass.getInstance(context).getUrl() + "/diagnosis";
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
-        User user = globalVariables.getCurrentUser();
+        if (!globalVariables.getCurrentUser().isPresent()) {
+            // TODO: 16.12.2020 dać tutaj wyjatek
+            System.out.println("User not found!");
+        }
+        User user = globalVariables.getCurrentUser().get();
+
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("App-Id", this.apiClass.getId());
-        headers.put("App-Key", this.apiClass.getKey());
+        headers.put("App-Id", ApiClass.getInstance(context).getId());
+        headers.put("App-Key", ApiClass.getInstance(context).getKey());
         headers.put("Content-Type", "application/json");
 
         JSONObject jsonObject = new JSONObject();
@@ -49,7 +49,7 @@ public class MakeFirstRequest {
         Response.Listener<JSONObject> listener = System.out::println;
         Response.ErrorListener errorListener = System.out::println;
 
-        this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(1, this.url, headers, jsonObject, listener, errorListener));
+        ApiRequestQueue.getInstance(context).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, listener, errorListener));
 
     }
 }

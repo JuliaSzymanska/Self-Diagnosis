@@ -67,7 +67,7 @@ public class MakeParseRequest {
                     jsonArrayToRequest.put(clearJsonObject);
                 }
             }
-            new MakeFirstRequest(context, jsonArrayToRequest);
+            new MakeDiagnoseRequest(context, jsonArrayToRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
