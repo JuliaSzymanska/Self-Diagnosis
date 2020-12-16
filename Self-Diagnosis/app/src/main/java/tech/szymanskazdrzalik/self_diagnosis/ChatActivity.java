@@ -56,6 +56,10 @@ public class ChatActivity extends AppCompatActivity implements AddProfileFragmen
 
     @Override
     public void callback(String result) {
-        binding.firstChatMessage.setText("Hello " + GlobalVariables.getInstance().getCurrentUser().getName() + "!");
+        if (GlobalVariables.getInstance().getCurrentUser().isPresent())
+            binding.firstChatMessage.setText("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
+        else {
+            binding.firstChatMessage.setText("Hello !");
+        }
     }
 }

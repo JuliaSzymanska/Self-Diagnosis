@@ -24,15 +24,15 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     }
 
     public void setPicture() {
-        if (GlobalVariables.getInstance().getCurrentUser() == null) {
+        if (!GlobalVariables.getInstance().getCurrentUser().isPresent()) {
             SharedPreferencesHelper.loadUser(this);
         }
 
-        if (GlobalVariables.getInstance().getCurrentUser() != null) {
-            if (GlobalVariables.getInstance().getCurrentUser().getPicture() != null) {
-                binding.menuTop1Bar.profileImage.setImageBitmap(GlobalVariables.getInstance().getCurrentUser().getPicture());
+        if (GlobalVariables.getInstance().getCurrentUser().isPresent()) {
+            if (GlobalVariables.getInstance().getCurrentUser().get().getPicture() != null) {
+                binding.menuTop1Bar.profileImage.setImageBitmap(GlobalVariables.getInstance().getCurrentUser().get().getPicture());
             } else {
-                if (GlobalVariables.getInstance().getCurrentUser().getGender().equals("M")) {
+                if (GlobalVariables.getInstance().getCurrentUser().get().getGender().equals("M")) {
                     binding.menuTop1Bar.profileImage.setImageResource(R.drawable.male);
                 } else {
                     binding.menuTop1Bar.profileImage.setImageResource(R.drawable.female);

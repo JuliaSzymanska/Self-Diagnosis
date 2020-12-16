@@ -1,5 +1,7 @@
 package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
+import java.util.Optional;
+
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 
 public class GlobalVariables {
@@ -14,8 +16,8 @@ public class GlobalVariables {
         return INSTANCE;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
+    public Optional<User> getCurrentUser() {
+        return Optional.ofNullable(this.currentUser);
     }
 
     public void setCurrentUser(User currentUser) {

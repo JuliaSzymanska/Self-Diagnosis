@@ -96,7 +96,7 @@ public class AddProfileFragment extends Fragment {
             if (isNewUser) {
                 currentID = SampleSQLiteDBHelper.getNextIdAvailable(getContext());
             } else {
-                currentID = globalVariables.getCurrentUser().getId();
+                currentID = globalVariables.getCurrentUser().get().getId();
             }
 
             User user = new User(currentID, userName, userBirthDate, userGender, userPicture);
@@ -217,19 +217,19 @@ public class AddProfileFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.isNewUser = bundle.getBoolean("is_new_user");
-            if (globalVariables.getCurrentUser() == null) {
+            if (!globalVariables.getCurrentUser().isPresent()) {
                 this.isNewUser = true;
             }
         }
     }
 
     private void setInputsToCurrentUser() {
-        if (globalVariables.getCurrentUser() != null) {
+        if (globalVariables.getCurrentUser().isPresent()) {
             setFieldsFromGlobalVariable();
 
-            binding.editProfileName.setText(globalVariables.getCurrentUser().getName());
+            binding.editProfileName.setText(globalVariables.getCurrentUser().get().getName());
 
-            String birthString = new SimpleDateFormat("yyyy-MM-dd").format(globalVariables.getCurrentUser().getBirthDate());
+            String birthString = new SimpleDateFormat("yyyy-MM-dd").format(globalVariables.getCurrentUser().get().getBirthDate());
             binding.dateEditTextFragmentAddProfile.setText(birthString);
 
             if (userGender.equals("M")) {
@@ -237,20 +237,26 @@ public class AddProfileFragment extends Fragment {
             } else if (userGender.equals("F")) {
                 binding.female.clearColorFilter();
             }
-            binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().getPicture());
+            binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().get().getPicture());
             binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
             binding.fgAddButton.setText(getString(R.string.update_string));
         }
     }
 
     private void setFieldsFromGlobalVariable() {
-        this.userGender = globalVariables.getCurrentUser().getGender();
+        // TODO: 16.12.2020 Test
+        if (!globalVariables.getCurrentUser().isPresent()) {
+            return;
+        }
+        this.userGender = globalVariables.getCurrentUser().get().getGender();
         Calendar callendar = Calendar.getInstance();
-        callendar.setTime(globalVariables.getCurrentUser().getBirthDate());
+        callendar.setTime(globalVariables.getCurrentUser().get().getBirthDate());
         setCalendarDate(callendar.get(Calendar.YEAR),
                         callendar.get(Calendar.MONTH),
                         callendar.get(Calendar.DAY_OF_MONTH));
     }
+
+
 
     private void openImagePicker() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
