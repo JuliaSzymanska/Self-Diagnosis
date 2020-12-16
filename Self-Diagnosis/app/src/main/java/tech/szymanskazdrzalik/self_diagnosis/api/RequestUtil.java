@@ -90,6 +90,6 @@ public class RequestUtil {
 
         void onDoctorQuestionReceived(String id, JSONArray msg);
 
-        void finishDiagnose();
+        boolean finishDiagnose();
     }
 }

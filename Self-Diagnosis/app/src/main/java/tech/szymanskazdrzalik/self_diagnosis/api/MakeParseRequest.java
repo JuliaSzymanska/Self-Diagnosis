@@ -24,6 +24,7 @@ public class MakeParseRequest {
         // TODO: 16.12.2020 Make show error message / show
     };
     private Context context;
+    private String userMessage;
     private ChatActivity chatActivity;
     private RequestUtil.ChatRequestListener chatRequestListener;
     private final Response.Listener<JSONObject> successListener = response -> {
@@ -54,6 +55,7 @@ public class MakeParseRequest {
         this.apiClass = ApiClass.getInstance(context);
         this.apiRequestQueue = ApiRequestQueue.getInstance(context);
         this.url = this.apiClass.getUrl() + "/parse";
+        this.userMessage = text;
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         if (!globalVariables.getCurrentUser().isPresent()) {
@@ -70,6 +72,8 @@ public class MakeParseRequest {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        chatRequestListener.addUserMessage(text);
 
         this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.POST, this.url, headers, jsonObject, this.successListener, this.errorListener));
     }

@@ -22,9 +22,12 @@ import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
+// TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
+
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
     private ActivityChatBinding binding;
+    private boolean didAskForEndDiagnose = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +76,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         startActivity(intent);
     }
 
-
     public void sendSymptomsOnClick(View v) {
         new MakeParseRequest(this, binding.inputSymptoms.getText().toString());
-        addUserMessage(binding.inputSymptoms.getText().toString());
     }
 
     @Override
@@ -100,13 +101,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         // TODO: 16.12.2020
     }
 
-    private void questionButtonOnClick(String id, String choice) {
+    private void questionButtonOnClick(String id, String choice, String userMessage) {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", id);
             jsonObject.put("choice_id", choice);
             RequestUtil.getInstance().addToEvidenceArray(jsonObject);
-            new MakeDiagnoseRequest(this);
+            new MakeDiagnoseRequest(this, userMessage);
             binding.inputLayout.removeAllViews();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -124,8 +125,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 int finalI = i;
                 button.setOnClickListener(v -> {
                     try {
-                        addUserMessage(msg.getJSONObject(finalI).getString("label"));
-                        questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"));
+                        questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"), msg.getJSONObject(finalI).getString("label"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -141,7 +141,12 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     @Override
-    public void finishDiagnose() {
+    public boolean finishDiagnose() {
+        if (didAskForEndDiagnose) {
+            return false;
+        }
+        this.didAskForEndDiagnose = true;
+
         // TODO: 16.12.2020 Lokalizacja
         onDoctorMessage("I believe I know your diagnose. \nDo you want to finish?");
         Button buttonYes = (Button) View.inflate(this, R.layout.answer_button, null);
@@ -149,5 +154,15 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         buttonYes.setOnClickListener(v -> {
 
         });
+
+        Button buttonNo = (Button) View.inflate(this, R.layout.answer_button, null);
+        buttonNo.setText("No");
+        buttonNo.setOnClickListener(v -> {
+            new MakeDiagnoseRequest(this, "No");
+        });
+
+        binding.inputLayout.addView(buttonYes);
+        binding.inputLayout.addView(buttonNo);
+        return true;
     }
 }
