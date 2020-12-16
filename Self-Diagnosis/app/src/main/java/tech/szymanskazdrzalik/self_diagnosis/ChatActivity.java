@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +16,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
+    private int chatId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +29,23 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setNameInChat() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-            binding.firstChatMessage.setText("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
+            addChatToView("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
         else {
             binding.firstChatMessage.setText("Hello !");
         }
+    }
+
+    private void addChatToView(String text) {
+        TextView valueTV = new TextView(this);
+        valueTV.setText(text);
+        valueTV.setId(this.chatId);
+
+        this.chatId++;
+
+        valueTV.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        binding.chatLayout.addView(valueTV);
     }
 
 
