@@ -40,4 +40,10 @@ public class RequestUtil {
         headers.put("Content-Type", "application/json");
         return headers;
     }
+
+    public interface ChatRequestListener {
+        void addDoctorMessage(String msg);
+        void addUserMessage(String msg);
+        void hideChat();
+    }
 }

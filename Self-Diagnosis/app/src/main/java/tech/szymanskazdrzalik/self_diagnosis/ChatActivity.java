@@ -68,11 +68,8 @@ public class ChatActivity extends AppCompatActivity {
     private int id = 0;
 
     public void sendSymptomsOnClick(View v) {
-        // TODO: 16.12.2020 ODKOMENTOWAC
-//        new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
+        new MakeParseRequest(this,  binding.inputSymptoms.getText().toString());
         addUserMessageToChat(binding.inputSymptoms.getText().toString() + " " + id);
-        addDoctorMessageToChat("Hejka naklejka siemka tu lenka " + id);
-        id++;
     }
 
 }

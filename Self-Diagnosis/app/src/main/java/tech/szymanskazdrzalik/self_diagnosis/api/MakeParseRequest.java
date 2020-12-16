@@ -49,7 +49,6 @@ public class MakeParseRequest {
             // TODO: 16.12.2020 Add user not found exception
             System.out.println("User not found");
         }
-        User user = globalVariables.getCurrentUser().get();
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(context);
 
