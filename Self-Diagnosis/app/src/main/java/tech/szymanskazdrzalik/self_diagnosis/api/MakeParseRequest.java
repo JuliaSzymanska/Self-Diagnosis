@@ -8,9 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
@@ -58,7 +56,7 @@ public class MakeParseRequest {
             JSONArray jsonArrayToRequest = new JSONArray();
             for (int i = 0; i < jsonArrayFromResponse.length(); i++) {
                 JSONObject jsonObject = jsonArrayFromResponse.getJSONObject(i);
-                if(jsonObject.getString("type").equals("symptom")) {
+                if (jsonObject.getString("type").equals("symptom")) {
                     JSONObject clearJsonObject = new JSONObject();
                     clearJsonObject.put("id", jsonObject.getString("id"));
                     clearJsonObject.put("choice_id", jsonObject.getString("choice_id"));

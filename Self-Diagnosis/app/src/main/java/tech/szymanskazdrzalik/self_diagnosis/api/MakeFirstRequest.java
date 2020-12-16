@@ -3,15 +3,12 @@ package tech.szymanskazdrzalik.self_diagnosis.api;
 import android.content.Context;
 
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
