@@ -39,6 +39,7 @@ public class ChatActivity extends AppCompatActivity {
         TextView valueTV = linearLayout.findViewById(R.id.userMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
+        binding.scrollViewChat.scrollTo(0, binding.scrollViewChat.getBottom() + 100);
     }
 
     private void addDoctorMessageToChat(String text) {
@@ -46,6 +47,7 @@ public class ChatActivity extends AppCompatActivity {
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
+        binding.scrollViewChat.scrollTo(0, binding.scrollViewChat.getBottom() + 100);
     }
 
     public void backArrowOnClick(View v) {
