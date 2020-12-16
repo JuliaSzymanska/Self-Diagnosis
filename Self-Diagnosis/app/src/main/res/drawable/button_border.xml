@@ -9,9 +9,9 @@
             <gradient
                 android:centerX="50%"
                 android:centerY="50%"
-                android:endColor="@color/black"
-                android:gradientRadius="100%"
-                android:startColor="@color/design_default_color_primary_dark"
+                android:endColor="@color/orange_dark"
+                android:gradientRadius="80%"
+                android:startColor="#DCB987"
                 android:type="radial"/>
         </shape>
     </item>
