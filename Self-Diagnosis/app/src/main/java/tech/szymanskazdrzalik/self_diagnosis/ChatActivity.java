@@ -16,7 +16,6 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
-    private int chatId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,25 +28,23 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setNameInChat() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-            addChatToView("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
+            addUserMessageToChat("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
         else {
-            binding.firstChatMessage.setText("Hello !");
+            addUserMessageToChat("Hello !");
         }
     }
 
-    private void addChatToView(String text) {
-        TextView valueTV = new TextView(this);
+    private void addUserMessageToChat(String text) {
+        TextView valueTV = (TextView) View.inflate(this, R.layout.user_message, null);
         valueTV.setText(text);
-        valueTV.setId(this.chatId);
-
-        this.chatId++;
-
-        valueTV.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
         binding.chatLayout.addView(valueTV);
     }
 
+    private void addDoctorMessageToChat(String text) {
+        TextView valueTV = (TextView) View.inflate(this, R.layout.doctor_message, null);
+        valueTV.setText(text);
+        binding.chatLayout.addView(valueTV);
+    }
 
     public void backArrowOnClick(View v) {
         Intent intent = new Intent(this, Menu.class);
