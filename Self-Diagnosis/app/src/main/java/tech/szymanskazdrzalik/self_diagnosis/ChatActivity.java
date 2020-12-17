@@ -96,8 +96,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     public void sendSymptomsOnClick(View v) {
-        new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
-        this.hideMessageBox();
+        if(!binding.inputLayout.inputSymptoms.getText().toString().equals("")) {
+            new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
+            this.hideMessageBox();
+        }
     }
 
     @Override
