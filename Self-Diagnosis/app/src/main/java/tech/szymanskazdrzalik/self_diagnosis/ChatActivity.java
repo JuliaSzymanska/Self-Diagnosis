@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -69,9 +70,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     private void setNameInChat() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-            generateNewDoctorMessageFromString("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName() + "!");
+            generateNewDoctorMessageFromString("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName()
+                    + "! \nHow can I help you today?");
         else {
-            generateNewDoctorMessageFromString("Hello !");
+            generateNewDoctorMessageFromString("Hello! \nHow can I help you today?");
         }
     }
 
@@ -99,6 +101,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if(!binding.inputLayout.inputSymptoms.getText().toString().equals("")) {
             new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
             this.hideMessageBox();
+        } else {
+            // TODO: 17.12.2020 poprawić to
+            Toast.makeText(this, "Input can not be empty.", Toast.LENGTH_LONG).show();
         }
     }
 
