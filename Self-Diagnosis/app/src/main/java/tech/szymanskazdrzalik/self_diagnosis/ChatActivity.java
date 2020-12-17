@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Space;
@@ -25,6 +27,8 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
+
+    Animation slide_out_messbox;
 
     private ActivityChatBinding binding;
     private final View.OnClickListener onEndDiagnoseClick = v -> {
@@ -55,6 +59,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setNameInChat();
+        slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View child) {
@@ -114,8 +119,22 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void hideMessageBox() {
-        // TODO: 16.12.2020 add animation
-        binding.inputLayout.inputsContainer.removeAllViews();
+        slide_out_messbox.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.inputLayout.inputsContainer.removeAllViews();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        binding.inputLayout.inputsContainer.setAnimation(slide_out_messbox);
     }
 
     @Override
@@ -139,6 +158,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
         binding.inputLayout.inputsContainer.removeAllViews();
+        binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
         try {
             for (int i = 0; i < msg.length(); i++) {
                 Button button = (Button) View.inflate(this, R.layout.answer_button, null);

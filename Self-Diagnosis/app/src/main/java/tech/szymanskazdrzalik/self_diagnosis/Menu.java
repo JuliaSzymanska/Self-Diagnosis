@@ -105,8 +105,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_right,
                 R.anim.slide_out_left);
