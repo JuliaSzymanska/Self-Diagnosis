@@ -10,7 +10,6 @@
 
     <EditText
         android:id="@+id/inputSymptoms"
-        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:autofillHints="Type Your symptoms..."
@@ -23,7 +22,9 @@
         android:scrollbars="vertical"
         android:text="@string/default_message_delete_me"
         android:textColor="@color/text_color"
-        android:textColorHint="@color/text_color" />
+        android:textColorHint="@color/text_color"
+        android:layout_weight="1"
+        android:layout_width="0dp" />
 
     <Button
         android:id="@+id/sendSymptoms"
