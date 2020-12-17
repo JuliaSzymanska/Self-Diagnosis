@@ -92,6 +92,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     public void goToChatActivity(View v) {
         Intent intent = new Intent(Menu.this, ChatActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         // TODO: 16.12.2020 Override transition
         finish();
 
