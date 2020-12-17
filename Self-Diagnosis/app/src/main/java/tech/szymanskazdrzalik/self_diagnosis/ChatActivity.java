@@ -50,6 +50,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
         binding.inputLayout.inputsContainer.removeAllViews();
         onDoctorMessage(stringBuilder.toString());
+
+
+
+
     };
     private boolean didAskForEndDiagnose = false;
 
