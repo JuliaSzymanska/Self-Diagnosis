@@ -61,9 +61,12 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         bundle.putBoolean("is_new_user", isNewUser);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment)
-                .addToBackStack(null);
+                .beginTransaction();
+        if (!isNewUser) {
+                transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
+        }
+                transaction.replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment);
+                transaction.addToBackStack(null);
 
         transaction.commit();
     }
