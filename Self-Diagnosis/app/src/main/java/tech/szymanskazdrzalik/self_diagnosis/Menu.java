@@ -61,9 +61,13 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         bundle.putBoolean("is_new_user", isNewUser);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment)
-                .addToBackStack(null);
+                .beginTransaction();
+        if (!isNewUser) {
+                transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
+        }
+                transaction.replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment);
+                transaction.addToBackStack(null);
+
         transaction.commit();
     }
 
@@ -87,9 +91,12 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
 
     public void goToChatActivity(View v) {
         Intent intent = new Intent(Menu.this, ChatActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         // TODO: 16.12.2020 Override transition
         finish();
+
     }
 
     @Override
@@ -97,5 +104,12 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         if (result.equals(getString(R.string.reload))) {
             setPicture();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
     }
 }
