@@ -64,6 +64,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
                 .beginTransaction()
                 .replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment)
                 .addToBackStack(null);
+
         transaction.commit();
     }
 
@@ -90,6 +91,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         startActivity(intent);
         // TODO: 16.12.2020 Override transition
         finish();
+
     }
 
     @Override
@@ -97,5 +99,13 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         if (result.equals(getString(R.string.reload))) {
             setPicture();
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,
+                R.anim.slide_out_left);
     }
 }

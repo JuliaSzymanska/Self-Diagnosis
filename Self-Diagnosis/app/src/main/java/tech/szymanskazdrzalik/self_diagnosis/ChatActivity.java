@@ -93,6 +93,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void backArrowOnClick(View v) {
         Intent intent = new Intent(this, Menu.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left,
+                R.anim.slide_out_right);
     }
 
     public void sendSymptomsOnClick(View v) {
