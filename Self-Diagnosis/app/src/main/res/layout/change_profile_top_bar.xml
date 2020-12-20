@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background_top"
     android:padding="8dp">
 
     <Button
@@ -20,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
         android:layout_centerVertical="true"
         android:layout_marginEnd="11dp"
         android:text="@string/choose_you_profile"

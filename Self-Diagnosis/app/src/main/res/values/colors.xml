@@ -2,10 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="background">#FBF3E7</color>
-    <color name="light_orange">#F1DEC1</color>
-    <color name="light_orange_border">#EDD3AC</color>
+    <color name="background">#FDFDFD</color>
+    <color name="background_top">#F4F4F4</color>
+    <color name="light_orange">#99D4DF</color>
+    <color name="light_orange_border">#99D4DF</color>
     <color name="text_color">#333333</color>
-    <color name="orange">#EA9A52</color>
-    <color name="orange_dark">#ED811F</color>
+    <color name="orange">#2E8495</color>
+    <color name="orange_dark">#186978</color>
 </resources>
