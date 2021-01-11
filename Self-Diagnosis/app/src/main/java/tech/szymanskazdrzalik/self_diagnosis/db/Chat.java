@@ -1,5 +1,8 @@
 package tech.szymanskazdrzalik.self_diagnosis.db;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Chat {
 
     private int id;
@@ -10,6 +13,12 @@ public class Chat {
         this.id = id;
         this.userId = userId;
         this.lastRequest = lastRequest;
+    }
+
+    public Chat(int id, int userId, JSONObject lastRequest) {
+        this.id = id;
+        this.userId = userId;
+        this.lastRequest = lastRequest.toString();
     }
 
     public int getId() {
@@ -34,5 +43,10 @@ public class Chat {
 
     public void setLastRequest(String lastRequest) {
         this.lastRequest = lastRequest;
+    }
+
+    // TODO: 11.01.2021 TEST
+    public JSONObject getLastRequestJSONObject() throws JSONException {
+        return new JSONObject(lastRequest);
     }
 }
