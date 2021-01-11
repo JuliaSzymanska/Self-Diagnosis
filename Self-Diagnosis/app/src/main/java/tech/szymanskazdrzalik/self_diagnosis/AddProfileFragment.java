@@ -95,7 +95,7 @@ public class AddProfileFragment extends Fragment {
             int currentID;
 
             if (isNewUser) {
-                currentID = SampleSQLiteDBHelper.getNextIdAvailable(getContext());
+                currentID = SampleSQLiteDBHelper.getNextUserIdAvailable(getContext());
             } else {
                 currentID = globalVariables.getCurrentUser().get().getId();
             }

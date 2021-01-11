@@ -149,8 +149,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-
-    public static int getNextIdAvailable(Context context) {
+    public static int getNextUserIdAvailable(Context context) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 USER_COLUMN_ID
@@ -173,6 +172,31 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         cursor.close();
         return 1000;
     }
+
+    public static int getNextChatIdAvailable(Context context) {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        String[] projection = {
+                CHATS_COLUMN_ID
+        };
+
+        Cursor cursor = database.query(
+                SampleSQLiteDBHelper.CHATS_TABLE_NAME,      // The table to query
+                projection,                                        // The columns to return
+                null,                                     // The columns for the WHERE clause
+                null,                                 // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                      // don't filter by row groups
+                CHATS_COLUMN_ID + " DESC"                   // don't sort
+        );
+        if (cursor.moveToFirst()) {
+            int retint = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_ID)) + 1;
+            cursor.close();
+            return retint;
+        }
+        cursor.close();
+        return 100;
+    }
+
 
     /**
      * {@inheritDoc}
