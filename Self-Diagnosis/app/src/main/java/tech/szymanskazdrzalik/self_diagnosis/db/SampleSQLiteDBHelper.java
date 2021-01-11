@@ -149,6 +149,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
+
     public static int getNextIdAvailable(Context context) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
