@@ -32,6 +32,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_TABLE_NAME = "chats";
     public static final String CHATS_COLUMN_ID = "chat_id";
     public static final String CHATS_COLUMN_USER_ID = "user_id";
+    public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
 
 
     private static final int DATABASE_VERSION = 7;
@@ -187,6 +188,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + CHATS_TABLE_NAME + " (" +
                 CHATS_COLUMN_ID + " INTEGER PRIMARY KEY," +
                 CHATS_COLUMN_USER_ID + " INTEGER," +
+                CHATS_COLUMN_NEWEST_REQUEST + " VARCHAR(8192)," +
                 " FOREIGN KEY (" + CHATS_COLUMN_USER_ID + ") REFERENCES " + USER_PROFILE_TABLE_NAME + "(" + USER_COLUMN_ID + ")" + ")"
         );
 
