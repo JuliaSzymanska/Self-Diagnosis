@@ -9,8 +9,6 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
-import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeDiagnoseRequest {

@@ -71,7 +71,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
-        setNameInChat();
         if (chat.isPresent()) {
             try {
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
@@ -79,6 +78,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else {
+            setNameInChat();
         }
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
@@ -132,8 +133,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
         if (!chat.isPresent()) {
             saveChatToDB();
+            chat = GlobalVariables.getInstance().getCurrentChat();
         }
         int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
+        chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
+        SampleSQLiteDBHelper.saveChatDataToDB(this, chat.get());
         int id = SampleSQLiteDBHelper.getNextMessageIdAvailable(this, chatId);
         Date date = new Date();
         ChatMessage message = new ChatMessage(id, chatId, date, text, isUserMessage);
