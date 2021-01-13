@@ -12,13 +12,40 @@
 
         <include
             android:id="@+id/menuTop1Bar"
-            layout="@layout/menu_top_bar" />
+            layout="@layout/menu_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp" />
+
+        <RelativeLayout
+            android:id="@+id/newChat"
+            android:layout_below="@id/menuTop1Bar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/doctor_border"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            android:onClick="newChatButtonOnClick">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_centerInParent="true"
+                android:id="@+id/textNewChat"
+                android:text="@string/create_new_conversation" />
+
+        </RelativeLayout>
+
+
 
         <ListView
             android:id="@+id/chatList"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/menuTop1Bar"
+            android:layout_below="@id/newChat"
             android:layout_marginTop="3dp"
             android:orientation="horizontal"
             android:dividerHeight="6.0sp"
