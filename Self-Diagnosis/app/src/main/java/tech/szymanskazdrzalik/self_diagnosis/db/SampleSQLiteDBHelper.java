@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.os.Message;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -78,6 +79,21 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         database.insert(CHATS_TABLE_NAME, null, contentValues);
     }
 
+    public static void saveMessageDataToDB(Context context, Message message) {
+        // TODO: 05.11.2020 make not break with null date
+        // TODO: 05.11.2020 sprawdzic
+        if (isExist(context, chat)) {
+            updateChatDataToDB(context, chat);
+            return;
+        }
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CHATS_COLUMN_ID, chat.getId());
+        contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
+        contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
+        database.insert(CHATS_TABLE_NAME, null, contentValues);
+    }
+
 
     private static void updateUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
@@ -115,6 +131,17 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     private static boolean isExist(Context context, Chat chat) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         String checkQuery = "SELECT " + CHATS_COLUMN_ID + " FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_ID + " = '" + chat.getId() + "'";
+        Cursor cursor = database.rawQuery(checkQuery, null);
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
+    private static boolean isExist(Context context, ChatMessage message) {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        String checkQuery = "SELECT " + MESSAGES_COLUMN_MESSAGE_ID + " FROM " + MESSAGES_TABLE_NAME
+                + " WHERE " + MESSAGES_COLUMN_MESSAGE_ID + " = '" + message.getId() + " AND "
+                + MESSAGES_COLUMN_CHAT_ID + " = '" + message.getChatId() + "'";
         Cursor cursor = database.rawQuery(checkQuery, null);
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
@@ -232,6 +259,30 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return 100;
     }
 
+    public static int getNextMessageIdAvailable(Context context, int chatId) {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        String[] projection = {
+                MESSAGES_COLUMN_MESSAGE_ID
+        };
+
+        Cursor cursor = database.query(
+                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
+                projection,                                        // The columns to return
+                MESSAGES_COLUMN_CHAT_ID + " =?",  // The columns for the WHERE clause
+                new String[]{Integer.toString(chatId)},                                 // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                      // don't filter by row groups
+                MESSAGES_COLUMN_MESSAGE_ID + " DESC"                   // don't sort
+        );
+        if (cursor.moveToFirst()) {
+            int retint = cursor.getInt(cursor.getColumnIndex(MESSAGES_COLUMN_MESSAGE_ID)) + 1;
+            cursor.close();
+            return retint;
+        }
+        cursor.close();
+        return 0;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -268,6 +319,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + MESSAGES_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CHATS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + USER_PROFILE_TABLE_NAME);
         onCreate(db);
     }

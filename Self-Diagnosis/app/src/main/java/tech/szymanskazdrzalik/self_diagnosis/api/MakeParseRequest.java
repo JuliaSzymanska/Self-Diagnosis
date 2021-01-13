@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
+import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeParseRequest {
@@ -25,6 +26,7 @@ public class MakeParseRequest {
     };
     private final Context context;
     private final String userMessage;
+    private final RequestUtil.ChatRequestListener chatRequestListener;
     private ChatActivity chatActivity;
     private final Response.Listener<JSONObject> successListener = response -> {
         try {
@@ -41,12 +43,12 @@ public class MakeParseRequest {
                 }
             }
             RequestUtil.getInstance().addToEvidenceArray(jsonArrayToRequest);
+
             new MakeDiagnoseRequest(chatActivity);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     };
-    private final RequestUtil.ChatRequestListener chatRequestListener;
 
     public MakeParseRequest(ChatActivity chatActivity, String text) {
         this.chatActivity = chatActivity;

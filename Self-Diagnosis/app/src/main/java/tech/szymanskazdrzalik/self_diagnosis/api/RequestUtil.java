@@ -71,6 +71,14 @@ public class RequestUtil {
         }
     }
 
+    public void setEvidenceArrayFromString(String string) throws JSONException {
+        this.evidenceArray = new JSONArray(string);
+    }
+
+    public String getStringFromEvidenceArray() {
+        return evidenceArray.toString();
+    }
+
     public void addToEvidenceArray(JSONObject jsonObject) {
         evidenceArray.put(jsonObject);
     }

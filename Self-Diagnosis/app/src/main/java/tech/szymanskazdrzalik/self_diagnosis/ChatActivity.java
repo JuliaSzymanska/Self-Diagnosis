@@ -19,10 +19,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Optional;
+
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
+import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
+import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
@@ -52,8 +56,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         onDoctorMessage(stringBuilder.toString());
 
 
-
-
     };
     private boolean didAskForEndDiagnose = false;
 
@@ -75,6 +77,20 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             public void onChildViewRemoved(View parent, View child) {
             }
         });
+
+        Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
+        if (!chat.isPresent()) {
+            Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(this),
+                    GlobalVariables.getInstance().getCurrentUser().get().getId(), "");
+            GlobalVariables.getInstance().setCurrentChat(currentChat);
+            SampleSQLiteDBHelper.saveChatDataToDB(this, currentChat);
+        } else {
+            try {
+                RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setNameInChat() {
@@ -109,7 +125,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     public void sendSymptomsOnClick(View v) {
-        if(!binding.inputLayout.inputSymptoms.getText().toString().equals("")) {
+        if (!binding.inputLayout.inputSymptoms.getText().toString().equals("")) {
             new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
             this.hideMessageBox();
         } else {
