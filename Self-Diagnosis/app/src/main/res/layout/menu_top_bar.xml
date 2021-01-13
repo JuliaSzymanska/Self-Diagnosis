@@ -28,6 +28,7 @@
         android:background="@android:color/transparent"
         android:layout_centerVertical="true"
         android:text="@string/diagnosis"
+        android:fontFamily="sans-serif-medium"
         android:textSize="24sp" />
 
     <Button
