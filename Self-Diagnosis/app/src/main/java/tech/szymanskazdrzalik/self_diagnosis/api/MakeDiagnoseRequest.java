@@ -79,8 +79,6 @@ public class MakeDiagnoseRequest {
 
         System.out.println(jsonObject);
 
-        saveChat(chatActivity);
-
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
 
     }
@@ -113,8 +111,6 @@ public class MakeDiagnoseRequest {
         System.out.println(jsonObject);
 
         listener.addUserMessage(userAnswer);
-
-        saveChat(chatActivity);
 
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
 
@@ -151,11 +147,4 @@ public class MakeDiagnoseRequest {
     }
 
     // TODO: 16.12.2020 Wyrzucić wspólne elementy wszystkich 3 metod do jednej metody
-
-    private void saveChat(ChatActivity chatActivity) {
-        Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(chatActivity),
-                GlobalVariables.getInstance().getCurrentUser().get().getId(), "");
-        GlobalVariables.getInstance().setCurrentChat(currentChat);
-        SampleSQLiteDBHelper.saveChatDataToDB(chatActivity, currentChat);
-    }
 }

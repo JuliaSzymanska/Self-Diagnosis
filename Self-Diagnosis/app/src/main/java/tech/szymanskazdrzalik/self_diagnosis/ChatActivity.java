@@ -19,6 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
@@ -26,6 +30,8 @@ import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
+import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
+import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
@@ -78,12 +84,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         });
 
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
-//        if (!chat.isPresent()) {
-//            Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(this),
-//                    GlobalVariables.getInstance().getCurrentUser().get().getId(), "");
-//            GlobalVariables.getInstance().setCurrentChat(currentChat);
-//            SampleSQLiteDBHelper.saveChatDataToDB(this, currentChat);
-//        } else {
         if (chat.isPresent()) {
             try {
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
@@ -106,15 +106,35 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.user_message, null);
         TextView valueTV = linearLayout.findViewById(R.id.userMessage);
         valueTV.setText(text);
+        saveMessageToDB(text, true);
         binding.chatLayout.addView(linearLayout);
-
     }
 
     private void generateNewDoctorMessageFromString(String text) {
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.doctor_message, null);
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
+        saveMessageToDB(text, false);
         binding.chatLayout.addView(linearLayout);
+    }
+
+    private void saveMessageToDB(String text, boolean isUserMessage) {
+        Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
+        if (!chat.isPresent()) {
+            saveChatToDB();
+        }
+        int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
+        int id = SampleSQLiteDBHelper.getNextMessageIdAvailable(this, chatId);
+        Date date = new Date();
+        ChatMessage message = new ChatMessage(id, chatId, date, text, isUserMessage);
+        SampleSQLiteDBHelper.saveMessageDataToDB(this, message);
+    }
+
+    private void saveChatToDB() {
+        Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(this),
+                GlobalVariables.getInstance().getCurrentUser().get().getId(), "");
+        GlobalVariables.getInstance().setCurrentChat(currentChat);
+        SampleSQLiteDBHelper.saveChatDataToDB(this, currentChat);
     }
 
     public void backArrowOnClick(View v) {

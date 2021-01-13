@@ -13,6 +13,7 @@ import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
+import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeParseRequest {
@@ -79,6 +80,7 @@ public class MakeParseRequest {
 
         this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.POST, this.url, headers, jsonObject, this.successListener, this.errorListener));
     }
+
 
 
 }

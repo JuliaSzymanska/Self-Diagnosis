@@ -38,7 +38,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
 
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     /**
      * {@inheritDoc}
@@ -141,7 +141,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     private static boolean isExist(Context context, ChatMessage message) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         String checkQuery = "SELECT " + MESSAGES_COLUMN_MESSAGE_ID + " FROM " + MESSAGES_TABLE_NAME
-                + " WHERE " + MESSAGES_COLUMN_MESSAGE_ID + " = '" + message.getId() + " AND "
+                + " WHERE " + MESSAGES_COLUMN_MESSAGE_ID + " = '" + message.getId() + "' AND "
                 + MESSAGES_COLUMN_CHAT_ID + " = '" + message.getChatId() + "'";
         Cursor cursor = database.rawQuery(checkQuery, null);
         boolean exists = (cursor.getCount() > 0);

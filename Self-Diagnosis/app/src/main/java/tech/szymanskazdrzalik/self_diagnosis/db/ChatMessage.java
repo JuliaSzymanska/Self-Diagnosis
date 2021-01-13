@@ -10,28 +10,28 @@ public class ChatMessage {
     private String message;
     private int isUserMessage;
 
-    public ChatMessage(int id, int chatId, String date, String message, int isUserMessage) throws ParseException {
+    public ChatMessage(int id, int chatId, String date, String message, boolean isUserMessage) throws ParseException {
         this.id = id;
         this.date = SampleSQLiteDBHelper.DB_DATE_USER_FORMAT.parse(date);
         this.chatId = chatId;
         this.message = message;
-        this.isUserMessage = isUserMessage;
+        this.isUserMessage = isUserMessage ? 1 : 0;
     }
 
-    public ChatMessage(int id, int chatId, Date date, String message, int isUserMessage) {
+    public ChatMessage(int id, int chatId, Date date, String message, boolean isUserMessage) {
         this.id = id;
         this.chatId = chatId;
         this.date = date;
         this.message = message;
-        this.isUserMessage = isUserMessage;
+        this.isUserMessage = isUserMessage ? 1 : 0;
     }
 
-    public int getIsUserMessage() {
-        return isUserMessage;
+    public boolean getIsUserMessage() {
+        return isUserMessage == 1;
     }
 
-    public void setIsUserMessage(int userMessage) {
-        isUserMessage = userMessage;
+    public void setIsUserMessage(boolean isUserMessage) {
+        this.isUserMessage = isUserMessage ? 1 : 0;
     }
 
     public int getId() {
