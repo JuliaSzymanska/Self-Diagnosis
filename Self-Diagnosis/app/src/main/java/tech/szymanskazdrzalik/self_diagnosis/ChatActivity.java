@@ -35,6 +35,8 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 jesli uzytkownik nie ma zadnych chatow to trzeba naprawic
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
+// TODO: 13.01.2021 Wiadomosci maja znikać po wyjsciu z czatu
+// TODO: 13.01.2021 Przyciski do rozmowy po wczytaniu też muszą zostać wczytane
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
@@ -49,7 +51,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
         try {
             for (int i = 0; i < conditions.length(); i++) {
-
                 stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
                 stringBuilder.append("Probability: ").append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
             }
