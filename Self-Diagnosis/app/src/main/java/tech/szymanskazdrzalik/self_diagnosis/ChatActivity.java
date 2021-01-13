@@ -144,8 +144,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
         SampleSQLiteDBHelper.saveChatDataToDB(this, chat.get());
         int id = SampleSQLiteDBHelper.getNextMessageIdAvailable(this, chatId);
-        Date date = new Date();
-        ChatMessage message = new ChatMessage(id, chatId, date, text, isUserMessage);
+        ChatMessage message = new ChatMessage(id, chatId, text, isUserMessage);
         SampleSQLiteDBHelper.saveMessageDataToDB(this, message);
     }
 

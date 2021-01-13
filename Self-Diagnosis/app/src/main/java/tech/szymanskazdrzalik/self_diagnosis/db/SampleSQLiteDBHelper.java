@@ -29,16 +29,15 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String MESSAGES_COLUMN_CHAT_ID = "chat_id";
     public static final String MESSAGES_COLUMN_MESSAGE_ID = "message_id";
     public static final String MESSAGES_COLUMN_MESSAGE = "text";
-    public static final String MESSAGES_COLUMN_DATETIME = "message_datetime";
     public static final String MESSAGES_COLUMN_IS_USER_MESSAGE = "message_is_user_message";
 
     public static final String CHATS_TABLE_NAME = "chats";
     public static final String CHATS_COLUMN_ID = "chat_id";
     public static final String CHATS_COLUMN_USER_ID = "user_id";
     public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
+    public static final String CHATS_COLUMN_DATETIME = "datetime";
 
-
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
     /**
      * {@inheritDoc}
@@ -76,6 +75,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_ID, chat.getId());
         contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
         contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
+        String date = DB_DATE_MESSAGE_FORMAT.format(chat.getDate());
+        contentValues.put(CHATS_COLUMN_DATETIME, date);
         database.insert(CHATS_TABLE_NAME, null, contentValues);
     }
 
@@ -90,8 +91,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(MESSAGES_COLUMN_CHAT_ID, message.getChatId());
         contentValues.put(MESSAGES_COLUMN_MESSAGE, message.getMessage());
         contentValues.put(MESSAGES_COLUMN_IS_USER_MESSAGE, message.getIsUserMessage());
-        String date = DB_DATE_MESSAGE_FORMAT.format(message.getDate());
-        contentValues.put(MESSAGES_COLUMN_DATETIME, date);
         database.insert(MESSAGES_TABLE_NAME, null, contentValues);
     }
 
@@ -195,9 +194,14 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         List<Chat> chatList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                int retId = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_ID));
-                String newestRequest = cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_NEWEST_REQUEST));
-                chatList.add(new Chat(retId, userId, newestRequest));
+                try {
+                    int retId = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_ID));
+                    String newestRequest = cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_NEWEST_REQUEST));
+                    Date date = DB_DATE_MESSAGE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_DATETIME)));
+                    chatList.add(new Chat(retId, userId, date, newestRequest));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             } while (cursor.moveToNext());
             cursor.close();
             return chatList;
@@ -206,35 +210,10 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public static Date getDateForChat(Context context, int chatId) throws ParseException {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
-        String[] projection = {
-                MESSAGES_COLUMN_DATETIME
-        };
-        Cursor cursor = database.query(
-                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
-                projection,                                        // The columns to return
-                MESSAGES_COLUMN_CHAT_ID + " =?",                                   // The columns for the WHERE clause
-                new String[]{Integer.toString(chatId)},                               // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                      // don't filter by row groups
-                MESSAGES_COLUMN_MESSAGE_ID + " DESC"     // don't sort
-        );
-
-        if (cursor.moveToFirst()) {
-            Date date = DB_DATE_MESSAGE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME)));
-            cursor.close();
-            return date;
-        }
-        cursor.close();
-        // TODO: 13.01.2021 throw exception
-        return null;
-    }
-
     public static List<ChatMessage> getAllMessagesForChat(Context context, int chatId) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM " + MESSAGES_TABLE_NAME + " WHERE "
-                + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "'", null);
+                + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "' ORDER BY " + MESSAGES_COLUMN_MESSAGE_ID + " ASC", null);
         List<ChatMessage> messageList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -242,29 +221,12 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 String text = cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_MESSAGE));
                 boolean isUserMessage = cursor.getInt(cursor.getColumnIndex(MESSAGES_COLUMN_IS_USER_MESSAGE)) == 1;
 
-                messageList.add(new ChatMessage(retId, chatId, new Date(), text, isUserMessage));
+                messageList.add(new ChatMessage(retId, chatId, text, isUserMessage));
             } while (cursor.moveToNext());
             cursor.close();
             return messageList;
         }
         cursor.close();
-        return null;
-    }
-
-    public static String getStringDateForChat(Context context, int chatId) throws ParseException {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
-        String[] projection = {
-                MESSAGES_COLUMN_DATETIME
-        };
-        Cursor cursor = database.rawQuery("SELECT " + MESSAGES_COLUMN_DATETIME + " FROM " + MESSAGES_TABLE_NAME + " WHERE "
-                + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "' ORDER BY " + MESSAGES_COLUMN_MESSAGE_ID + " DESC", null);
-        if (cursor.moveToFirst()) {
-            String date = cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME));
-            cursor.close();
-            return date;
-        }
-        cursor.close();
-        // TODO: 13.01.2021 throw exception
         return null;
     }
 
@@ -380,13 +342,13 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 CHATS_COLUMN_ID + " INTEGER PRIMARY KEY," +
                 CHATS_COLUMN_USER_ID + " INTEGER," +
                 CHATS_COLUMN_NEWEST_REQUEST + " VARCHAR(8192)," +
+                CHATS_COLUMN_DATETIME + " DATETIME," +
                 " FOREIGN KEY (" + CHATS_COLUMN_USER_ID + ") REFERENCES " + USER_PROFILE_TABLE_NAME + "(" + USER_COLUMN_ID + ")" + ")"
         );
 
         db.execSQL("CREATE TABLE " + MESSAGES_TABLE_NAME + " (" +
                 MESSAGES_COLUMN_MESSAGE_ID + " INTEGER," +
                 MESSAGES_COLUMN_CHAT_ID + " INTEGER," +
-                MESSAGES_COLUMN_DATETIME + " DATETIME," +
                 MESSAGES_COLUMN_MESSAGE + " VARCHAR(1024)," +
                 MESSAGES_COLUMN_IS_USER_MESSAGE + " INTEGER," +
                 " FOREIGN KEY (" + MESSAGES_COLUMN_CHAT_ID + ") REFERENCES " + CHATS_TABLE_NAME + "(" + CHATS_COLUMN_ID + ")," +
