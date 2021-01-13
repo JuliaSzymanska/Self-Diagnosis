@@ -8,13 +8,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
+import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
+import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.UsersAdapter;
+
+import static java.security.AccessController.getContext;
 
 public class Menu extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
@@ -26,7 +29,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setPicture();
-        initCurrentDiagnosisTextDateHour();
+//        initCurrentDiagnosisTextDateHour();
     }
 
     public void setPicture() {
@@ -63,10 +66,10 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
         if (!isNewUser) {
-                transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
+            transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
         }
-                transaction.replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment);
-                transaction.addToBackStack(null);
+        transaction.replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment);
+        transaction.addToBackStack(null);
 
         transaction.commit();
     }
@@ -82,11 +85,18 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         transaction.commit();
     }
 
-    private void initCurrentDiagnosisTextDateHour() {
-        DateFormat dfDate = new SimpleDateFormat("dd.MM.yyyy");
-        DateFormat dfHour = new SimpleDateFormat("HH:mm");
-        binding.aktualnyChatData.setText(dfDate.format(Calendar.getInstance().getTime()));
-        binding.aktualnyChatGodzina.setText(dfHour.format(Calendar.getInstance().getTime()));
+//    private void initCurrentDiagnosisTextDateHour() {
+//        DateFormat dfDate = new SimpleDateFormat("dd.MM.yyyy");
+//        DateFormat dfHour = new SimpleDateFormat("HH:mm");
+//        binding.aktualnyChatData.setText(dfDate.format(Calendar.getInstance().getTime()));
+//        binding.aktualnyChatGodzina.setText(dfHour.format(Calendar.getInstance().getTime()));
+//    }
+
+    private void loadChats() {
+        ArrayList<Chat> usersList = (ArrayList<Chat>) SampleSQLiteDBHelper.getAllChatsForUserFromDB(this,
+                GlobalVariables.getInstance().getCurrentUser().get().getId());
+        UsersAdapter usersAdapter = new UsersAdapter(getContext(), usersList);
+        binding.usersList.setAdapter(usersAdapter);
     }
 
     public void goToChatActivity(View v) {
@@ -96,7 +106,6 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         // TODO: 16.12.2020 Override transition
         finish();
-
     }
 
     @Override

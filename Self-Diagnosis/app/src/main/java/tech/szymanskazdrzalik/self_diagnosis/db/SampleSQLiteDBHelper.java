@@ -204,7 +204,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public Date getDateForChat(Context context, int chatId) throws ParseException {
+    public static Date getDateForChat(Context context, int chatId) throws ParseException {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 MESSAGES_COLUMN_DATETIME
@@ -221,6 +221,31 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             Date date = DB_DATE_MESSAGE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME)) + 1);
+            cursor.close();
+            return date;
+        }
+        cursor.close();
+        // TODO: 13.01.2021 throw exception
+        return null;
+    }
+
+    public static String getStringDateForChat(Context context, int chatId) throws ParseException {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        String[] projection = {
+                MESSAGES_COLUMN_DATETIME
+        };
+        Cursor cursor = database.query(
+                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
+                projection,                                        // The columns to return
+                MESSAGES_COLUMN_CHAT_ID + " =?",                                   // The columns for the WHERE clause
+                new String[]{Integer.toString(chatId)},                               // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                      // don't filter by row groups
+                MESSAGES_COLUMN_MESSAGE_ID + " DESC"     // don't sort
+        );
+
+        if (cursor.moveToFirst()) {
+            String date = cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME)) + 1;
             cursor.close();
             return date;
         }
