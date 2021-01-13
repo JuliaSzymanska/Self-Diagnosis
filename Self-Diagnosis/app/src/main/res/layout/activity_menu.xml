@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:background="@color/light_orange"
+                    android:fontFamily="sans-serif-medium"
                     android:text=""
                     android:textSize="25sp" />
 
@@ -49,6 +50,7 @@
                     android:layout_marginStart="10dp"
                     android:background="@color/light_orange"
                     android:text=""
+                    android:fontFamily="sans-serif-medium"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -67,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:background="@color/light_orange"
+                    android:fontFamily="sans-serif-medium"
                     android:text="28.11.2019"
                     android:textSize="25sp" />
 
@@ -93,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:background="@color/light_orange"
+                    android:fontFamily="sans-serif-medium"
                     android:text="15.10.2019"
                     android:textSize="25sp" />
 
