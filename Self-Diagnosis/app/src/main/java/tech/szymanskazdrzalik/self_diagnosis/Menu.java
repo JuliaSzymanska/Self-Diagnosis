@@ -112,6 +112,11 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         finish();
     }
 
+    public void newChatButtonOnClick(View v) {
+        GlobalVariables.getInstance().setCurrentChat(null);
+        goToChatActivity();
+    }
+
     @Override
     public void callback(String result) {
         if (result.equals(getString(R.string.reload))) {
