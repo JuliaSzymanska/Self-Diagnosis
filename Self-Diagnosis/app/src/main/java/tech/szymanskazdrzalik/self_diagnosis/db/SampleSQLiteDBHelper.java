@@ -11,10 +11,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
-    public static final DateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateFormat DB_DATE_USER_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateFormat DB_DATE_MESSAGE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public static final String DATABASE_NAME = "user_profiles";
     public static final String USER_PROFILE_TABLE_NAME = "users";
     public static final String USER_COLUMN_ID = "user_id";
@@ -35,7 +37,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
 
 
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 10;
 
     /**
      * {@inheritDoc}
@@ -56,7 +58,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_ID, user.getId());
         contentValues.put(USER_COLUMN_NAME, user.getName());
-        String date = DB_DATE_FORMAT.format(user.getBirthDate());
+        String date = DB_DATE_USER_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
         contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
@@ -86,7 +88,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(MESSAGES_COLUMN_MESSAGE_ID, message.getId());
         contentValues.put(MESSAGES_COLUMN_CHAT_ID, message.getChatId());
         contentValues.put(MESSAGES_COLUMN_MESSAGE, message.getMessage());
-        String date = DB_DATE_FORMAT.format(message.getDate());
+        String date = DB_DATE_MESSAGE_FORMAT.format(message.getDate());
         contentValues.put(MESSAGES_COLUMN_DATETIME, date);
         database.insert(MESSAGES_TABLE_NAME, null, contentValues);
     }
@@ -98,7 +100,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_NAME, user.getName());
-        String date = DB_DATE_FORMAT.format(user.getBirthDate());
+        String date = DB_DATE_USER_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
         contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
@@ -185,24 +187,74 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return usersList;
     }
 
-    public static List<User> getAllChatsForUserFromDB(Context context, int userId) {
+    public static List<Chat> getAllChatsForUserFromDB(Context context, int userId) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_USER_ID + " = '" + userId + "'", null);
+        List<Chat> chatList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
-                String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
-                String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
-                String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
-                Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
-//                try {
-//                    usersList.add(new User(retId, retName, retBirthDate, retGender, retBitmap));
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                    // FIXME: 05.11.2020
-//                }
+                int retId = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_ID));
+                String newestRequest = cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_NEWEST_REQUEST));
+                chatList.add(new Chat(retId, userId, newestRequest));
             } while (cursor.moveToNext());
+            cursor.close();
+            return chatList;
         }
+        cursor.close();
+        return null;
+    }
+
+    public static Date getDateForChat(Context context, int chatId) throws ParseException {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        String[] projection = {
+                MESSAGES_COLUMN_DATETIME
+        };
+        Cursor cursor = database.query(
+                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
+                projection,                                        // The columns to return
+                MESSAGES_COLUMN_CHAT_ID + " =?",                                   // The columns for the WHERE clause
+                new String[]{Integer.toString(chatId)},                               // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                      // don't filter by row groups
+                MESSAGES_COLUMN_MESSAGE_ID + " DESC"     // don't sort
+        );
+
+        if (cursor.moveToFirst()) {
+            Date date = DB_DATE_MESSAGE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME)));
+            cursor.close();
+            return date;
+        }
+        cursor.close();
+        // TODO: 13.01.2021 throw exception
+        return null;
+    }
+
+    public static String getStringDateForChat(Context context, int chatId) throws ParseException {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        String[] projection = {
+                MESSAGES_COLUMN_DATETIME
+        };
+        System.out.println("Chat id jEEEEESTTT: " + chatId);
+//        Cursor cursor = database.query(
+//                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
+//                projection,                                        // The columns to return
+//                MESSAGES_COLUMN_CHAT_ID + " = " + chatId,                                   // The columns for the WHERE clause
+//                null,                               // The values for the WHERE clause
+//                null,                                     // don't group the rows
+//                null,                                      // don't filter by row groups
+//                MESSAGES_COLUMN_MESSAGE_ID + " DESC"     // don't sort
+//        );
+        Cursor cursor = database.rawQuery("SELECT " + MESSAGES_COLUMN_DATETIME + " FROM " + MESSAGES_TABLE_NAME + " WHERE "
+                + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "' ORDER BY " + MESSAGES_COLUMN_MESSAGE_ID + " DESC", null);
+        System.out.println("JESTEM TUTUTUTUTUTUTU");
+        if (cursor.moveToFirst()) {
+            String date = cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME));
+            System.out.println(date);
+            cursor.close();
+            return date;
+        }
+        cursor.close();
+        // TODO: 13.01.2021 throw exception
         return null;
     }
 
@@ -226,9 +278,9 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 return null;
             }
         }
+        cursor.close();
         return null;
     }
-
 
     public static int getNextUserIdAvailable(Context context) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
@@ -287,8 +339,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         Cursor cursor = database.query(
                 SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
                 projection,                                        // The columns to return
-                MESSAGES_COLUMN_CHAT_ID + " =?",  // The columns for the WHERE clause
-                new String[]{Integer.toString(chatId)},                                 // The values for the WHERE clause
+                MESSAGES_COLUMN_CHAT_ID + " = " + chatId,  // The columns for the WHERE clause
+                null,                             // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                      // don't filter by row groups
                 MESSAGES_COLUMN_MESSAGE_ID + " DESC"                   // don't sort
@@ -301,7 +353,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         cursor.close();
         return 0;
     }
-
 
     /**
      * {@inheritDoc}

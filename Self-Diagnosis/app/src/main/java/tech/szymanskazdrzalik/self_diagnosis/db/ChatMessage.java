@@ -11,7 +11,7 @@ public class ChatMessage {
 
     public ChatMessage(int id, int chatId, String date, String message) throws ParseException {
         this.id = id;
-        this.date = SampleSQLiteDBHelper.DB_DATE_FORMAT.parse(date);
+        this.date = SampleSQLiteDBHelper.DB_DATE_USER_FORMAT.parse(date);
         this.chatId = chatId;
         this.message = message;
     }

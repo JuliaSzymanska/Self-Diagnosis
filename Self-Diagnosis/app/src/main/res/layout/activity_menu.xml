@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Menu">
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/layoutToBeReplacedWithFragmentInMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,102 +14,106 @@
             android:id="@+id/menuTop1Bar"
             layout="@layout/menu_top_bar" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ListView
+            android:id="@+id/chatList"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="15dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/aktualny_chat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/doctor_border"
-                android:onClick="goToChatActivity"
-                android:orientation="vertical"
-                android:padding="5dp">
-
-                <TextView
-                    android:id="@+id/aktualny_chat_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:fontFamily="sans-serif-medium"
-                    android:text=""
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/aktualny_chat_godzina"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:text=""
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
+            android:layout_below="@+id/menuTop1Bar"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal"/>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/doctor_border"
-                android:orientation="vertical"
-                android:padding="5dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:layout_marginTop="80dp"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="28.11.2019"
-                    android:textSize="25sp" />
+<!--            <LinearLayout-->
+<!--                android:id="@+id/aktualny_chat"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/doctor_border"-->
+<!--                android:onClick="goToChatActivity"-->
+<!--                android:orientation="vertical"-->
+<!--                android:padding="5dp">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:text="17:11"
-                    android:textSize="18sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/aktualny_chat_data"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:background="@color/light_orange"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="25sp" />-->
 
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/aktualny_chat_godzina"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:background="@color/light_orange"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="18sp" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/doctor_border"
-                android:orientation="vertical"
-                android:padding="5dp">
+<!--            </LinearLayout>-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="15.10.2019"
-                    android:textSize="25sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:text="12:47"
-                    android:textSize="18sp" />
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:background="@drawable/doctor_border"-->
+<!--                android:orientation="vertical"-->
+<!--                android:padding="5dp">-->
 
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:background="@color/light_orange"-->
+<!--                    android:text="28.11.2019"-->
+<!--                    android:textSize="25sp" />-->
 
-        </LinearLayout>
-    </FrameLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:background="@color/light_orange"-->
+<!--                    android:text="17:11"-->
+<!--                    android:textSize="18sp" />-->
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:background="@drawable/doctor_border"-->
+<!--                android:orientation="vertical"-->
+<!--                android:padding="5dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:background="@color/light_orange"-->
+<!--                    android:text="15.10.2019"-->
+<!--                    android:textSize="25sp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:background="@color/light_orange"-->
+<!--                    android:text="12:47"-->
+<!--                    android:textSize="18sp" />-->
+
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
+    </RelativeLayout>
 </RelativeLayout>

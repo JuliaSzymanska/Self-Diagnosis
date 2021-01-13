@@ -255,7 +255,7 @@ public class AddProfileFragment extends Fragment {
     }
 
     private void updateLabel() {
-        binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_FORMAT.format(myCalendar.getTime()));
+        binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_USER_FORMAT.format(myCalendar.getTime()));
     }
 
     @Override
