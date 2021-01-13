@@ -107,10 +107,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     private void setNameInChat() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-            generateNewDoctorMessageFromString("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName()
+            generateNewDoctorMessageFromStringWithoutSaving("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName()
                     + "! \nHow can I help you today?");
         else {
-            generateNewDoctorMessageFromString("Hello! \nHow can I help you today?");
+            generateNewDoctorMessageFromStringWithoutSaving("Hello! \nHow can I help you today?");
         }
     }
 
@@ -123,10 +123,14 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     private void generateNewDoctorMessageFromString(String text) {
+        generateNewDoctorMessageFromStringWithoutSaving(text);
+        saveMessageToDB(text, false);
+    }
+
+    private void generateNewDoctorMessageFromStringWithoutSaving(String text) {
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.doctor_message, null);
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
-        saveMessageToDB(text, false);
         binding.chatLayout.addView(linearLayout);
     }
 
