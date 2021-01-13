@@ -23,7 +23,6 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
     View.OnClickListener openChatOnClickListener = v -> {
         Chat chat = (Chat) v.getTag();
-        System.out.println(chat.getId());
         GlobalVariables.getInstance().setCurrentChat(chat);
         if (mListener != null) {
             mListener.callback(context.getString(R.string.openChat));

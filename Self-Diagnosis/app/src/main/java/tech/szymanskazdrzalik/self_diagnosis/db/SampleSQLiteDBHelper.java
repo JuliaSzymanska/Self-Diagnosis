@@ -231,20 +231,31 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    public static List<ChatMessage> getAllMessagesForChat(Context context, int chatId) {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + MESSAGES_TABLE_NAME + " WHERE "
+                + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "'", null);
+        List<ChatMessage> messageList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                int retId = cursor.getInt(cursor.getColumnIndex(MESSAGES_COLUMN_MESSAGE_ID));
+                String text = cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_MESSAGE));
+                boolean isUserMessage = cursor.getInt(cursor.getColumnIndex(MESSAGES_COLUMN_IS_USER_MESSAGE)) == 1;
+
+                messageList.add(new ChatMessage(retId, chatId, new Date(), text, isUserMessage));
+            } while (cursor.moveToNext());
+            cursor.close();
+            return messageList;
+        }
+        cursor.close();
+        return null;
+    }
+
     public static String getStringDateForChat(Context context, int chatId) throws ParseException {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 MESSAGES_COLUMN_DATETIME
         };
-//        Cursor cursor = database.query(
-//                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
-//                projection,                                        // The columns to return
-//                MESSAGES_COLUMN_CHAT_ID + " = " + chatId,                                   // The columns for the WHERE clause
-//                null,                               // The values for the WHERE clause
-//                null,                                     // don't group the rows
-//                null,                                      // don't filter by row groups
-//                MESSAGES_COLUMN_MESSAGE_ID + " DESC"     // don't sort
-//        );
         Cursor cursor = database.rawQuery("SELECT " + MESSAGES_COLUMN_DATETIME + " FROM " + MESSAGES_TABLE_NAME + " WHERE "
                 + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "' ORDER BY " + MESSAGES_COLUMN_MESSAGE_ID + " DESC", null);
         if (cursor.moveToFirst()) {

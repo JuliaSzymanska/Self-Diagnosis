@@ -19,10 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
@@ -35,6 +33,8 @@ import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
+// TODO: 13.01.2021 jesli uzytkownik nie ma zadnych chatow to trzeba naprawic
+// TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
@@ -71,14 +71,14 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
+        setNameInChat();
         if (chat.isPresent()) {
             try {
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
+                setAllMessages(SampleSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else {
-            setNameInChat();
         }
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
@@ -91,6 +91,16 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             public void onChildViewRemoved(View parent, View child) {
             }
         });
+    }
+
+    private void setAllMessages(List<ChatMessage> messages) {
+        for (ChatMessage message : messages) {
+            if (message.getIsUserMessage()) {
+                generateNewUserMessageFromString(message.getMessage());
+            } else {
+                generateNewDoctorMessageFromString(message.getMessage());
+            }
+        }
     }
 
     private void setNameInChat() {
