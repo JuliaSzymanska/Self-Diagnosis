@@ -97,9 +97,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private void setAllMessages(List<ChatMessage> messages) {
         for (ChatMessage message : messages) {
             if (message.getIsUserMessage()) {
-                generateNewUserMessageFromString(message.getMessage());
+                generateNewUserMessageFromStringWithoutSaving(message.getMessage());
             } else {
-                generateNewDoctorMessageFromString(message.getMessage());
+                generateNewDoctorMessageFromStringWithoutSaving(message.getMessage());
             }
         }
     }
@@ -114,11 +114,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     private void generateNewUserMessageFromString(String text) {
-        LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.user_message, null);
-        TextView valueTV = linearLayout.findViewById(R.id.userMessage);
-        valueTV.setText(text);
+        generateNewUserMessageFromStringWithoutSaving(text);
         saveMessageToDB(text, true);
-        binding.chatLayout.addView(linearLayout);
     }
 
     private void generateNewDoctorMessageFromString(String text) {
@@ -129,6 +126,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private void generateNewDoctorMessageFromStringWithoutSaving(String text) {
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.doctor_message, null);
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
+        valueTV.setText(text);
+        binding.chatLayout.addView(linearLayout);
+    }
+
+    private void generateNewUserMessageFromStringWithoutSaving(String text) {
+        LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.user_message, null);
+        TextView valueTV = linearLayout.findViewById(R.id.userMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
     }
