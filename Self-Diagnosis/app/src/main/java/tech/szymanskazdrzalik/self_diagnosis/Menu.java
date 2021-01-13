@@ -100,14 +100,13 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     private void loadChats() {
         ArrayList<Chat> chatArrayList = (ArrayList<Chat>) SampleSQLiteDBHelper.getAllChatsForUserFromDB(this,
                 GlobalVariables.getInstance().getCurrentUser().get().getId());
-        System.out.println(chatArrayList.toString());
         ChatAdapter chatAdapter = new ChatAdapter(this, chatArrayList);
         binding.chatList.setAdapter(chatAdapter);
     }
 
     public void goToChatActivity() {
         Intent intent = new Intent(Menu.this, ChatActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish();

@@ -38,7 +38,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
 
 
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     /**
      * {@inheritDoc}
@@ -236,7 +236,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         String[] projection = {
                 MESSAGES_COLUMN_DATETIME
         };
-        System.out.println("Chat id jEEEEESTTT: " + chatId);
 //        Cursor cursor = database.query(
 //                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
 //                projection,                                        // The columns to return
@@ -248,10 +247,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 //        );
         Cursor cursor = database.rawQuery("SELECT " + MESSAGES_COLUMN_DATETIME + " FROM " + MESSAGES_TABLE_NAME + " WHERE "
                 + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "' ORDER BY " + MESSAGES_COLUMN_MESSAGE_ID + " DESC", null);
-        System.out.println("JESTEM TUTUTUTUTUTUTU");
         if (cursor.moveToFirst()) {
             String date = cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME));
-            System.out.println(date);
             cursor.close();
             return date;
         }

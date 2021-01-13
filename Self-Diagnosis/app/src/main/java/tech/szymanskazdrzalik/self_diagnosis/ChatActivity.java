@@ -70,7 +70,16 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        setNameInChat();
+        Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
+        if (chat.isPresent()) {
+            try {
+                RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            setNameInChat();
+        }
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
@@ -82,15 +91,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             public void onChildViewRemoved(View parent, View child) {
             }
         });
-
-        Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
-        if (chat.isPresent()) {
-            try {
-                RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void setNameInChat() {

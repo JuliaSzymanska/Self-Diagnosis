@@ -23,6 +23,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
     View.OnClickListener openChatOnClickListener = v -> {
         Chat chat = (Chat) v.getTag();
+        System.out.println(chat.getId());
         GlobalVariables.getInstance().setCurrentChat(chat);
         if (mListener != null) {
             mListener.callback(context.getString(R.string.openChat));
@@ -50,14 +51,10 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
                 String date = SampleSQLiteDBHelper.getStringDateForChat(this.context, chat.getId());
                 TextView tvChatDate = convertView.findViewById(R.id.chatDate);
                 TextView tvChatTime = convertView.findViewById(R.id.chatTime);
-//                tvChatDate.setText(date.substring(0, 9));
-//                tvChatTime.setText(date.substring(10));
-                tvChatDate.setText(Integer.toString(chat.getId()));
-                tvChatTime.setText(Integer.toString(chat.getId()));
-                tvChatDate.setTag(chat);
-                tvChatDate.setOnClickListener(openChatOnClickListener);
-                tvChatTime.setTag(chat);
-                tvChatTime.setOnClickListener(openChatOnClickListener);
+                tvChatDate.setText(date.substring(0,10));
+                tvChatTime.setText(date.substring(11));
+                convertView.setTag(chat);
+                convertView.setOnClickListener(openChatOnClickListener);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
