@@ -15,7 +15,7 @@
             layout="@layout/menu_top_bar" />
 
         <ListView
-            android:id="@+id/usersList"
+            android:id="@+id/chatList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/menuTop1Bar"

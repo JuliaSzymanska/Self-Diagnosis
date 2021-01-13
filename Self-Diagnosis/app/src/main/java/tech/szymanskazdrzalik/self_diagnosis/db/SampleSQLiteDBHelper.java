@@ -37,7 +37,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
 
 
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 10;
 
     /**
      * {@inheritDoc}
@@ -220,7 +220,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         );
 
         if (cursor.moveToFirst()) {
-            Date date = DB_DATE_MESSAGE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME)) + 1);
+            Date date = DB_DATE_MESSAGE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME)));
             cursor.close();
             return date;
         }
@@ -234,18 +234,22 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         String[] projection = {
                 MESSAGES_COLUMN_DATETIME
         };
-        Cursor cursor = database.query(
-                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
-                projection,                                        // The columns to return
-                MESSAGES_COLUMN_CHAT_ID + " =?",                                   // The columns for the WHERE clause
-                new String[]{Integer.toString(chatId)},                               // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                      // don't filter by row groups
-                MESSAGES_COLUMN_MESSAGE_ID + " DESC"     // don't sort
-        );
-
+        System.out.println("Chat id jEEEEESTTT: " + chatId);
+//        Cursor cursor = database.query(
+//                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
+//                projection,                                        // The columns to return
+//                MESSAGES_COLUMN_CHAT_ID + " = " + chatId,                                   // The columns for the WHERE clause
+//                null,                               // The values for the WHERE clause
+//                null,                                     // don't group the rows
+//                null,                                      // don't filter by row groups
+//                MESSAGES_COLUMN_MESSAGE_ID + " DESC"     // don't sort
+//        );
+        Cursor cursor = database.rawQuery("SELECT " + MESSAGES_COLUMN_DATETIME + " FROM " + MESSAGES_TABLE_NAME + " WHERE "
+                + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "' ORDER BY " + MESSAGES_COLUMN_MESSAGE_ID + " DESC", null);
+        System.out.println("JESTEM TUTUTUTUTUTUTU");
         if (cursor.moveToFirst()) {
-            String date = cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME)) + 1;
+            String date = cursor.getString(cursor.getColumnIndex(MESSAGES_COLUMN_DATETIME));
+            System.out.println(date);
             cursor.close();
             return date;
         }
@@ -274,6 +278,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 return null;
             }
         }
+        cursor.close();
         return null;
     }
 
@@ -334,8 +339,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         Cursor cursor = database.query(
                 SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
                 projection,                                        // The columns to return
-                MESSAGES_COLUMN_CHAT_ID + " =?",  // The columns for the WHERE clause
-                new String[]{Integer.toString(chatId)},                                 // The values for the WHERE clause
+                MESSAGES_COLUMN_CHAT_ID + " = " + chatId,  // The columns for the WHERE clause
+                null,                             // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                      // don't filter by row groups
                 MESSAGES_COLUMN_MESSAGE_ID + " DESC"                   // don't sort

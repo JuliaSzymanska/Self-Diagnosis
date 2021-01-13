@@ -13,11 +13,9 @@ import java.util.ArrayList;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.ChatAdapter;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
-import tech.szymanskazdrzalik.self_diagnosis.helpers.UsersAdapter;
-
-import static java.security.AccessController.getContext;
 
 public class Menu extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
@@ -30,6 +28,13 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         setContentView(binding.getRoot());
         setPicture();
 //        initCurrentDiagnosisTextDateHour();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadChats();
     }
 
     public void setPicture() {
@@ -93,18 +98,18 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
 //    }
 
     private void loadChats() {
-        ArrayList<Chat> usersList = (ArrayList<Chat>) SampleSQLiteDBHelper.getAllChatsForUserFromDB(this,
+        ArrayList<Chat> chatArrayList = (ArrayList<Chat>) SampleSQLiteDBHelper.getAllChatsForUserFromDB(this,
                 GlobalVariables.getInstance().getCurrentUser().get().getId());
-        UsersAdapter usersAdapter = new UsersAdapter(getContext(), usersList);
-        binding.usersList.setAdapter(usersAdapter);
+        System.out.println(chatArrayList.toString());
+        ChatAdapter chatAdapter = new ChatAdapter(this, chatArrayList);
+        binding.chatList.setAdapter(chatAdapter);
     }
 
-    public void goToChatActivity(View v) {
+    public void goToChatActivity() {
         Intent intent = new Intent(Menu.this, ChatActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        // TODO: 16.12.2020 Override transition
         finish();
     }
 
@@ -112,6 +117,8 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     public void callback(String result) {
         if (result.equals(getString(R.string.reload))) {
             setPicture();
+        } else if (result.equals(getString(R.string.openChat))) {
+            goToChatActivity();
         }
     }
 
