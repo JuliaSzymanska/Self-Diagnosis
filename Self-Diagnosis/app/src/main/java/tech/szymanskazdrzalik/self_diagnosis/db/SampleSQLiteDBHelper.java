@@ -191,7 +191,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
 
     public static List<Chat> getAllChatsForUserFromDB(Context context, int userId) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_USER_ID + " = '" + userId + "'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_USER_ID + " = '" + userId + "' ORDER BY " + CHATS_COLUMN_ID + " DESC", null);
         List<Chat> chatList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
