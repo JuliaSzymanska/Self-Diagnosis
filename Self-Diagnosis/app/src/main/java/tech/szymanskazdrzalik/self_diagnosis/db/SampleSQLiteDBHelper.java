@@ -38,7 +38,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_DATETIME = "datetime";
     public static final String CHATS_COLUMN_IS_FINISHED = "is_finished";
 
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     /**
      * {@inheritDoc}
@@ -347,6 +347,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 CHATS_COLUMN_USER_ID + " INTEGER," +
                 CHATS_COLUMN_NEWEST_REQUEST + " VARCHAR(8192)," +
                 CHATS_COLUMN_DATETIME + " DATETIME," +
+                CHATS_COLUMN_IS_FINISHED + " INTEGER," +
                 " FOREIGN KEY (" + CHATS_COLUMN_USER_ID + ") REFERENCES " + USER_PROFILE_TABLE_NAME + "(" + USER_COLUMN_ID + ")" + ")"
         );
 
