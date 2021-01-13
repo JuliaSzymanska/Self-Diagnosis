@@ -50,8 +50,10 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
                 String date = SampleSQLiteDBHelper.getStringDateForChat(this.context, chat.getId());
                 TextView tvChatDate = convertView.findViewById(R.id.chatDate);
                 TextView tvChatTime = convertView.findViewById(R.id.chatTime);
-                tvChatDate.setText(date.substring(0, 9));
-                tvChatTime.setText(date.substring(10));
+//                tvChatDate.setText(date.substring(0, 9));
+//                tvChatTime.setText(date.substring(10));
+                tvChatDate.setText(Integer.toString(chat.getId()));
+                tvChatTime.setText(Integer.toString(chat.getId()));
                 tvChatDate.setTag(chat);
                 tvChatDate.setOnClickListener(openChatOnClickListener);
                 tvChatTime.setTag(chat);
