@@ -4,9 +4,9 @@
     <color name="white">#FFFFFF</color>
     <color name="background">#FDFDFD</color>
     <color name="background_top">#F4F4F4</color>
-    <color name="light_orange">#99D4DF</color>
-    <color name="light_orange_border">#99D4DF</color>
+    <color name="light_orange">#32D0DD</color>
+    <color name="light_orange_border">#31BFCC</color>
     <color name="text_color">#333333</color>
-    <color name="orange">#2E8495</color>
-    <color name="orange_dark">#186978</color>
+    <color name="orange">#29A4AF</color>
+    <color name="orange_dark">#186066</color>
 </resources>

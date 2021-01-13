@@ -35,7 +35,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
 
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     /**
      * {@inheritDoc}
@@ -44,7 +44,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     }
-
 
     public static void saveUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
@@ -64,6 +63,22 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         database.insert(USER_PROFILE_TABLE_NAME, null, contentValues);
     }
 
+    public static void saveChatDataToDB(Context context, Chat chat) {
+        // TODO: 05.11.2020 make not break with null date
+        // TODO: 05.11.2020 sprawdzic
+        if (isExist(context, chat)) {
+            updateChatDataToDB(context, chat);
+            return;
+        }
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CHATS_COLUMN_ID, chat.getId());
+        contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
+        contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
+        database.insert(CHATS_TABLE_NAME, null, contentValues);
+    }
+
+
     private static void updateUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
@@ -77,9 +92,29 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID + "=" + user.getId(), null);
     }
 
+    private static void updateChatDataToDB(Context context, Chat chat) {
+        // TODO: 05.11.2020 make not break with null date
+        // TODO: 05.11.2020 sprawdzic
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CHATS_COLUMN_ID, chat.getId());
+        contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
+        contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
+        database.update(CHATS_TABLE_NAME, contentValues, CHATS_COLUMN_ID + "=" + chat.getId(), null);
+    }
+
     private static boolean isExist(Context context, User user) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         String checkQuery = "SELECT " + USER_COLUMN_ID + " FROM " + USER_PROFILE_TABLE_NAME + " WHERE " + USER_COLUMN_ID + " = '" + user.getId() + "'";
+        Cursor cursor = database.rawQuery(checkQuery, null);
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
+    private static boolean isExist(Context context, Chat chat) {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        String checkQuery = "SELECT " + CHATS_COLUMN_ID + " FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_ID + " = '" + chat.getId() + "'";
         Cursor cursor = database.rawQuery(checkQuery, null);
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
@@ -226,6 +261,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 " PRIMARY KEY " + "(" + MESSAGES_COLUMN_MESSAGE_ID + ", " + MESSAGES_COLUMN_CHAT_ID + ")" + ")"
         );
     }
+
 
     /**
      * {@inheritDoc}
