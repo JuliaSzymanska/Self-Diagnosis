@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.os.Message;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -65,8 +64,6 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static void saveChatDataToDB(Context context, Chat chat) {
-        // TODO: 05.11.2020 make not break with null date
-        // TODO: 05.11.2020 sprawdzic
         if (isExist(context, chat)) {
             updateChatDataToDB(context, chat);
             return;
@@ -79,19 +76,19 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         database.insert(CHATS_TABLE_NAME, null, contentValues);
     }
 
-    public static void saveMessageDataToDB(Context context, Message message) {
-        // TODO: 05.11.2020 make not break with null date
-        // TODO: 05.11.2020 sprawdzic
-        if (isExist(context, chat)) {
-            updateChatDataToDB(context, chat);
+    public static void saveMessageDataToDB(Context context, ChatMessage message) {
+        // TODO: 13.01.2021 throw ex
+        if (isExist(context, message)) {
             return;
         }
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(CHATS_COLUMN_ID, chat.getId());
-        contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
-        contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
-        database.insert(CHATS_TABLE_NAME, null, contentValues);
+        contentValues.put(MESSAGES_COLUMN_MESSAGE_ID, message.getId());
+        contentValues.put(MESSAGES_COLUMN_CHAT_ID, message.getChatId());
+        contentValues.put(MESSAGES_COLUMN_MESSAGE, message.getMessage());
+        String date = DB_DATE_FORMAT.format(message.getDate());
+        contentValues.put(MESSAGES_COLUMN_DATETIME, date);
+        database.insert(MESSAGES_TABLE_NAME, null, contentValues);
     }
 
 
@@ -188,6 +185,27 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         return usersList;
     }
 
+    public static List<User> getAllChatsForUserFromDB(Context context, int userId) {
+        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_USER_ID + " = '" + userId + "'", null);
+        if (cursor.moveToFirst()) {
+            do {
+                int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
+                String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
+                String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
+                String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
+                Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
+//                try {
+//                    usersList.add(new User(retId, retName, retBirthDate, retGender, retBitmap));
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                    // FIXME: 05.11.2020
+//                }
+            } while (cursor.moveToNext());
+        }
+        return null;
+    }
+
     // TODO: 05.11.2020 TEST ME
     public static User getUserByID(Context context, int id) {
         // TODO: 05.11.2020 make it not break when id not exists
@@ -210,6 +228,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         }
         return null;
     }
+
 
     public static int getNextUserIdAvailable(Context context) {
         SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
