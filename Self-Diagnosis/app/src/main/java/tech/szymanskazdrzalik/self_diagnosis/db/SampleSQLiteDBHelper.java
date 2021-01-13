@@ -36,8 +36,9 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_USER_ID = "user_id";
     public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
     public static final String CHATS_COLUMN_DATETIME = "datetime";
+    public static final String CHATS_COLUMN_IS_FINISHED = "is_finished";
 
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
 
     /**
      * {@inheritDoc}
@@ -77,6 +78,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
         String date = DB_DATE_MESSAGE_FORMAT.format(chat.getDate());
         contentValues.put(CHATS_COLUMN_DATETIME, date);
+        contentValues.put(CHATS_COLUMN_IS_FINISHED, chat.getIsFinished());
         database.insert(CHATS_TABLE_NAME, null, contentValues);
     }
 
@@ -116,6 +118,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_ID, chat.getId());
         contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
         contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
+        contentValues.put(CHATS_COLUMN_IS_FINISHED, chat.getIsFinished());
         database.update(CHATS_TABLE_NAME, contentValues, CHATS_COLUMN_ID + "=" + chat.getId(), null);
     }
 
@@ -198,7 +201,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                     int retId = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_ID));
                     String newestRequest = cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_NEWEST_REQUEST));
                     Date date = DB_DATE_MESSAGE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_DATETIME)));
-                    chatList.add(new Chat(retId, userId, date, newestRequest));
+                    boolean isFinished = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_IS_FINISHED)) == 1;
+                    chatList.add(new Chat(retId, userId, date, newestRequest, isFinished));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

@@ -11,33 +11,38 @@ public class Chat {
     private int id;
     private int userId;
     private String lastRequest;
+    private int isFinished;
 
-    public Chat(int id, int userId, String lastRequest) {
+    public Chat(int id, int userId, String lastRequest, boolean isFinished) {
         this.id = id;
         this.userId = userId;
         this.lastRequest = lastRequest;
         this.date = new Date();
+        this.isFinished = isFinished ? 1 : 0;
     }
 
-    public Chat(int id, int userId, Date date, String lastRequest) {
+    public Chat(int id, int userId, Date date, String lastRequest, boolean isFinished) {
         this.id = id;
         this.userId = userId;
         this.lastRequest = lastRequest;
         this.date = date;
+        this.isFinished = isFinished ? 1 : 0;
     }
 
-    public Chat(int id, int userId, JSONObject lastRequest) {
+    public Chat(int id, int userId, JSONObject lastRequest, boolean isFinished) {
         this.id = id;
         this.userId = userId;
         this.lastRequest = lastRequest.toString();
         this.date = new Date();
+        this.isFinished = isFinished ? 1 : 0;
     }
 
-    public Chat(int id, int userId, Date date, JSONObject lastRequest) {
+    public Chat(int id, int userId, Date date, JSONObject lastRequest, boolean isFinished) {
         this.id = id;
         this.userId = userId;
         this.lastRequest = lastRequest.toString();
         this.date = date;
+        this.isFinished = isFinished ? 1 : 0;
     }
 
     public Date getDate() {
@@ -50,6 +55,14 @@ public class Chat {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean getIsFinished() {
+        return isFinished == 1;
+    }
+
+    public void setIsFinished(boolean isFinished) {
+        this.isFinished = isFinished ? 1 : 0;
     }
 
     public int getUserId() {

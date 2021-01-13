@@ -19,7 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +44,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private ActivityChatBinding binding;
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         // TODO: 16.12.2020 lokalizacja
+        saveChatToDB(true);
         addUserMessage("Finish");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Diagnosis:\n");
@@ -136,7 +136,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private void saveMessageToDB(String text, boolean isUserMessage) {
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
         if (!chat.isPresent()) {
-            saveChatToDB();
+            saveChatToDB(false);
             chat = GlobalVariables.getInstance().getCurrentChat();
         }
         int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
@@ -147,9 +147,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         SampleSQLiteDBHelper.saveMessageDataToDB(this, message);
     }
 
-    private void saveChatToDB() {
+    private void saveChatToDB(boolean isFinished) {
         Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(this),
-                GlobalVariables.getInstance().getCurrentUser().get().getId(), "");
+                GlobalVariables.getInstance().getCurrentUser().get().getId(), "", isFinished);
         GlobalVariables.getInstance().setCurrentChat(currentChat);
         SampleSQLiteDBHelper.saveChatDataToDB(this, currentChat);
     }
