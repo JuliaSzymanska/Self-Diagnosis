@@ -26,7 +26,6 @@ import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
@@ -79,12 +78,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         });
 
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
-        if (!chat.isPresent()) {
-            Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(this),
-                    GlobalVariables.getInstance().getCurrentUser().get().getId(), "");
-            GlobalVariables.getInstance().setCurrentChat(currentChat);
-            SampleSQLiteDBHelper.saveChatDataToDB(this, currentChat);
-        } else {
+//        if (!chat.isPresent()) {
+//            Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(this),
+//                    GlobalVariables.getInstance().getCurrentUser().get().getId(), "");
+//            GlobalVariables.getInstance().setCurrentChat(currentChat);
+//            SampleSQLiteDBHelper.saveChatDataToDB(this, currentChat);
+//        } else {
+        if (chat.isPresent()) {
             try {
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
             } catch (JSONException e) {

@@ -8,19 +8,30 @@ public class ChatMessage {
     private int chatId;
     private Date date;
     private String message;
+    private int isUserMessage;
 
-    public ChatMessage(int id, int chatId, String date, String message) throws ParseException {
+    public ChatMessage(int id, int chatId, String date, String message, int isUserMessage) throws ParseException {
         this.id = id;
         this.date = SampleSQLiteDBHelper.DB_DATE_USER_FORMAT.parse(date);
         this.chatId = chatId;
         this.message = message;
+        this.isUserMessage = isUserMessage;
     }
 
-    public ChatMessage(int id, int chatId, Date date, String message) {
+    public ChatMessage(int id, int chatId, Date date, String message, int isUserMessage) {
         this.id = id;
         this.chatId = chatId;
         this.date = date;
         this.message = message;
+        this.isUserMessage = isUserMessage;
+    }
+
+    public int getIsUserMessage() {
+        return isUserMessage;
+    }
+
+    public void setIsUserMessage(int userMessage) {
+        isUserMessage = userMessage;
     }
 
     public int getId() {

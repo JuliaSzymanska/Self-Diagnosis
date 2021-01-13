@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
+import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
+import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeDiagnoseRequest {
@@ -77,6 +79,8 @@ public class MakeDiagnoseRequest {
 
         System.out.println(jsonObject);
 
+        saveChat(chatActivity);
+
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
 
     }
@@ -110,11 +114,11 @@ public class MakeDiagnoseRequest {
 
         listener.addUserMessage(userAnswer);
 
+        saveChat(chatActivity);
+
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
 
     }
-
-    // TODO: 16.12.2020 Wyrzucić wspólne elementy wszystkich 3 metod do jednej metody
 
     public MakeDiagnoseRequest(ChatActivity chatActivity) {
 
@@ -144,5 +148,14 @@ public class MakeDiagnoseRequest {
         System.out.println(jsonObject);
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
 
+    }
+
+    // TODO: 16.12.2020 Wyrzucić wspólne elementy wszystkich 3 metod do jednej metody
+
+    private void saveChat(ChatActivity chatActivity) {
+        Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(chatActivity),
+                GlobalVariables.getInstance().getCurrentUser().get().getId(), "");
+        GlobalVariables.getInstance().setCurrentChat(currentChat);
+        SampleSQLiteDBHelper.saveChatDataToDB(chatActivity, currentChat);
     }
 }

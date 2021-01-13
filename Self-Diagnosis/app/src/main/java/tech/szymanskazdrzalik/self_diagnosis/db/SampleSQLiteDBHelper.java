@@ -29,7 +29,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String MESSAGES_COLUMN_CHAT_ID = "chat_id";
     public static final String MESSAGES_COLUMN_MESSAGE_ID = "message_id";
     public static final String MESSAGES_COLUMN_MESSAGE = "text";
-    public static final String MESSAGES_COLUMN_DATETIME = "message_date_time";
+    public static final String MESSAGES_COLUMN_DATETIME = "message_datetime";
+    public static final String MESSAGES_COLUMN_IS_USER_MESSAGE = "message_is_user_message";
 
     public static final String CHATS_TABLE_NAME = "chats";
     public static final String CHATS_COLUMN_ID = "chat_id";
@@ -88,6 +89,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(MESSAGES_COLUMN_MESSAGE_ID, message.getId());
         contentValues.put(MESSAGES_COLUMN_CHAT_ID, message.getChatId());
         contentValues.put(MESSAGES_COLUMN_MESSAGE, message.getMessage());
+        contentValues.put(MESSAGES_COLUMN_IS_USER_MESSAGE, message.getIsUserMessage());
         String date = DB_DATE_MESSAGE_FORMAT.format(message.getDate());
         contentValues.put(MESSAGES_COLUMN_DATETIME, date);
         database.insert(MESSAGES_TABLE_NAME, null, contentValues);
@@ -378,6 +380,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 MESSAGES_COLUMN_CHAT_ID + " INTEGER," +
                 MESSAGES_COLUMN_DATETIME + " DATETIME," +
                 MESSAGES_COLUMN_MESSAGE + " VARCHAR(1024)," +
+                MESSAGES_COLUMN_IS_USER_MESSAGE + " INTEGER," +
                 " FOREIGN KEY (" + MESSAGES_COLUMN_CHAT_ID + ") REFERENCES " + CHATS_TABLE_NAME + "(" + CHATS_COLUMN_ID + ")," +
                 " PRIMARY KEY " + "(" + MESSAGES_COLUMN_MESSAGE_ID + ", " + MESSAGES_COLUMN_CHAT_ID + ")" + ")"
         );
