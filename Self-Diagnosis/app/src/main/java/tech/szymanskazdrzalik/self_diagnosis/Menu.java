@@ -90,13 +90,6 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         transaction.commit();
     }
 
-//    private void initCurrentDiagnosisTextDateHour() {
-//        DateFormat dfDate = new SimpleDateFormat("dd.MM.yyyy");
-//        DateFormat dfHour = new SimpleDateFormat("HH:mm");
-//        binding.aktualnyChatData.setText(dfDate.format(Calendar.getInstance().getTime()));
-//        binding.aktualnyChatGodzina.setText(dfHour.format(Calendar.getInstance().getTime()));
-//    }
-
     private void loadChats() {
         ArrayList<Chat> chatArrayList = (ArrayList<Chat>) SampleSQLiteDBHelper.getAllChatsForUserFromDB(this,
                 GlobalVariables.getInstance().getCurrentUser().get().getId());
@@ -106,7 +99,6 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
 
     public void goToChatActivity() {
         Intent intent = new Intent(Menu.this, ChatActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         finish();
