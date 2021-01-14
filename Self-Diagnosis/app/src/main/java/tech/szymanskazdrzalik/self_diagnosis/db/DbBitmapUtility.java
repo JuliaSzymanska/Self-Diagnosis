@@ -24,7 +24,7 @@ public class DbBitmapUtility {
     // convert from byte array to bitmap
     @Nullable
     public static Bitmap getImage(byte[] image) {
-        if(Arrays.equals(image, new byte[0])) {
+        if (Arrays.equals(image, new byte[0])) {
             return null;
         }
         return BitmapFactory.decodeByteArray(image, 0, image.length);
