@@ -228,8 +228,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         }
     }
 
+    private String previousQuestionId;
+    private JSONArray previousDoctorMsgForButtons;
+
     @Override
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
+        previousQuestionId = id;
+        previousDoctorMsgForButtons = msg;
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
         try {
@@ -284,5 +289,16 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         binding.inputLayout.inputsContainer.addView(space);
         binding.inputLayout.inputsContainer.addView(buttonNo);
         return true;
+    }
+
+    @Override
+    public void onRequestFailure() {
+        // FIXME: 14.01.2021 FIX MESSAGE
+        this.generateNewDoctorMessageFromStringWithoutSaving("ERROR FIX ME D :");
+        if (this.previousQuestionId != null && this.previousDoctorMsgForButtons != null) {
+            this.onDoctorQuestionReceived(previousQuestionId, previousDoctorMsgForButtons);
+        } else {
+
+        }
     }
 }

@@ -100,5 +100,7 @@ public class RequestUtil {
         void onDoctorQuestionReceived(String id, JSONArray msg);
 
         boolean finishDiagnose();
+
+        void onRequestFailure();
     }
 }
