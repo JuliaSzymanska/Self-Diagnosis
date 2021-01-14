@@ -228,6 +228,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         }
     }
 
+    // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private String previousQuestionId;
     private JSONArray previousDoctorMsgForButtons;
 
@@ -298,7 +299,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if (this.previousQuestionId != null && this.previousDoctorMsgForButtons != null) {
             this.onDoctorQuestionReceived(previousQuestionId, previousDoctorMsgForButtons);
         } else {
-
         }
     }
 }

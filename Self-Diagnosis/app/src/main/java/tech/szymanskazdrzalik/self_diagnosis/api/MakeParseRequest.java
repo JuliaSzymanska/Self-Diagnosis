@@ -22,10 +22,7 @@ public class MakeParseRequest {
     private final ApiClass apiClass;
     private final ApiRequestQueue apiRequestQueue;
     private final String url;
-    private final Response.ErrorListener errorListener = error -> {
-        System.out.println(error);
-        // TODO: 16.12.2020 Make show error message / show
-    };
+    private final Response.ErrorListener errorListener;
     private final Context context;
     private final String userMessage;
     private final RequestUtil.ChatRequestListener chatRequestListener;
@@ -41,6 +38,11 @@ public class MakeParseRequest {
         this.apiRequestQueue = ApiRequestQueue.getInstance(context);
         this.url = this.apiClass.getUrl() + "/parse";
         this.userMessage = text;
+
+        this.errorListener = error -> {
+            chatActivity.onRequestFailure();
+            // TODO: 16.12.2020 Make show error message / show
+        };
 
         this.successListener = response -> {
             try {
