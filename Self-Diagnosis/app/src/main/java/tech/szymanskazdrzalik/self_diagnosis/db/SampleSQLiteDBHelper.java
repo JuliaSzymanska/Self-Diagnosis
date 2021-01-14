@@ -38,7 +38,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_DATETIME = "datetime";
     public static final String CHATS_COLUMN_IS_FINISHED = "is_finished";
 
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
 
     /**
      * {@inheritDoc}

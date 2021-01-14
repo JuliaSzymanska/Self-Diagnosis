@@ -40,7 +40,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
     Animation slide_out_messbox;
-
+    String lastDoctorMessage = "";
     private ActivityChatBinding binding;
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         // TODO: 16.12.2020 lokalizacja
@@ -72,14 +72,17 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
-        setNameInChat();
         if (chat.isPresent()) {
             try {
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
+                System.out.println("Evidence: " + RequestUtil.getInstance().getStringFromEvidenceArray());
                 setAllMessages(SampleSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
+                new MakeDiagnoseRequest(this);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else {
+            setNameInChat();
         }
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
@@ -115,6 +118,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     private void generateNewUserMessageFromString(String text) {
         generateNewUserMessageFromStringWithoutSaving(text);
+        saveMessageToDB(this.lastDoctorMessage, false);
         saveMessageToDB(text, true);
     }
 
@@ -128,6 +132,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         TextView valueTV = linearLayout.findViewById(R.id.doctorMessage);
         valueTV.setText(text);
         binding.chatLayout.addView(linearLayout);
+        this.lastDoctorMessage = text;
     }
 
     private void generateNewUserMessageFromStringWithoutSaving(String text) {
@@ -177,7 +182,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void onDoctorMessage(String msg) {
-        generateNewDoctorMessageFromString(msg);
+        generateNewDoctorMessageFromStringWithoutSaving(msg);
     }
 
     @Override

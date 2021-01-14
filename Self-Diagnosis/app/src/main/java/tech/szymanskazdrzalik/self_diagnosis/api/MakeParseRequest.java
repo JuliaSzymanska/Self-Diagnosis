@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
+import java.util.Optional;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
@@ -44,7 +45,16 @@ public class MakeParseRequest {
                 }
             }
             RequestUtil.getInstance().addToEvidenceArray(jsonArrayToRequest);
-
+            Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
+            if (!chat.isPresent()) {
+                Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(MakeParseRequest.this.context),
+                        GlobalVariables.getInstance().getCurrentUser().get().getId(), "", false);
+                GlobalVariables.getInstance().setCurrentChat(currentChat);
+                SampleSQLiteDBHelper.saveChatDataToDB(this.context, currentChat);
+                chat = GlobalVariables.getInstance().getCurrentChat();
+            }
+            chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
+            SampleSQLiteDBHelper.saveChatDataToDB(this.context, chat.get());
             new MakeDiagnoseRequest(chatActivity);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -80,7 +90,6 @@ public class MakeParseRequest {
 
         this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.POST, this.url, headers, jsonObject, this.successListener, this.errorListener));
     }
-
 
 
 }
