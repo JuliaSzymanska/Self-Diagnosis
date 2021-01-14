@@ -29,37 +29,9 @@ public class MakeParseRequest {
     private final Context context;
     private final String userMessage;
     private final RequestUtil.ChatRequestListener chatRequestListener;
-    private ChatActivity chatActivity;
-    private final Response.Listener<JSONObject> successListener = response -> {
-        try {
-            JSONArray jsonArrayFromResponse = response.getJSONArray("mentions");
-            JSONArray jsonArrayToRequest = new JSONArray();
-            for (int i = 0; i < jsonArrayFromResponse.length(); i++) {
-                JSONObject jsonObject = jsonArrayFromResponse.getJSONObject(i);
-                if (jsonObject.getString("type").equals("symptom")) {
-                    JSONObject clearJsonObject = new JSONObject();
-                    clearJsonObject.put("id", jsonObject.getString("id"));
-                    clearJsonObject.put("choice_id", jsonObject.getString("choice_id"));
-                    clearJsonObject.put("source", "initial");
-                    jsonArrayToRequest.put(clearJsonObject);
-                }
-            }
-            RequestUtil.getInstance().addToEvidenceArray(jsonArrayToRequest);
-            Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
-            if (!chat.isPresent()) {
-                Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(MakeParseRequest.this.context),
-                        GlobalVariables.getInstance().getCurrentUser().get().getId(), "", false);
-                GlobalVariables.getInstance().setCurrentChat(currentChat);
-                SampleSQLiteDBHelper.saveChatDataToDB(this.context, currentChat);
-                chat = GlobalVariables.getInstance().getCurrentChat();
-            }
-            chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
-            SampleSQLiteDBHelper.saveChatDataToDB(this.context, chat.get());
-            new MakeDiagnoseRequest(chatActivity);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    };
+    private final Response.Listener<JSONObject> successListener;
+    private final ChatActivity chatActivity;
+
 
     public MakeParseRequest(ChatActivity chatActivity, String text) {
         this.chatActivity = chatActivity;
@@ -69,6 +41,37 @@ public class MakeParseRequest {
         this.apiRequestQueue = ApiRequestQueue.getInstance(context);
         this.url = this.apiClass.getUrl() + "/parse";
         this.userMessage = text;
+
+        this.successListener = response -> {
+            try {
+                JSONArray jsonArrayFromResponse = response.getJSONArray("mentions");
+                JSONArray jsonArrayToRequest = new JSONArray();
+                for (int i = 0; i < jsonArrayFromResponse.length(); i++) {
+                    JSONObject jsonObject = jsonArrayFromResponse.getJSONObject(i);
+                    if (jsonObject.getString("type").equals("symptom")) {
+                        JSONObject clearJsonObject = new JSONObject();
+                        clearJsonObject.put("id", jsonObject.getString("id"));
+                        clearJsonObject.put("choice_id", jsonObject.getString("choice_id"));
+                        clearJsonObject.put("source", "initial");
+                        jsonArrayToRequest.put(clearJsonObject);
+                    }
+                }
+                RequestUtil.getInstance().addToEvidenceArray(jsonArrayToRequest);
+                Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
+                if (!chat.isPresent()) {
+                    Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(MakeParseRequest.this.context),
+                            GlobalVariables.getInstance().getCurrentUser().get().getId(), "", false);
+                    GlobalVariables.getInstance().setCurrentChat(currentChat);
+                    SampleSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, currentChat);
+                    chat = GlobalVariables.getInstance().getCurrentChat();
+                }
+                chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
+                SampleSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, chat.get());
+                new MakeDiagnoseRequest(chatActivity);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        };
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         if (!globalVariables.getCurrentUser().isPresent()) {
