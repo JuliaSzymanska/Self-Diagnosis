@@ -48,12 +48,12 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/advanced_info_button"
             android:layout_marginHorizontal="15sp"
             android:paddingTop="20dp"
             android:layout_gravity="center"
             android:textColor="@color/orange_dark"
             android:background="@android:color/transparent"
-            android:onClick="showMore"
             android:text="@string/show_more" />
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
             android:background="@color/light_orange"
-            android:padding="18sp"
+            android:paddingTop="10sp"
             android:textSize="16sp"
             android:visibility="gone" />
     </LinearLayout>

@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import tech.szymanskazdrzalik.self_diagnosis.AddProfileFragment;
@@ -18,6 +21,7 @@ import tech.szymanskazdrzalik.self_diagnosis.db.User;
 public class UsersAdapter extends ArrayAdapter<User> {
 
     Context context;
+    List<User> userList;
     View.OnClickListener changeUserOnClickListener = v -> {
         User user = (User) v.getTag();
         GlobalVariables.getInstance().setCurrentUser(user);
@@ -32,6 +36,13 @@ public class UsersAdapter extends ArrayAdapter<User> {
     public UsersAdapter(Context context, ArrayList<User> users) {
         super(context, 0, users);
         this.context = context;
+        this.userList = users;
+    }
+
+    @Nullable
+    @Override
+    public User getItem(int position) {
+        return userList.get(position);
     }
 
     @Override

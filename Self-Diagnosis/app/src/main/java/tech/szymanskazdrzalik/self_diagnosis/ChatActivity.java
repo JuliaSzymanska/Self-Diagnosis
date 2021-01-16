@@ -15,8 +15,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.JsonArray;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -146,9 +144,18 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
                 stringBuilder.append("Probability: ").append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
                 stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
-                advancedTV.setText(stringBuilder.toString());
-                advancedTV.setVisibility(View.VISIBLE);
             }
+            advancedTV.setText(stringBuilder.toString());
+            linearLayout.findViewById(R.id.advanced_info_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (advancedTV.getVisibility() == View.GONE) {
+                        advancedTV.setVisibility(View.VISIBLE);
+                    } else {
+                        advancedTV.setVisibility(View.GONE);
+                    }
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -338,10 +345,5 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 binding.inputLayout.inputsContainer.addView(view);
             }
         }
-    }
-
-    public void showMore(View view) {
-        View v = binding.chatLayout.getChildAt(4);
-        System.out.println(v);
     }
 }

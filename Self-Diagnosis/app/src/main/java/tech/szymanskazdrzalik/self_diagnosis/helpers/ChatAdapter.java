@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import tech.szymanskazdrzalik.self_diagnosis.AddProfileFragment;
 import tech.szymanskazdrzalik.self_diagnosis.Menu;
@@ -19,6 +22,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
     Context context;
     AddProfileFragment.AddProfileFragmentListener mListener;
+    List<Chat> chatList;
 
     View.OnClickListener openChatOnClickListener = v -> {
         Chat chat = (Chat) v.getTag();
@@ -31,7 +35,14 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
     public ChatAdapter(Menu activity, ArrayList<Chat> chats) {
         super(activity, 0, chats);
         this.context = activity;
+        this.chatList = chats;
         setmListener(activity);
+    }
+
+    @Nullable
+    @Override
+    public Chat getItem(int position) {
+        return chatList.get(position);
     }
 
     public void setmListener(AddProfileFragment.AddProfileFragmentListener mListener) {
