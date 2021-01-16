@@ -148,8 +148,7 @@
 
         </LinearLayout>
 
-        <!--        TODO: zmieniac tekst buttonu w zaleznosci czy zmiana usera czy nie (binding najlepiej) -->
-        <Button
+       <Button
             android:id="@+id/fgAddButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

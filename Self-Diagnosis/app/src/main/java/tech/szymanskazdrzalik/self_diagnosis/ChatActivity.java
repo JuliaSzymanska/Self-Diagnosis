@@ -43,7 +43,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private ActivityChatBinding binding;
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
-        // TODO: 16.12.2020 lokalizacja
         saveOrUpdateChatToDB(true);
         addUserMessage(getResources().getString(R.string.finish));
         StringBuilder stringBuilder = new StringBuilder();
@@ -177,11 +176,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     public void sendSymptomsOnClick(View v) {
-        if (!binding.inputLayout.inputSymptoms.getText().toString().equals("")) {
+        if (binding.inputLayout.inputSymptoms.getText().toString().trim().length() > 0) {
             new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
             this.hideMessageBox();
         } else {
-            // TODO: 17.12.2020 poprawić to
             Toast.makeText(this, getString(R.string.input_can_not_be_empty), Toast.LENGTH_LONG).show();
         }
     }
