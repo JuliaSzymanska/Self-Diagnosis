@@ -62,7 +62,7 @@ public class MakeParseRequest {
                 Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
                 if (!chat.isPresent()) {
                     Chat currentChat = Chat.builder(SampleSQLiteDBHelper.getNextChatIdAvailable(context), GlobalVariables.getInstance().getCurrentUser().get().getId())
-                            .isFinished(false)
+                            .conditionArray(null)
                             .date(new Date())
                             .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                             .build();

@@ -11,44 +11,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/doctor_border">
+        android:background="@drawable/doctor_border"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15sp"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:paddingTop="10sp"
+            android:text="@string/diagnosis"
+            android:textSize="22sp"
+            android:textColor="@color/orange_dark"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
             android:background="@color/light_orange"
-            android:paddingTop="10sp"
-            android:text="@string/diagnosis"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:background="@android:color/transparent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15sp"
-                android:background="@color/light_orange"
-                android:paddingTop="10sp"
-                android:textSize="17sp"
-                android:text=""
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15sp"
-                android:background="@color/light_orange"
-                android:paddingTop="10sp"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+            android:paddingTop="20sp"
+            android:text="@string/most_likely_condition"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/standard_info"
@@ -56,14 +41,19 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
             android:background="@color/light_orange"
-            android:padding="18sp"
-            android:textSize="16sp" />
+            android:paddingTop="10sp"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
+            android:paddingTop="20dp"
+            android:layout_gravity="center"
+            android:textColor="@color/orange_dark"
             android:background="@android:color/transparent"
+            android:onClick="showMore"
             android:text="@string/show_more" />
 
         <TextView

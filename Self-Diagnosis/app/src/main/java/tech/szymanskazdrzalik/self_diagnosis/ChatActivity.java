@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.JsonArray;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,20 +47,14 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
         GlobalVariables.getInstance().getCurrentChat().get().setConditionsArray(conditions.toString());
-        saveOrUpdateChatToDB(true);
+        saveOrUpdateChatToDB();
         addUserMessage(getResources().getString(R.string.finish));
-        StringBuilder stringBuilder = new StringBuilder();
+        binding.inputLayout.inputsContainer.removeAllViews();
         try {
-            for (int i = 0; i < conditions.length(); i++) {
-                stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
-                stringBuilder.append("Probability: ").append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
-            }
+            onDoctorMessage(conditions.getJSONObject(0).getString("common_name"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
-        binding.inputLayout.inputsContainer.removeAllViews();
-        onDoctorMessage(stringBuilder.toString());
     };
 
     private boolean didAskForEndDiagnose = false;
@@ -95,12 +91,23 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     private void setAllMessages(List<ChatMessage> messages) {
-        for (ChatMessage message : messages) {
-            if (message.getIsUserMessage()) {
-                generateNewUserMessageFromStringWithoutSaving(message.getMessage());
-            } else {
-                generateNewDoctorMessageFromStringWithoutSaving(message.getMessage());
+        if (GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray() == null) {
+            for (ChatMessage message : messages) {
+                if (message.getIsUserMessage()) {
+                    generateNewUserMessageFromStringWithoutSaving(message.getMessage());
+                } else {
+                    generateNewDoctorMessageFromStringWithoutSaving(message.getMessage());
+                }
             }
+        } else {
+            for (int i = 0; i < messages.size() - 1; i++) {
+                if (messages.get(i).getIsUserMessage()) {
+                    generateNewUserMessageFromStringWithoutSaving(messages.get(i).getMessage());
+                } else {
+                    generateNewDoctorMessageFromStringWithoutSaving(messages.get(i).getMessage());
+                }
+            }
+            generateDiagnosisMessageFromStringWithoutSaving(messages.get(messages.size() - 1).getMessage());
         }
     }
 
@@ -131,6 +138,20 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.diagnose_message, null);
         TextView valueTV = linearLayout.findViewById(R.id.standard_info);
         valueTV.setText(text);
+        TextView advancedTV = linearLayout.findViewById(R.id.advanced_info);
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            JSONArray conditions = new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray());
+            for (int i = 0; i < conditions.length(); i++) {
+                stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
+                stringBuilder.append("Probability: ").append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
+                stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
+                advancedTV.setText(stringBuilder.toString());
+                advancedTV.setVisibility(View.VISIBLE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         binding.chatLayout.addView(linearLayout);
         this.lastDoctorMessage = text;
     }
@@ -151,16 +172,16 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     private void saveMessageToDB(String text, boolean isUserMessage) {
-        int chatId = saveOrUpdateChatToDB(false);
+        int chatId = saveOrUpdateChatToDB();
         int id = SampleSQLiteDBHelper.getNextMessageIdAvailable(this, chatId);
         ChatMessage message = new ChatMessage(id, chatId, text, isUserMessage);
         SampleSQLiteDBHelper.saveMessageDataToDB(this, message);
     }
 
-    private int saveOrUpdateChatToDB(boolean isFinished) {
+    private int saveOrUpdateChatToDB() {
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
         if (!chat.isPresent()) {
-            createNewChatAndSaveToDB(isFinished);
+            createNewChatAndSaveToDB();
             chat = GlobalVariables.getInstance().getCurrentChat();
         }
         int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
@@ -169,7 +190,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         return chatId;
     }
 
-    private void createNewChatAndSaveToDB(boolean isFinished) {
+    private void createNewChatAndSaveToDB() {
         Chat currentChat = Chat.builder(SampleSQLiteDBHelper.getNextChatIdAvailable(this), GlobalVariables.getInstance().getCurrentUser().get().getId())
                 .conditionArray(null)
                 .date(new Date())
@@ -242,7 +263,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId(id);
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestion(msg.toString());
-        saveOrUpdateChatToDB(false);
+        saveOrUpdateChatToDB();
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
         try {
@@ -317,5 +338,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 binding.inputLayout.inputsContainer.addView(view);
             }
         }
+    }
+
+    public void showMore(View view) {
+        View v = binding.chatLayout.getChildAt(4);
+        System.out.println(v);
     }
 }
