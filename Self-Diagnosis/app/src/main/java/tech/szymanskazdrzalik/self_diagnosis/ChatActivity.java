@@ -73,9 +73,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
         if (chat.isPresent()) {
             try {
-                System.out.println(chat.get());
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
-                System.out.println("Evidence: " + RequestUtil.getInstance().getStringFromEvidenceArray());
                 setAllMessages(SampleSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
                 this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()));
             } catch (JSONException e) {
@@ -262,7 +260,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(msg);
     }
 
     @Override

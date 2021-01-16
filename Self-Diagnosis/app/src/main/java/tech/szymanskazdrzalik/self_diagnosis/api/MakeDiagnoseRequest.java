@@ -22,7 +22,6 @@ public class MakeDiagnoseRequest {
 
             boolean shouldStop = false;
             try {
-                System.out.println(response);
                 try {
                     shouldStop = response.getBoolean("should_stop");
                     RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
@@ -73,8 +72,6 @@ public class MakeDiagnoseRequest {
             e.printStackTrace();
         }
 
-        System.out.println(jsonObject);
-
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
 
     }
@@ -107,8 +104,6 @@ public class MakeDiagnoseRequest {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        System.out.println(jsonObject);
 
         listener.addUserMessage(userAnswer);
 
@@ -146,7 +141,6 @@ public class MakeDiagnoseRequest {
             e.printStackTrace();
         }
 
-        System.out.println(jsonObject);
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
 
     }

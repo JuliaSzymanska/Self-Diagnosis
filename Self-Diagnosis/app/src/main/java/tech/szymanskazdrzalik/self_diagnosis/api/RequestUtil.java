@@ -71,7 +71,6 @@ public class RequestUtil {
     }
 
     public void setEvidenceArrayFromString(String string) throws JSONException {
-        System.out.println("HALKO" + string);
         this.evidenceArray = new JSONArray(string);
     }
 

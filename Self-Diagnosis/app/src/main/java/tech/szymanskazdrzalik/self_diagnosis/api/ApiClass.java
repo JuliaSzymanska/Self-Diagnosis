@@ -41,7 +41,6 @@ public class ApiClass {
     private static String loadJSONFromAsset(Context context) {
         String jsonString = "";
         try {
-            System.out.println(context);
             InputStream is = context.getResources().openRawResource(R.raw.api_info);
             int size = is.available();
             byte[] buffer = new byte[size];
