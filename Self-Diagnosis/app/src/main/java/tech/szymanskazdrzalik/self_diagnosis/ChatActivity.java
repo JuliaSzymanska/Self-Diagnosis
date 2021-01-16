@@ -43,10 +43,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private ActivityChatBinding binding;
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
+        GlobalVariables.getInstance().getCurrentChat().get().setIsFinished(true);
         saveOrUpdateChatToDB(true);
         addUserMessage(getResources().getString(R.string.finish));
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Diagnosis:\n");
+//        stringBuilder.append("Diagnosis:\n");
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
         try {
             for (int i = 0; i < conditions.length(); i++) {
@@ -120,8 +121,20 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     private void generateNewDoctorMessageFromString(String text) {
-        generateNewDoctorMessageFromStringWithoutSaving(text);
+        if (!GlobalVariables.getInstance().getCurrentChat().isPresent() || !GlobalVariables.getInstance().getCurrentChat().get().getIsFinished()) {
+            generateNewDoctorMessageFromStringWithoutSaving(text);
+        } else {
+            generateDiagnosisMessageFromStringWithoutSaving(text);
+        }
         saveMessageToDB(text, false);
+    }
+
+    private void generateDiagnosisMessageFromStringWithoutSaving(String text) {
+        LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.diagnose_message, null);
+        TextView valueTV = linearLayout.findViewById(R.id.standard_info);
+        valueTV.setText(text);
+        binding.chatLayout.addView(linearLayout);
+        this.lastDoctorMessage = text;
     }
 
     private void generateNewDoctorMessageFromStringWithoutSaving(String text) {

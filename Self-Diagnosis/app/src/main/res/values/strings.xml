@@ -25,8 +25,8 @@
     <string name="error_messsage_response_doctor">Sorry, I was unable to understand your message, could you repeat it?</string>
     <string name="finish">Finish</string>
     <string name="how_can_i_help_you">\nHow can I help you today?</string>
-    <string name="hallo_only">Hello </string>
-    <string name="hello_with_exclamation_mark">Hello! </string>
+    <string name="hallo_only">Hello \u0020</string>
+    <string name="hello_with_exclamation_mark">Hello! \u0020</string>
     <string name="input_can_not_be_empty">Input can not be empty.</string>
     <string name="finish_diagnose_question">I believe I know your diagnose. \nDo you want to finish?</string>
     <string name="yes">Yes</string>
@@ -38,4 +38,5 @@
     <string name="permission_denied">Permission denied</string>
     <string name="user_settings">user_settings</string>
     <string name="user_id">user_id</string>
+    <string name="show_more">Show more</string>
 </resources>
