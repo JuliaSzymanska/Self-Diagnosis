@@ -42,8 +42,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private ActivityChatBinding binding;
     private boolean didAskForEndDiagnose = false;
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
-    private String previousQuestionId;
-    private JSONArray previousDoctorMsgForButtons;
+    private String previousQuestionId = "";
+    private JSONArray previousDoctorMsgForButtons = new JSONArray();
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         // TODO: 16.12.2020 lokalizacja
         saveChatToDB(true);
@@ -75,10 +75,12 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
         if (chat.isPresent()) {
             try {
+                System.out.println(chat.get());
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
                 System.out.println("Evidence: " + RequestUtil.getInstance().getStringFromEvidenceArray());
                 setAllMessages(SampleSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
-                new MakeDiagnoseRequest(this);
+                this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()));
+//                new MakeDiagnoseRequest(this);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -161,6 +163,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         Chat currentChat = Chat.builder(SampleSQLiteDBHelper.getNextChatIdAvailable(this), GlobalVariables.getInstance().getCurrentUser().get().getId())
                 .isFinished(isFinished)
                 .date(new Date())
+                .lastDoctorQuestionAndId(previousDoctorMsgForButtons.toString() ,previousQuestionId)
                 .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                 .build();
         GlobalVariables.getInstance().setCurrentChat(currentChat);
@@ -231,8 +234,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
         previousQuestionId = id;
         previousDoctorMsgForButtons = msg;
+        GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId( id);
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestion(msg.toString());
-        GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId(id);
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
         try {

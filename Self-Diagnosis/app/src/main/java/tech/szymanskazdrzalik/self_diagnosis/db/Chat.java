@@ -35,6 +35,19 @@ public class Chat {
         return lastDoctorQuestion;
     }
 
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "date=" + date +
+                ", id=" + id +
+                ", userId=" + userId +
+                ", lastRequest='" + lastRequest + '\'' +
+                ", lastDoctorQuestion='" + lastDoctorQuestion + '\'' +
+                ", lastDoctorQuestionId='" + lastDoctorQuestionId + '\'' +
+                ", isFinished=" + isFinished +
+                '}';
+    }
+
     public String getLastDoctorQuestionId() {
         return lastDoctorQuestionId;
     }
