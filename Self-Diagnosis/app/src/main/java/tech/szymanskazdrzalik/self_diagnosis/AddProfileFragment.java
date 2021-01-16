@@ -40,10 +40,7 @@ import static android.app.Activity.RESULT_OK;
  * create an instance of this fragment.
  */
 public class AddProfileFragment extends Fragment {
-
-    // TODO: 02.11.2020 https://developer.android.com/topic/libraries/view-binding#java
-    //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
-    //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
+    // TODO: 16.01.2021
     //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
 
     private static final int IMAGE_PICK_CODE = 1000;

@@ -93,8 +93,10 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     private void loadChats() {
         ArrayList<Chat> chatArrayList = (ArrayList<Chat>) SampleSQLiteDBHelper.getAllChatsForUserFromDB(this,
                 GlobalVariables.getInstance().getCurrentUser().get().getId());
-        ChatAdapter chatAdapter = new ChatAdapter(this, chatArrayList);
-        binding.chatList.setAdapter(chatAdapter);
+        if (chatArrayList.size() != 0) {
+            ChatAdapter chatAdapter = new ChatAdapter(this, chatArrayList);
+            binding.chatList.setAdapter(chatAdapter);
+        }
     }
 
     public void goToChatActivity() {

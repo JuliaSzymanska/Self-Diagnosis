@@ -38,7 +38,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_DATETIME = "datetime";
     public static final String CHATS_COLUMN_IS_FINISHED = "is_finished";
 
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
 
     /**
      * {@inheritDoc}
@@ -211,7 +211,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
             return chatList;
         }
         cursor.close();
-        return null;
+        return chatList;
     }
 
     public static List<ChatMessage> getAllMessagesForChat(Context context, int chatId) {
