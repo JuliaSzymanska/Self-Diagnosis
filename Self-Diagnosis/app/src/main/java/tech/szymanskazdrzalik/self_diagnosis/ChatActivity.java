@@ -34,6 +34,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
+// TODO: 16.01.2021 po zakonczeniiu diagnozy i wczytaniu jej maja nie pojawiac sie przyciski
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
@@ -44,7 +45,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         // TODO: 16.12.2020 lokalizacja
         saveOrUpdateChatToDB(true);
-        addUserMessage("Finish");
+        addUserMessage(getResources().getString(R.string.finish));
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Diagnosis:\n");
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
@@ -79,8 +80,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else {
-            setNameInChat();
+        } else{
+            this.setNameInChat();
         }
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
@@ -107,16 +108,15 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     private void setNameInChat() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-            generateNewDoctorMessageFromStringWithoutSaving("Hello " + GlobalVariables.getInstance().getCurrentUser().get().getName()
-                    + "! \nHow can I help you today?");
+            generateNewDoctorMessageFromString(getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
+                    + "! " + getString(R.string.how_can_i_help_you));
         else {
-            generateNewDoctorMessageFromStringWithoutSaving("Hello! \nHow can I help you today?");
+            generateNewDoctorMessageFromString(getString(R.string.hello_with_exclamation_mark) + getString(R.string.how_can_i_help_you));
         }
     }
 
     private void generateNewUserMessageFromString(String text) {
         generateNewUserMessageFromStringWithoutSaving(text);
-        saveMessageToDB(this.lastDoctorMessage, false);
         saveMessageToDB(text, true);
     }
 
@@ -182,13 +182,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             this.hideMessageBox();
         } else {
             // TODO: 17.12.2020 poprawić to
-            Toast.makeText(this, "Input can not be empty.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.input_can_not_be_empty), Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onDoctorMessage(String msg) {
-        generateNewDoctorMessageFromStringWithoutSaving(msg);
+        generateNewDoctorMessageFromString(msg);
     }
 
     @Override
@@ -233,6 +233,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId(id);
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestion(msg.toString());
+        System.out.println(GlobalVariables.getInstance().getCurrentChat().get().toString());
         saveOrUpdateChatToDB(false);
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
@@ -291,7 +292,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void onRequestFailure() {
-        this.generateNewDoctorMessageFromStringWithoutSaving(getString(R.string.error_messsage_response_doctor));
+        this.generateNewDoctorMessageFromString(getString(R.string.error_messsage_response_doctor));
         if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
             String id = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId();
             String msg = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion();

@@ -24,4 +24,9 @@
     <string name="create_new_conversation">Create New Conversation</string>
     <string name="history">History</string>
     <string name="error_messsage_response_doctor">Sorry, I was unable to understand your message, could you repeat it?</string>
+    <string name="finish">Finish</string>
+    <string name="how_can_i_help_you">\nHow can I help you today?</string>
+    <string name="hallo_only">Hello </string>
+    <string name="hello_with_exclamation_mark">Hello! </string>
+    <string name="input_can_not_be_empty">Input can not be empty.</string>
 </resources>
