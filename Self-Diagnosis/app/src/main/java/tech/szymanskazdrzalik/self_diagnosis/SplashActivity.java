@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
     private void runFragment() {
         Fragment fragment = new AddProfileFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("is_new_user", true);
+        bundle.putBoolean(getString(R.string.is_new_user), true);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()

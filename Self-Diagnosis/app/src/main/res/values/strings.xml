@@ -32,4 +32,9 @@
     <string name="finish_diagnose_question">I believe I know your diagnose. \nDo you want to finish?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="is_new_user">is_new_user</string>
+    <string name="female_sign">F</string>
+    <string name="male_sign">M</string>
+    <string name="fill_all_inputs">Fill all the inputs</string>
+    <string name="permission_denied">Permission denied</string>
 </resources>

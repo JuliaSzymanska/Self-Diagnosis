@@ -28,7 +28,6 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         setContentView(binding.getRoot());
         setPicture();
 //        initCurrentDiagnosisTextDateHour();
-
     }
 
     @Override
@@ -66,7 +65,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     private void runAddProfileFragment(boolean isNewUser) {
         Fragment fragment = new AddProfileFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("is_new_user", isNewUser);
+        bundle.putBoolean(getString(R.string.is_new_user), isNewUser);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();

@@ -80,7 +80,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else{
+        } else {
             this.setNameInChat();
         }
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
