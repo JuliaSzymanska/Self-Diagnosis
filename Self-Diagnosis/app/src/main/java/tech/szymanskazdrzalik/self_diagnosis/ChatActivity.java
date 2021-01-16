@@ -80,7 +80,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 e.printStackTrace();
             }
         } else {
-            this.setNameInChat();
+            this.createFirstMessageFromDoctor();
         }
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
@@ -105,7 +105,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         }
     }
 
-    private void setNameInChat() {
+    private void createFirstMessageFromDoctor() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent())
             generateNewDoctorMessageFromString(getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
                     + "! " + getString(R.string.how_can_i_help_you));
@@ -231,7 +231,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId(id);
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestion(msg.toString());
-        System.out.println(GlobalVariables.getInstance().getCurrentChat().get().toString());
         saveOrUpdateChatToDB(false);
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
