@@ -41,7 +41,6 @@ public class MakeParseRequest {
 
         this.errorListener = error -> {
             chatActivity.onRequestFailure();
-            // TODO: 16.12.2020 Make show error message / show
         };
 
         this.successListener = response -> {

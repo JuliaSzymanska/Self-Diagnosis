@@ -20,19 +20,9 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.UsersAdapter;
  * create an instance of this fragment.
  */
 public class ChangeProfile extends Fragment {
-
-    // TODO: 18.11.2020 Zanim się kliknie trzeba dodać nowego usera
-    //  Nie działa dokładnie, nie pokazuja się wszyscy userzy
-    //  Trzeba dodać przyciskiwalne
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private final View.OnClickListener onBackArrowClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            getActivity().onBackPressed();
-        }
-    };
+    private final View.OnClickListener onBackArrowClicked = v -> getActivity().onBackPressed();
     private String mParam1;
     private String mParam2;
     private FragmentChangeProfileBinding binding;

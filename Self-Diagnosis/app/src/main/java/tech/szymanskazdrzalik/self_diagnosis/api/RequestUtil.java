@@ -55,7 +55,6 @@ public class RequestUtil {
     public JSONArray getConditionsArray() {
         return conditionsArray;
     }
-    // TODO: 16.12.2020 Make singleton and not static
 
     public void setConditionsArray(JSONArray conditionsArray) {
         this.conditionsArray = conditionsArray;

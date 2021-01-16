@@ -291,13 +291,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     public void onRequestFailure() {
         // FIXME: 14.01.2021 FIX MESSAGE
-        this.generateNewDoctorMessageFromStringWithoutSaving("ERROR FIX ME D :");
+        this.generateNewDoctorMessageFromStringWithoutSaving(getString(R.string.error_messsage_response_doctor));
         if (this.previousQuestionId != null && this.previousDoctorMsgForButtons != null) {
             this.onDoctorQuestionReceived(previousQuestionId, previousDoctorMsgForButtons);
         } else {
             // TODO: 14.01.2021 przeniesc edittext, button do innego xmla, a tutaj to inflatowac
             // TODO: 14.01.2021 sprawdzic czemu animacja nie dziala
-            View view = View.inflate(this, R.layout.msg_input_bar, null);
+            View view = View.inflate(this, R.layout.msg_input_bar_inner, null);
             binding.inputLayout.inputsContainer.removeAllViews();
             binding.inputLayout.inputsContainer.addView(view);
         }

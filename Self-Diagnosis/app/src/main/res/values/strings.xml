@@ -23,4 +23,5 @@
     <string name="openChat">open_chat</string>
     <string name="create_new_conversation">Create New Conversation</string>
     <string name="history">History</string>
+    <string name="error_messsage_response_doctor">Sorry, I was unable to understand your message, could you repeat it?</string>
 </resources>
