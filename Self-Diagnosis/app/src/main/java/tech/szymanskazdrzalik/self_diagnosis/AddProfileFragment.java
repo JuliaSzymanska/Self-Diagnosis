@@ -209,7 +209,7 @@ public class AddProfileFragment extends Fragment {
 
             binding.editProfileName.setText(globalVariables.getCurrentUser().get().getName());
 
-            String birthString = new SimpleDateFormat("yyyy-MM-dd").format(globalVariables.getCurrentUser().get().getBirthDate());
+            String birthString = new SimpleDateFormat(getString(R.string.yyyy_mm_dd)).format(globalVariables.getCurrentUser().get().getBirthDate());
             binding.dateEditTextFragmentAddProfile.setText(birthString);
 
             if (userGender.equals(getString(R.string.male_sign))) {

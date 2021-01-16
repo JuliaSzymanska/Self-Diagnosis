@@ -4,7 +4,6 @@
     <string name="create_new_profile">Create new profile</string>
     <string name="choose_profile">Choose profile</string>
     <string name="let_s_diagnose">Diagnose</string>
-    <string name="hello_tom">Hello Tom!</string>
     <string name="edoctor">eDoctor</string>
     <string name="profile_name">Profile name:</string>
     <string name="sex">Sex:</string>
@@ -37,4 +36,6 @@
     <string name="male_sign">M</string>
     <string name="fill_all_inputs">Fill all the inputs</string>
     <string name="permission_denied">Permission denied</string>
+    <string name="user_settings">user_settings</string>
+    <string name="user_id">user_id</string>
 </resources>
