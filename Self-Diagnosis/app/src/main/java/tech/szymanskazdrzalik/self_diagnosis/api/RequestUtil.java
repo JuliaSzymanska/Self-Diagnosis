@@ -94,8 +94,6 @@ public class RequestUtil {
 
         void hideMessageBox();
 
-        void addErrorMessageFromDoctor(String msg);
-
         void onDoctorQuestionReceived(String id, JSONArray msg);
 
         boolean finishDiagnose();
