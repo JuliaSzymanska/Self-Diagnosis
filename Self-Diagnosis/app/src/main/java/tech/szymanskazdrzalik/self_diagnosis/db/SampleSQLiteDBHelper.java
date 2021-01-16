@@ -82,7 +82,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_DATETIME, date);
         contentValues.put(CHATS_COLUMN_IS_FINISHED, chat.getIsFinished());
         contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestion());
-        contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestionId());
+        contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID, chat.getLastDoctorQuestionId());
         database.insert(CHATS_TABLE_NAME, null, contentValues);
     }
 
@@ -124,7 +124,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
         contentValues.put(CHATS_COLUMN_IS_FINISHED, chat.getIsFinished());
         contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestion());
-        contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestionId());
+        contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID, chat.getLastDoctorQuestionId());
         database.update(CHATS_TABLE_NAME, contentValues, CHATS_COLUMN_ID + "=" + chat.getId(), null);
     }
 
