@@ -64,6 +64,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     };
     private boolean didAskForEndDiagnose = false;
+    // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
+    private String previousQuestionId;
+    private JSONArray previousDoctorMsgForButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,10 +231,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         }
     }
 
-    // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
-    private String previousQuestionId;
-    private JSONArray previousDoctorMsgForButtons;
-
     @Override
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
         previousQuestionId = id;
@@ -299,6 +298,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if (this.previousQuestionId != null && this.previousDoctorMsgForButtons != null) {
             this.onDoctorQuestionReceived(previousQuestionId, previousDoctorMsgForButtons);
         } else {
+            // TODO: 14.01.2021 przeniesc edittext, button do innego xmla, a tutaj to inflatowac
+            // TODO: 14.01.2021 sprawdzic czemu animacja nie dziala
+            View view = View.inflate(this, R.layout.msg_input_bar, null);
+            binding.inputLayout.inputsContainer.removeAllViews();
+            binding.inputLayout.inputsContainer.addView(view);
         }
     }
 }
