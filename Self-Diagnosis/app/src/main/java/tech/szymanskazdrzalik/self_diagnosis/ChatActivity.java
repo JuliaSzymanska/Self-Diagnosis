@@ -32,10 +32,7 @@ import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
-// TODO: 13.01.2021 jesli uzytkownik nie ma zadnych chatow to trzeba naprawic
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
-// TODO: 13.01.2021 Wiadomosci maja znikać po wyjsciu z czatu
-// TODO: 13.01.2021 Przyciski do rozmowy po wczytaniu też muszą zostać wczytane
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 

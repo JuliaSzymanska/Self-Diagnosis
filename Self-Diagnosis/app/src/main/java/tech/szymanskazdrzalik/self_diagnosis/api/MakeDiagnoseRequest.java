@@ -14,14 +14,12 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 public class MakeDiagnoseRequest {
     private final RequestUtil.ChatRequestListener listener;
 
-    private final Response.ErrorListener errorListener = error -> {
-        System.out.println(error);
-        // TODO: 16.12.2020 Make show error message / show
-    };
+    private Response.ErrorListener errorListener;
 
     private final Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
+
             boolean shouldStop = false;
             try {
                 System.out.println(response);
@@ -83,6 +81,11 @@ public class MakeDiagnoseRequest {
 
     public MakeDiagnoseRequest(ChatActivity chatActivity, String userAnswer) {
 
+        this.errorListener = error -> {
+            chatActivity.onRequestFailure();
+            // TODO: 16.12.2020 Make show error message / show
+        };
+
         listener = chatActivity;
 
         String url = ApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
@@ -125,6 +128,11 @@ public class MakeDiagnoseRequest {
             // TODO: 16.12.2020 dać tutaj wyjatek
             System.out.println("User not found!");
         }
+
+        this.errorListener = error -> {
+            chatActivity.onRequestFailure();
+            // TODO: 16.12.2020 Make show error message / show
+        };
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
 
