@@ -146,8 +146,8 @@ public class Chat {
                 this.lastRequest = "";
             }
             if (lastDoctorQuestion == null || lastDoctorQuestionId == null) {
-                this.lastDoctorQuestion = "";
-                this.lastDoctorQuestionId = "";
+                this.lastDoctorQuestion = null;
+                this.lastDoctorQuestionId = null;
             }
             return new Chat(this.date, this.chatId, this.userId, this.lastRequest, this.lastDoctorQuestion, this.lastDoctorQuestionId, this.isFinished == 1);
         }

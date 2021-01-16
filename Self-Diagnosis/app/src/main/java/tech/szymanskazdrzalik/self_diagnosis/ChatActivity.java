@@ -40,13 +40,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     Animation slide_out_messbox;
     String lastDoctorMessage = "";
     private ActivityChatBinding binding;
-    private boolean didAskForEndDiagnose = false;
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
-    private String previousQuestionId = "";
-    private JSONArray previousDoctorMsgForButtons = new JSONArray();
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         // TODO: 16.12.2020 lokalizacja
-        saveChatToDB(true);
+        saveOrUpdateChatToDB(true);
         addUserMessage("Finish");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Diagnosis:\n");
@@ -65,6 +62,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
 
     };
+    private boolean didAskForEndDiagnose = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +78,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 System.out.println("Evidence: " + RequestUtil.getInstance().getStringFromEvidenceArray());
                 setAllMessages(SampleSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
                 this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()));
-//                new MakeDiagnoseRequest(this);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -146,27 +143,28 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     private void saveMessageToDB(String text, boolean isUserMessage) {
-        Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
-        if (!chat.isPresent()) {
-            saveChatToDB(false);
-            chat = GlobalVariables.getInstance().getCurrentChat();
-        }
-        System.out.println("IDDDDDDDDDDDDDDDDDDDDDDDD");
-        System.out.println(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId());
-        int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
-        chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
-        SampleSQLiteDBHelper.saveChatDataToDB(this, chat.get());
-
+        int chatId = saveOrUpdateChatToDB(false);
         int id = SampleSQLiteDBHelper.getNextMessageIdAvailable(this, chatId);
         ChatMessage message = new ChatMessage(id, chatId, text, isUserMessage);
         SampleSQLiteDBHelper.saveMessageDataToDB(this, message);
     }
 
-    private void saveChatToDB(boolean isFinished) {
+    private int saveOrUpdateChatToDB(boolean isFinished) {
+        Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
+        if (!chat.isPresent()) {
+            createNewChatAndSaveToDB(isFinished);
+            chat = GlobalVariables.getInstance().getCurrentChat();
+        }
+        int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
+        chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
+        SampleSQLiteDBHelper.saveChatDataToDB(this, chat.get());
+        return chatId;
+    }
+
+    private void createNewChatAndSaveToDB(boolean isFinished) {
         Chat currentChat = Chat.builder(SampleSQLiteDBHelper.getNextChatIdAvailable(this), GlobalVariables.getInstance().getCurrentUser().get().getId())
                 .isFinished(isFinished)
                 .date(new Date())
-                .lastDoctorQuestionAndId(previousDoctorMsgForButtons.toString() ,previousQuestionId)
                 .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                 .build();
         GlobalVariables.getInstance().setCurrentChat(currentChat);
@@ -235,10 +233,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void onDoctorQuestionReceived(String id, JSONArray msg) {
-        previousQuestionId = id;
-        previousDoctorMsgForButtons = msg;
-        GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId( id);
+        GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId(id);
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestion(msg.toString());
+        saveOrUpdateChatToDB(false);
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
         try {
@@ -298,13 +295,23 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     public void onRequestFailure() {
         this.generateNewDoctorMessageFromStringWithoutSaving(getString(R.string.error_messsage_response_doctor));
-        if (this.previousQuestionId != null && this.previousDoctorMsgForButtons != null) {
-            this.onDoctorQuestionReceived(previousQuestionId, previousDoctorMsgForButtons);
-        } else {
-            // TODO: 14.01.2021 sprawdzic czemu animacja nie dziala
-            View view = View.inflate(this, R.layout.msg_input_bar_inner, null);
-            binding.inputLayout.inputsContainer.removeAllViews();
-            binding.inputLayout.inputsContainer.addView(view);
+        if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
+            String id = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId();
+            String msg = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion();
+            if (id != null && msg != null) {
+                try {
+                    this.onDoctorQuestionReceived(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId(),
+                            new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion())
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // TODO: 14.01.2021 sprawdzic czemu animacja nie dziala
+                View view = View.inflate(this, R.layout.msg_input_bar_inner, null);
+                binding.inputLayout.inputsContainer.removeAllViews();
+                binding.inputLayout.inputsContainer.addView(view);
+            }
         }
     }
 }
