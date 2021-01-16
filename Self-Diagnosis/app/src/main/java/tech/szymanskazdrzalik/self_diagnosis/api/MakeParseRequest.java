@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -60,14 +61,17 @@ public class MakeParseRequest {
                 RequestUtil.getInstance().addToEvidenceArray(jsonArrayToRequest);
                 Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
                 if (!chat.isPresent()) {
-                    Chat currentChat = new Chat(SampleSQLiteDBHelper.getNextChatIdAvailable(MakeParseRequest.this.context),
-                            GlobalVariables.getInstance().getCurrentUser().get().getId(), "", false);
+                    Chat currentChat = Chat.builder(SampleSQLiteDBHelper.getNextChatIdAvailable(context), GlobalVariables.getInstance().getCurrentUser().get().getId())
+                            .isFinished(false)
+                            .date(new Date())
+                            .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
+                            .build();
                     GlobalVariables.getInstance().setCurrentChat(currentChat);
-                    SampleSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, currentChat);
-                    chat = GlobalVariables.getInstance().getCurrentChat();
+                    SampleSQLiteDBHelper.saveChatDataToDB(context, currentChat);
+                } else {
+                    chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
+                    SampleSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, chat.get());
                 }
-                chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
-                SampleSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, chat.get());
                 new MakeDiagnoseRequest(chatActivity);
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -37,8 +37,10 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_NEWEST_REQUEST = "request";
     public static final String CHATS_COLUMN_DATETIME = "datetime";
     public static final String CHATS_COLUMN_IS_FINISHED = "is_finished";
+    public static final String CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION = "doc_message";
+    public static final String CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID = "doc_question_id";
 
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 21;
 
     /**
      * {@inheritDoc}
@@ -79,6 +81,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         String date = DB_DATE_MESSAGE_FORMAT.format(chat.getDate());
         contentValues.put(CHATS_COLUMN_DATETIME, date);
         contentValues.put(CHATS_COLUMN_IS_FINISHED, chat.getIsFinished());
+        contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestion());
+        contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestionId());
         database.insert(CHATS_TABLE_NAME, null, contentValues);
     }
 
@@ -119,6 +123,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
         contentValues.put(CHATS_COLUMN_NEWEST_REQUEST, chat.getLastRequest());
         contentValues.put(CHATS_COLUMN_IS_FINISHED, chat.getIsFinished());
+        contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestion());
+        contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestionId());
         database.update(CHATS_TABLE_NAME, contentValues, CHATS_COLUMN_ID + "=" + chat.getId(), null);
     }
 
@@ -200,9 +206,16 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 try {
                     int retId = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_ID));
                     String newestRequest = cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_NEWEST_REQUEST));
+                    String previousDoctorQuestion = cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION));
+                    String previousDoctorQuestionId = cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID));
                     Date date = DB_DATE_MESSAGE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(CHATS_COLUMN_DATETIME)));
                     boolean isFinished = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_IS_FINISHED)) == 1;
-                    chatList.add(new Chat(retId, userId, date, newestRequest, isFinished));
+                    chatList.add(Chat.builder(retId, userId)
+                            .date(date)
+                            .lastRequest(newestRequest)
+                            .isFinished(isFinished)
+                            .lastDoctorQuestionAndId(previousDoctorQuestion, previousDoctorQuestionId)
+                            .build());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -348,6 +361,8 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
                 CHATS_COLUMN_NEWEST_REQUEST + " VARCHAR(8192)," +
                 CHATS_COLUMN_DATETIME + " DATETIME," +
                 CHATS_COLUMN_IS_FINISHED + " INTEGER," +
+                CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION + " VARCHAR(8192)," +
+                CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID + " VARCHAR(32)," +
                 " FOREIGN KEY (" + CHATS_COLUMN_USER_ID + ") REFERENCES " + USER_PROFILE_TABLE_NAME + "(" + USER_COLUMN_ID + ")" + ")"
         );
 
