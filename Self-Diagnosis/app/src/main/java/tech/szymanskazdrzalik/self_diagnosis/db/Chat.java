@@ -1,6 +1,7 @@
 package tech.szymanskazdrzalik.self_diagnosis.db;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,26 +14,35 @@ public class Chat {
     private int id;
     private int userId;
     private String lastRequest;
+    @Nullable
     private String lastDoctorQuestion;
+    @Nullable
     private String lastDoctorQuestionId;
-    private int isFinished;
+    @Nullable
+    private String conditionsArray;
 
-    private Chat(Date date, int id, int userId, String lastRequest, String lastDoctorQuestion, String lastDoctorQuestionId, boolean isFinished) {
+    private Chat(Date date, int id, int userId, String lastRequest, @Nullable String lastDoctorQuestion, @Nullable String lastDoctorQuestionId, @Nullable String conditionsArray) {
         this.date = date;
         this.id = id;
         this.userId = userId;
         this.lastRequest = lastRequest;
         this.lastDoctorQuestion = lastDoctorQuestion;
         this.lastDoctorQuestionId = lastDoctorQuestionId;
-        this.isFinished = isFinished ? 1 : 0;
+        this.conditionsArray = conditionsArray;
     }
 
     public static Builder builder(int id, int userId) {
         return new Builder(id, userId);
     }
 
+    @Nullable
     public String getLastDoctorQuestion() {
         return lastDoctorQuestion;
+    }
+
+
+    public void setLastDoctorQuestion(@Nullable String lastDoctorQuestion) {
+        this.lastDoctorQuestion = lastDoctorQuestion;
     }
 
     @Override
@@ -44,12 +54,17 @@ public class Chat {
                 ", lastRequest='" + lastRequest + '\'' +
                 ", lastDoctorQuestion='" + lastDoctorQuestion + '\'' +
                 ", lastDoctorQuestionId='" + lastDoctorQuestionId + '\'' +
-                ", isFinished=" + isFinished +
+                ", conditionArray=" + conditionsArray +
                 '}';
     }
 
+    @Nullable
     public String getLastDoctorQuestionId() {
         return lastDoctorQuestionId;
+    }
+
+    public void setLastDoctorQuestionId(@Nullable String lastDoctorQuestionId) {
+        this.lastDoctorQuestionId = lastDoctorQuestionId;
     }
 
     public Date getDate() {
@@ -64,12 +79,13 @@ public class Chat {
         this.id = id;
     }
 
-    public boolean getIsFinished() {
-        return isFinished == 1;
+    @Nullable
+    public String getConditionsArray() {
+        return conditionsArray;
     }
 
-    public void setIsFinished(boolean isFinished) {
-        this.isFinished = isFinished ? 1 : 0;
+    public void setConditionsArray(@Nullable String conditionsArray) {
+        this.conditionsArray = conditionsArray;
     }
 
     public int getUserId() {
@@ -78,14 +94,6 @@ public class Chat {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public void setLastDoctorQuestion(String lastDoctorQuestion) {
-        this.lastDoctorQuestion = lastDoctorQuestion;
-    }
-
-    public void setLastDoctorQuestionId(String lastDoctorQuestionId) {
-        this.lastDoctorQuestionId = lastDoctorQuestionId;
     }
 
     public String getLastRequest() {
@@ -102,13 +110,13 @@ public class Chat {
     }
 
     public static final class Builder {
-        private Date date = null;
         private final int chatId;
         private final int userId;
+        private Date date = null;
         private String lastRequest = null;
         private String lastDoctorQuestion = null;
         private String lastDoctorQuestionId = null;
-        private int isFinished = 0;
+        private String conditionsArray = null;
 
         private Builder(int id, int userId) {
             this.chatId = id;
@@ -133,10 +141,11 @@ public class Chat {
         }
 
 
-        public Builder isFinished(boolean isFinished) {
-            this.isFinished = isFinished ? 1 : 0;
+        public Builder conditionArray(String conditionArray) {
+            this.conditionsArray = conditionArray;
             return this;
         }
+
 
         public Chat build() {
             if (date == null) {
@@ -149,7 +158,10 @@ public class Chat {
                 this.lastDoctorQuestion = null;
                 this.lastDoctorQuestionId = null;
             }
-            return new Chat(this.date, this.chatId, this.userId, this.lastRequest, this.lastDoctorQuestion, this.lastDoctorQuestionId, this.isFinished == 1);
+            if (conditionsArray == null) {
+                this.conditionsArray = null;
+            }
+            return new Chat(this.date, this.chatId, this.userId, this.lastRequest, this.lastDoctorQuestion, this.lastDoctorQuestionId, this.conditionsArray);
         }
     }
 }

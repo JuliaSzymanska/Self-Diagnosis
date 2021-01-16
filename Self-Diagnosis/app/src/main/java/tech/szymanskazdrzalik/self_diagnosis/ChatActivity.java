@@ -43,12 +43,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private ActivityChatBinding binding;
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
-        GlobalVariables.getInstance().getCurrentChat().get().setIsFinished(true);
+        JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
+        GlobalVariables.getInstance().getCurrentChat().get().setConditionsArray(conditions.toString());
         saveOrUpdateChatToDB(true);
         addUserMessage(getResources().getString(R.string.finish));
         StringBuilder stringBuilder = new StringBuilder();
-//        stringBuilder.append("Diagnosis:\n");
-        JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
         try {
             for (int i = 0; i < conditions.length(); i++) {
                 stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
@@ -60,9 +59,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
         binding.inputLayout.inputsContainer.removeAllViews();
         onDoctorMessage(stringBuilder.toString());
-
-
     };
+
     private boolean didAskForEndDiagnose = false;
 
     @Override
@@ -121,7 +119,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     private void generateNewDoctorMessageFromString(String text) {
-        if (!GlobalVariables.getInstance().getCurrentChat().isPresent() || !GlobalVariables.getInstance().getCurrentChat().get().getIsFinished()) {
+        if (!GlobalVariables.getInstance().getCurrentChat().isPresent() || GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray() == null) {
             generateNewDoctorMessageFromStringWithoutSaving(text);
         } else {
             generateDiagnosisMessageFromStringWithoutSaving(text);
@@ -173,7 +171,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     private void createNewChatAndSaveToDB(boolean isFinished) {
         Chat currentChat = Chat.builder(SampleSQLiteDBHelper.getNextChatIdAvailable(this), GlobalVariables.getInstance().getCurrentUser().get().getId())
-                .isFinished(isFinished)
+                .conditionArray(null)
                 .date(new Date())
                 .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                 .build();
