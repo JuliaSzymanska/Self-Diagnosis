@@ -255,7 +255,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 binding.inputLayout.inputsContainer.addView(space);
             }
             Button button = (Button) View.inflate(this, R.layout.answer_button, null);
-            button.setText("Finish");
+            button.setText(getString(R.string.finish));
             button.setOnClickListener(onEndDiagnoseClick);
             binding.inputLayout.inputsContainer.addView(button);
         } catch (JSONException e) {
@@ -271,13 +271,13 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         this.didAskForEndDiagnose = true;
 
         // TODO: 16.12.2020 Lokalizacja
-        onDoctorMessage("I believe I know your diagnose. \nDo you want to finish?");
+        onDoctorMessage(getString(R.string.finish_diagnose_question));
         Button buttonYes = (Button) View.inflate(this, R.layout.answer_button, null);
-        buttonYes.setText("Yes");
+        buttonYes.setText(R.string.yes);
         buttonYes.setOnClickListener(onEndDiagnoseClick);
 
         Button buttonNo = (Button) View.inflate(this, R.layout.answer_button, null);
-        buttonNo.setText("No");
+        buttonNo.setText(R.string.no);
         buttonNo.setOnClickListener(v -> {
             new MakeDiagnoseRequest(this, "No");
         });

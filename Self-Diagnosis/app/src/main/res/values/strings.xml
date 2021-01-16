@@ -29,4 +29,7 @@
     <string name="hallo_only">Hello </string>
     <string name="hello_with_exclamation_mark">Hello! </string>
     <string name="input_can_not_be_empty">Input can not be empty.</string>
+    <string name="finish_diagnose_question">I believe I know your diagnose. \nDo you want to finish?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
