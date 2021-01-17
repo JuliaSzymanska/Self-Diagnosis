@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_name">Nazwa profilu:</string>
+    <string name="sex">Płeć:</string>
+    <string name="birth_date">Data urodzenia:</string>
+    <string name="add">Dodaj</string>
+    <string name="let_s_diagnose">Zdiagnozuj</string>
+    <string name="yes">Tak</string>
+    <string name="finish">Zakończ</string>
+    <string name="hallo_only">Cześć \\u0020</string>
+    <string name="hello_with_exclamation_mark">Cześć! \\u0020</string>
+    <string name="no">Nie</string>
+    <string name="permission_denied">Odmowa dostępu</string>
+    <string name="show_more">Pokaż więcej</string>
+    <string name="history">Historia</string>
+    <string name="edoctor">eLekarz</string>
+    <string name="diagnosis">Diagnoza</string>
+    <string name="type_your_symptoms">Podaj swoje objawy...</string>
+    <string name="update_string">Zaktualizuj</string>
+    <string name="choose_you_profile">Wybierz swój profil</string>
+    <string name="create_new_conversation">Stwórz nową konwersację</string>
+    <string name="how_can_i_help_you">Jak mogę Ci dzisiaj pomóc?</string>
+    <string name="input_can_not_be_empty">Pola nie mogą być puste</string>
+    <string name="fill_all_inputs">Wypełnij wszystkie pola</string>
+    <string name="create_new_profile">Stwórz nowy profil</string>
+    <string name="choose_profile">Wybierz profil</string>
+    <string name="app_description">Twoja aplikacja do samo diagnozy</string>
+    <string name="self_diagnosis" translatable="false">Samodiagnoza</string>
+    <string name="error_messsage_response_doctor">Przepraszam, nie zrozumiałem Twojej wiadomości, mógłbyś powtórzyć?</string>
+    <string name="finish_diagnose_question">Wierzę, że znam Twoją diagnozę. \\nCzy chcesz zakończyć?</string>
+    <string name="most_likely_condition">Najprawdopodobniej dolega Ci:</string>
+    <string name="app_name" translatable="false">SamoDiagnoza</string>
+</resources>
