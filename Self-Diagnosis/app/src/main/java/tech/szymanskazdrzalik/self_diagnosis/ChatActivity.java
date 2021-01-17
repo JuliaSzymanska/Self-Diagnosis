@@ -34,7 +34,6 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
-// TODO: 16.01.2021 po zakonczeniiu diagnozy i wczytaniu jej maja nie pojawiac sie przyciski
 // TODO: 17.01.2021 nie zapisywac pierwszej wiadomosci
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
@@ -69,7 +68,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             try {
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
                 setAllMessages(SampleSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
-                this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()));
+                if (chat.get().getConditionsArray() == null) {
+                    this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()));
+                } else {
+                    binding.inputLayout.inputsContainer.removeAllViews();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
