@@ -35,6 +35,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
 // TODO: 16.01.2021 po zakonczeniiu diagnozy i wczytaniu jej maja nie pojawiac sie przyciski
+// TODO: 17.01.2021 nie zapisywac pierwszej wiadomosci
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
@@ -146,14 +147,14 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
             }
             advancedTV.setText(stringBuilder.toString());
-            linearLayout.findViewById(R.id.advanced_info_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (advancedTV.getVisibility() == View.GONE) {
-                        advancedTV.setVisibility(View.VISIBLE);
-                    } else {
-                        advancedTV.setVisibility(View.GONE);
-                    }
+            Button advanced_info_button = linearLayout.findViewById(R.id.advanced_info_button);
+            linearLayout.findViewById(R.id.advanced_info_button).setOnClickListener(v -> {
+                if (advancedTV.getVisibility() == View.GONE) {
+                    advancedTV.setVisibility(View.VISIBLE);
+                    advanced_info_button.setText(R.string.show_less);
+                } else {
+                    advancedTV.setVisibility(View.GONE);
+                    advanced_info_button.setText(R.string.show_more);
                 }
             });
         } catch (JSONException e) {
