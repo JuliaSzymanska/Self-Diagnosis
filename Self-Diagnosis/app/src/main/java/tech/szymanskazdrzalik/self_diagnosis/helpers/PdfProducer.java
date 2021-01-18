@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 
 public class PdfProducer {
 
