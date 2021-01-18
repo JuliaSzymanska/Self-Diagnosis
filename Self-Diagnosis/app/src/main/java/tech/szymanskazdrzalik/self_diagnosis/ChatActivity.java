@@ -1,6 +1,8 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
 import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
@@ -160,11 +163,30 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                     advanced_info_button.setText(R.string.show_more);
                 }
             });
+            requestPermission();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         binding.chatLayout.addView(linearLayout);
         this.lastDoctorMessage = text;
+    }
+
+    private void requestPermission() {
+        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        requestPermissions(permissions, 300);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 300:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
+                        PdfProducer.createPdfFile(SampleSQLiteDBHelper.getAllMessagesForChat(this, GlobalVariables.getInstance().getCurrentChat().get().getId()));
+                    }
+                }
+                break;
+        }
     }
 
     private void generateNewDoctorMessageFromStringWithoutSaving(String text) {
