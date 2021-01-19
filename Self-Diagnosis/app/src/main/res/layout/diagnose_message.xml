@@ -71,7 +71,8 @@
                 android:layout_gravity="right"
                 android:textColor="@color/orange_dark"
                 android:background="@android:color/transparent"
-                android:text="@string/export_to_pdf" />
+                android:text="@string/export_to_pdf"
+                android:onClick="onExportButtonClick"/>
 
         </LinearLayout>
 

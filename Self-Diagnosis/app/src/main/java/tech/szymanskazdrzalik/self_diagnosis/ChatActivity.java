@@ -163,12 +163,15 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                     advanced_info_button.setText(R.string.show_more);
                 }
             });
-            requestPermission();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         binding.chatLayout.addView(linearLayout);
         this.lastDoctorMessage = text;
+    }
+
+    public void onExportButtonClick(View v) {
+        requestPermission();
     }
 
     private void requestPermission() {
