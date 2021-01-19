@@ -40,4 +40,5 @@
     <string name="show_more">Show more</string>
     <string name="show_less">Show less</string>
     <string name="most_likely_condition">Your condition is most likely:</string>
+    <string name="export_to_pdf">EXPORT TO PDF</string>
 </resources>
