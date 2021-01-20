@@ -248,7 +248,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void sendSymptomsOnClick(View v) {
         if (binding.inputLayout.inputSymptoms.getText().toString().trim().length() > 0) {
             new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
-            TranslatorHelper.TranslateText(this, binding.inputLayout.inputSymptoms.getText().toString());
+//            TranslatorHelper.TranslateText(this, binding.inputLayout.inputSymptoms.getText().toString());
+            TranslatorHelper.translateText( binding.inputLayout.inputSymptoms.getText().toString());
             this.hideMessageBox();
         } else {
             Toast.makeText(this, getString(R.string.input_can_not_be_empty), Toast.LENGTH_LONG).show();

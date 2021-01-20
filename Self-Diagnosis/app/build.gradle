@@ -16,9 +16,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-//    packagingOptions {
-//        exclude 'META-INF/DEPENDENCIES'
-//    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/INDEX.LIST'
+    }
 
     buildFeatures {
         viewBinding true
