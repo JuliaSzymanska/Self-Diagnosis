@@ -38,6 +38,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
 // TODO: 17.01.2021 nie zapisywac pierwszej wiadomosci
+// TODO: 20.01.2021 zapytanie o zezwolenie na dostep rpzy odczycie obrazka
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
