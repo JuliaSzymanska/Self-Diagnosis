@@ -28,6 +28,7 @@ import java.util.Optional;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeSymptomsRequest;
+import tech.szymanskazdrzalik.self_diagnosis.api.MakeTranslatorRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
@@ -86,6 +87,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         } else {
             this.createFirstMessageFromDoctor();
         }
+        new MakeTranslatorRequest(this, "Siemka tu lenka");
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override

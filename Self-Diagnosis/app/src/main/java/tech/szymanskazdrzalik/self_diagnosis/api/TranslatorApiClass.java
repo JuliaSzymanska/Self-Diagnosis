@@ -27,7 +27,7 @@ public class TranslatorApiClass {
         return INSTANCE;
     }
 
-    public static void loadApiInfo(Context context) {
+    private static void loadApiInfo(Context context) {
         try {
             JSONObject jsonObject = new JSONObject(Objects.requireNonNull(loadJSONFromAsset(context)));
             key = (String) jsonObject.get("key");
