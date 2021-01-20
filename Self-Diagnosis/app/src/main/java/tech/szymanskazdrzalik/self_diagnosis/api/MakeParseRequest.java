@@ -20,7 +20,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeParseRequest {
 
-    private final ApiClass apiClass;
+    private final InfermedicaApiClass infermedicaApiClass;
     private final ApiRequestQueue apiRequestQueue;
     private final String url;
     private final Response.ErrorListener errorListener;
@@ -35,9 +35,9 @@ public class MakeParseRequest {
         this.chatActivity = chatActivity;
         this.chatRequestListener = chatActivity;
         this.context = chatActivity;
-        this.apiClass = ApiClass.getInstance(context);
+        this.infermedicaApiClass = InfermedicaApiClass.getInstance(context);
         this.apiRequestQueue = ApiRequestQueue.getInstance(context);
-        this.url = this.apiClass.getUrl() + "/parse";
+        this.url = this.infermedicaApiClass.getUrl() + "/parse";
         this.userMessage = text;
 
         this.errorListener = error -> {

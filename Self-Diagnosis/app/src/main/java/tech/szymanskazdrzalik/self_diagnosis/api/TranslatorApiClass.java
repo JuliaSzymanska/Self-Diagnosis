@@ -12,18 +12,17 @@ import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.R;
 
-public class ApiClass {
+public class TranslatorApiClass {
 
-    private static final ApiClass INSTANCE = new ApiClass();
+    private static final TranslatorApiClass INSTANCE = new TranslatorApiClass();
 
     private static final String url = "https://api.infermedica.com/v3";
-    private static String id;
     private static String key;
 
-    private ApiClass() {
+    private TranslatorApiClass() {
     }
 
-    public static ApiClass getInstance(Context context) {
+    public static TranslatorApiClass getInstance(Context context) {
         loadApiInfo(context);
         return INSTANCE;
     }
@@ -31,7 +30,6 @@ public class ApiClass {
     public static void loadApiInfo(Context context) {
         try {
             JSONObject jsonObject = new JSONObject(Objects.requireNonNull(loadJSONFromAsset(context)));
-            id = (String) jsonObject.get("id");
             key = (String) jsonObject.get("key");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -41,7 +39,7 @@ public class ApiClass {
     private static String loadJSONFromAsset(Context context) {
         String jsonString = "";
         try {
-            InputStream is = context.getResources().openRawResource(R.raw.api_info);
+            InputStream is = context.getResources().openRawResource(R.raw.translator_api_info);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -58,13 +56,8 @@ public class ApiClass {
         return url;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public String getKey() {
         return key;
     }
-
 
 }

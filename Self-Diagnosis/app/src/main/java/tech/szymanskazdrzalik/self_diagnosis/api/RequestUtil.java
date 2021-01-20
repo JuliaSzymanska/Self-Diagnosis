@@ -47,14 +47,18 @@ public class RequestUtil {
 
     public static Map<String, String> getDefaultHeaders(Context context) {
         Map<String, String> headers = new HashMap<>();
-        headers.put("App-Id", ApiClass.getInstance(context).getId());
-        headers.put("App-Key", ApiClass.getInstance(context).getKey());
+        headers.put("App-Id", InfermedicaApiClass.getInstance(context).getId());
+        headers.put("App-Key", InfermedicaApiClass.getInstance(context).getKey());
         headers.put("Model", "infermedica-en");
         headers.put("Content-Type", "application/json");
         return headers;
     }
 
-    public static void addLanguageToHeaders(Map<String, String> map) {
+    public static String getDefaultTranslatorUrlParameter(Context context) {
+        return "key=" + TranslatorApiClass.getInstance(context).getKey();
+    }
+
+    public static void addLanguageToInfermedicaHeaders(Map<String, String> map) {
         map.put("Model", "infermedica-" + Locale.getDefault().getLanguage());
     }
 
