@@ -10,4 +10,19 @@
         <item name="android:background">@color/background</item>
     </style>
 
+
+    <style name="CalendarTheme" parent="Theme.AppCompat.Light.Dialog">
+<!--        TODO naprawic colorAccent bo nie zczytuje tej wlasciwosci
+ https://www.zoftino.com/android-datepicker-example
+ https://stackoverflow.com/questions/30239627/how-to-change-the-style-of-a-datepicker-in-android -->
+
+        <item name="colorAccent">@color/orange_dark</item>
+        <item name="android:textColorPrimary">#000</item>
+<!--        TODO to tez nie dziala .__.-->
+        <item name="android:headerBackground">#00c853</item>
+        <item name="colorControlActivated">@color/orange</item>
+        <item name="android:textColorSecondary">@color/orange_dark</item>    <!--days of the week-->
+
+    </style>
+
 </resources>

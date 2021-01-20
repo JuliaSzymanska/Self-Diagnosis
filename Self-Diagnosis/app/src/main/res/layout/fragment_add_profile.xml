@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:focusable="true"
-                    android:text="@string/yyyy_mm_dd"/>
+                    android:text="@string/yyyy_mm_dd" />
 
             </LinearLayout>
 

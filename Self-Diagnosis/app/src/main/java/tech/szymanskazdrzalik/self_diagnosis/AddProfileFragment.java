@@ -54,7 +54,7 @@ public class AddProfileFragment extends Fragment {
         updateLabel();
     };
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
-            v -> new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            v -> new DatePickerDialog(getContext(), R.style.CalendarTheme, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     private boolean isNewUser = false;
     private String userGender;
     private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
