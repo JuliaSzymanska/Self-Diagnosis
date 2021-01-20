@@ -13,12 +13,9 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeDiagnoseRequest {
     private final RequestUtil.ChatRequestListener listener;
-
-    private Response.ErrorListener errorListener;
-
     private final Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
         @Override
-        public void onResponse(JSONObject response){
+        public void onResponse(JSONObject response) {
             boolean shouldStop = false;
             try {
                 try {
@@ -38,13 +35,15 @@ public class MakeDiagnoseRequest {
                     listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
                     listener.hideMessageBox();
                     listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
-                            jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"));
+                            jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"),
+                            jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("name"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     };
+    private Response.ErrorListener errorListener;
 
     public MakeDiagnoseRequest(ChatActivity chatActivity, JSONArray jsonArray) {
 
@@ -62,6 +61,7 @@ public class MakeDiagnoseRequest {
 
         JSONObject jsonObject = new JSONObject();
         try {
+
             RequestUtil.addUserDataToJsonObject(jsonObject);
             jsonObject.put("evidence", jsonArray);
             JSONObject jsonObjectExtras = new JSONObject();
@@ -95,8 +95,12 @@ public class MakeDiagnoseRequest {
 
         JSONObject jsonObject = new JSONObject();
         try {
+            JSONArray jsonArray = new JSONArray(RequestUtil.getInstance().getEvidenceArray().toString());
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonArray.getJSONObject(i).remove("name");
+            }
             RequestUtil.addUserDataToJsonObject(jsonObject);
-            jsonObject.put("evidence", RequestUtil.getInstance().getEvidenceArray());
+            jsonObject.put("evidence", jsonArray);
             JSONObject jsonObjectExtras = new JSONObject();
             jsonObjectExtras.put("disable_groups", "true");
             jsonObject.put("extras", jsonObjectExtras);
@@ -130,9 +134,15 @@ public class MakeDiagnoseRequest {
         Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
 
         JSONObject jsonObject = new JSONObject();
+
+
         try {
+            JSONArray jsonArray = new JSONArray(RequestUtil.getInstance().getEvidenceArray().toString());
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonArray.getJSONObject(i).remove("name");
+            }
             RequestUtil.addUserDataToJsonObject(jsonObject);
-            jsonObject.put("evidence", RequestUtil.getInstance().getEvidenceArray());
+            jsonObject.put("evidence", jsonArray);
             JSONObject jsonObjectExtras = new JSONObject();
             jsonObjectExtras.put("disable_groups", "true");
             jsonObject.put("extras", jsonObjectExtras);

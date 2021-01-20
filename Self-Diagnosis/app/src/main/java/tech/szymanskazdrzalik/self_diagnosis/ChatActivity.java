@@ -75,7 +75,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
                 setAllMessages(SampleSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
                 if (chat.get().getConditionsArray() == null) {
-                    this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()));
+                    // FIXME: 20.01.2021 empty string
+                    this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()), "");
                 } else {
                     binding.inputLayout.inputsContainer.removeAllViews();
                 }
@@ -288,7 +289,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", id);
             jsonObject.put("choice_id", choice);
-//            jsonObject.put("name", name);
+            jsonObject.put("name", name);
             RequestUtil.getInstance().addToEvidenceArray(jsonObject);
             new MakeDiagnoseRequest(this, userMessage);
             binding.inputLayout.inputsContainer.removeAllViews();
@@ -298,9 +299,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     @Override
-    public void onDoctorQuestionReceived(String id, JSONArray msg) {
+    public void onDoctorQuestionReceived(String id, JSONArray msg, String name) {
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId(id);
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestion(msg.toString());
+        System.out.println(name);
         saveOrUpdateChatToDB();
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
@@ -312,8 +314,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 int finalI = i;
                 button.setOnClickListener(v -> {
                     try {
-                        questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"), msg.getJSONObject(finalI).getString("label"),
-                                msg.getJSONObject(finalI).getString("name"));
+                        questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"),
+                                msg.getJSONObject(finalI).getString("label"),
+                                name);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -365,8 +368,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             String msg = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion();
             if (id != null && msg != null) {
                 try {
-                    this.onDoctorQuestionReceived(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId(),
-                            new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion())
+                    this.onDoctorQuestionReceived(  GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId(),
+                                                    new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion()),
+                                                ""
                     );
                 } catch (JSONException e) {
                     e.printStackTrace();

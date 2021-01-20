@@ -93,7 +93,7 @@ public class RequestUtil {
 
         void hideMessageBox();
 
-        void onDoctorQuestionReceived(String id, JSONArray msg);
+        void onDoctorQuestionReceived(String id, JSONArray msg, String name);
 
         boolean finishDiagnose();
 
