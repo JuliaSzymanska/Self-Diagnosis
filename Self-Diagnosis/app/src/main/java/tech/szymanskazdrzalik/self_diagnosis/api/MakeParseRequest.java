@@ -54,6 +54,7 @@ public class MakeParseRequest {
                         JSONObject clearJsonObject = new JSONObject();
                         clearJsonObject.put("id", jsonObject.getString("id"));
                         clearJsonObject.put("choice_id", jsonObject.getString("choice_id"));
+//                        clearJsonObject.put("name", jsonObject.getString("name"));
                         clearJsonObject.put("source", "initial");
                         jsonArrayToRequest.put(clearJsonObject);
                     }

@@ -18,8 +18,7 @@ public class MakeDiagnoseRequest {
 
     private final Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
         @Override
-        public void onResponse(JSONObject response) {
-
+        public void onResponse(JSONObject response){
             boolean shouldStop = false;
             try {
                 try {

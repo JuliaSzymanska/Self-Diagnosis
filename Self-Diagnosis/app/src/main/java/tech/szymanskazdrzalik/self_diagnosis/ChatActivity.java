@@ -27,6 +27,7 @@ import java.util.Optional;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
+import tech.szymanskazdrzalik.self_diagnosis.api.MakeSymptomsRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
@@ -47,6 +48,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
+        System.out.println(RequestUtil.getInstance().getEvidenceArray());
         GlobalVariables.getInstance().getCurrentChat().get().setConditionsArray(conditions.toString());
         saveOrUpdateChatToDB();
         addUserMessage(getResources().getString(R.string.finish));
@@ -66,6 +68,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+//        new MakeSymptomsRequest(this);
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
         if (chat.isPresent()) {
             try {
@@ -280,11 +283,12 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         binding.inputLayout.inputsContainer.setAnimation(slide_out_messbox);
     }
 
-    private void questionButtonOnClick(String id, String choice, String userMessage) {
+    private void questionButtonOnClick(String id, String choice, String userMessage, String name) {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", id);
             jsonObject.put("choice_id", choice);
+//            jsonObject.put("name", name);
             RequestUtil.getInstance().addToEvidenceArray(jsonObject);
             new MakeDiagnoseRequest(this, userMessage);
             binding.inputLayout.inputsContainer.removeAllViews();
@@ -300,6 +304,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         saveOrUpdateChatToDB();
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
+
         try {
             for (int i = 0; i < msg.length(); i++) {
                 Button button = (Button) View.inflate(this, R.layout.answer_button, null);
@@ -307,7 +312,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 int finalI = i;
                 button.setOnClickListener(v -> {
                     try {
-                        questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"), msg.getJSONObject(finalI).getString("label"));
+                        questionButtonOnClick(id, msg.getJSONObject(finalI).getString("id"), msg.getJSONObject(finalI).getString("label"),
+                                msg.getJSONObject(finalI).getString("name"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
