@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
@@ -48,8 +49,13 @@ public class RequestUtil {
         Map<String, String> headers = new HashMap<>();
         headers.put("App-Id", ApiClass.getInstance(context).getId());
         headers.put("App-Key", ApiClass.getInstance(context).getKey());
+        headers.put("Model", "infermedica-en");
         headers.put("Content-Type", "application/json");
         return headers;
+    }
+
+    public static void addLanguageToHeaders(Map<String, String> map) {
+        map.put("Model", "infermedica-" + Locale.getDefault().getLanguage());
     }
 
     public JSONArray getConditionsArray() {

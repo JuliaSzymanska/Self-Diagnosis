@@ -93,6 +93,8 @@ public class MakeDiagnoseRequest {
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
 
+        RequestUtil.addLanguageToHeaders(headers);
+
         JSONObject jsonObject = new JSONObject();
         try {
             JSONArray jsonArray = new JSONArray(RequestUtil.getInstance().getEvidenceArray().toString());
@@ -132,6 +134,9 @@ public class MakeDiagnoseRequest {
         };
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
+
+        RequestUtil.addLanguageToHeaders(headers);
+
 
         JSONObject jsonObject = new JSONObject();
 
