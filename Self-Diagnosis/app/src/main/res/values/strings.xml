@@ -41,4 +41,6 @@
     <string name="show_less">Show less</string>
     <string name="most_likely_condition">Your condition is most likely:</string>
     <string name="export_to_pdf">EXPORT TO PDF</string>
+    <string name="name">Name: \u0020</string>
+    <string name="probability">Probability: \u0020</string>
 </resources>

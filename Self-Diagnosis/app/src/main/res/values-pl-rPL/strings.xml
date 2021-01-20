@@ -31,4 +31,7 @@
     <string name="finish_diagnose_question">Wierzę, że znam Twoją diagnozę. \nCzy chcesz zakończyć?</string>
     <string name="most_likely_condition">Najprawdopodobniej dolega Ci:</string>
     <string name="app_name" translatable="false">SamoDiagnoza</string>
+    <string name="export_to_pdf">Eksport do PDF</string>
+    <string name="name">"Nazwa: \u0020"</string>
+    <string name="probability">"Prawdopodobieństwo: \u0020"</string>
 </resources>
