@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -87,17 +88,31 @@ public class MakeParseRequest {
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(context);
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            RequestUtil.addUserDataToJsonObject(jsonObject);
-            jsonObject.put("text", text);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                RequestUtil.addUserDataToJsonObject(jsonObject);
+                jsonObject.put("text", text);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            chatRequestListener.addUserMessage(text);
+            this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.POST, this.url, headers, jsonObject, this.successListener, this.errorListener));
+        } else {
+
+            new MakeTranslatorRequest(chatActivity, text, response -> {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    String newText = response.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("translatedText");
+                    RequestUtil.addUserDataToJsonObject(jsonObject);
+                    jsonObject.put("text", newText);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                chatRequestListener.addUserMessage(text);
+                apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.POST, url, headers, jsonObject, successListener, errorListener));
+            }, error -> chatActivity.onRequestFailure());
         }
-
-        chatRequestListener.addUserMessage(text);
-
-        this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.POST, this.url, headers, jsonObject, this.successListener, this.errorListener));
     }
 
 
