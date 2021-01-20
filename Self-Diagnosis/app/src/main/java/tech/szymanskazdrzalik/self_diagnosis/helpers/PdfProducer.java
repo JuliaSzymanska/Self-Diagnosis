@@ -23,6 +23,8 @@ public class PdfProducer {
         PdfDocument.Page myPage = myPdfDocument.startPage(myPageInfo);
         Paint myPaint = new Paint();
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getDiagnose());
+        stringBuilder.append("\n\n\n");
         stringBuilder.append(getAllNames());
         stringBuilder.append("\n\n\n");
         stringBuilder.append(getAllMessages(messages));
@@ -56,6 +58,22 @@ public class PdfProducer {
             }
         }
         stringBuilder.append("Doctor: Your diagnosis: ").append(messages.get(messages.size() - 1).getMessage()).append("\n\n");
+        return stringBuilder.toString();
+    }
+
+    private static String getDiagnose() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Diagnose: \n");
+        try {
+            JSONArray conditions = new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray());
+            for (int i = 0; i < conditions.length(); i++) {
+                stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
+                stringBuilder.append("Probability: ").append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
+                stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return stringBuilder.toString();
     }
 
