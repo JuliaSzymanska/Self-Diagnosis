@@ -27,7 +27,6 @@ import java.util.Optional;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
-import tech.szymanskazdrzalik.self_diagnosis.api.MakeSymptomsRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeTranslatorRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
@@ -36,7 +35,6 @@ import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
-import tech.szymanskazdrzalik.self_diagnosis.helpers.TranslatorHelper;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
@@ -87,7 +85,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         } else {
             this.createFirstMessageFromDoctor();
         }
-        new MakeTranslatorRequest(this, "Siemka tu lenka");
         slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
@@ -250,8 +247,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void sendSymptomsOnClick(View v) {
         if (binding.inputLayout.inputSymptoms.getText().toString().trim().length() > 0) {
             new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
-//            TranslatorHelper.TranslateText(this, binding.inputLayout.inputSymptoms.getText().toString());
-            TranslatorHelper.translateText( binding.inputLayout.inputSymptoms.getText().toString());
             this.hideMessageBox();
         } else {
             Toast.makeText(this, getString(R.string.input_can_not_be_empty), Toast.LENGTH_LONG).show();
