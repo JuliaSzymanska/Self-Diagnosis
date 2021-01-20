@@ -16,7 +16,7 @@ public class TranslatorApiClass {
 
     private static final TranslatorApiClass INSTANCE = new TranslatorApiClass();
 
-    private static final String url = "https://api.infermedica.com/v3";
+    private static final String url = "https://www.googleapis.com/language/translate/v2";
     private static String key;
 
     private TranslatorApiClass() {
