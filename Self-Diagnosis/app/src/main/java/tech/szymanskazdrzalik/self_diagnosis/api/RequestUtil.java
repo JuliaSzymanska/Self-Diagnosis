@@ -62,6 +62,10 @@ public class RequestUtil {
         map.put("Model", "infermedica-" + Locale.getDefault().getLanguage());
     }
 
+    public static String getTranslatorApiKey(Context context){
+        return TranslatorApiClass.getInstance(context).getKey();
+    }
+
     public JSONArray getConditionsArray() {
         return conditionsArray;
     }

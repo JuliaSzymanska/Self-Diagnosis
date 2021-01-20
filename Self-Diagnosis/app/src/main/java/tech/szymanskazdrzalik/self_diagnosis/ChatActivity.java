@@ -35,6 +35,7 @@ import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.TranslatorHelper;
 
 // TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
@@ -68,7 +69,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-//        new MakeSymptomsRequest(this);
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
         if (chat.isPresent()) {
             try {
@@ -248,6 +248,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void sendSymptomsOnClick(View v) {
         if (binding.inputLayout.inputSymptoms.getText().toString().trim().length() > 0) {
             new MakeParseRequest(this, binding.inputLayout.inputSymptoms.getText().toString());
+            TranslatorHelper.TranslateText(this, binding.inputLayout.inputSymptoms.getText().toString());
             this.hideMessageBox();
         } else {
             Toast.makeText(this, getString(R.string.input_can_not_be_empty), Toast.LENGTH_LONG).show();
