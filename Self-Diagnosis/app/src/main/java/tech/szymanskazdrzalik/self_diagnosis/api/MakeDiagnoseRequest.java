@@ -49,7 +49,7 @@ public class MakeDiagnoseRequest {
 
         listener = chatActivity;
 
-        String url = ApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
+        String url = InfermedicaApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         if (!globalVariables.getCurrentUser().isPresent()) {
@@ -83,7 +83,7 @@ public class MakeDiagnoseRequest {
 
         listener = chatActivity;
 
-        String url = ApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
+        String url = InfermedicaApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         if (!globalVariables.getCurrentUser().isPresent()) {
@@ -92,6 +92,8 @@ public class MakeDiagnoseRequest {
         }
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
+
+        RequestUtil.addLanguageToInfermedicaHeaders(headers);
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -118,7 +120,7 @@ public class MakeDiagnoseRequest {
 
         listener = chatActivity;
 
-        String url = ApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
+        String url = InfermedicaApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         if (!globalVariables.getCurrentUser().isPresent()) {
@@ -132,6 +134,9 @@ public class MakeDiagnoseRequest {
         };
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
+
+        RequestUtil.addLanguageToInfermedicaHeaders(headers);
+
 
         JSONObject jsonObject = new JSONObject();
 
