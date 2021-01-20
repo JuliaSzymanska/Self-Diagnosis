@@ -6,7 +6,7 @@
     <color name="background_top">#F4F4F4</color>
     <color name="light_orange">#7cccec</color>
     <color name="light_orange_border">#4cbce4</color>
-    <color name="text_color">#333333</color>
+    <color name="text_color">#222</color>
     <color name="orange">#4cbce4</color>
     <color name="orange_dark">#186066</color>
 </resources>

@@ -15,5 +15,6 @@
         android:layout_marginHorizontal="15sp"
         android:background="@drawable/user_border"
         android:padding="18sp"
+        android:textColor="@color/text_color"
         android:textSize="16sp" />
 </LinearLayout>
