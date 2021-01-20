@@ -1,8 +1,10 @@
 package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.os.Environment;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,22 +14,23 @@ import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
 
+import tech.szymanskazdrzalik.self_diagnosis.R;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
 
 public class PdfProducer {
 
-    public static void createPdfFile(List<ChatMessage> messages) {
+    public static void createPdfFile(Context context, List<ChatMessage> messages) {
         PdfDocument myPdfDocument = new PdfDocument();
         PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(300, 600, 1).create();
         PdfDocument.Page myPage = myPdfDocument.startPage(myPageInfo);
         Paint myPaint = new Paint();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getDiagnose());
+        stringBuilder.append(getDiagnose(context));
         stringBuilder.append("\n\n\n");
-        stringBuilder.append(getAllNames());
+        stringBuilder.append(getAllNames(context));
         stringBuilder.append("\n\n\n");
-        stringBuilder.append(getAllMessages(messages));
+        stringBuilder.append(getAllMessages(context, messages));
 
         int x = 10, y = 25;
         for (String line : stringBuilder.toString().split("\n")) {
@@ -46,29 +49,30 @@ public class PdfProducer {
         }
 
         myPdfDocument.close();
+        Toast.makeText(context, R.string.exported_to_pdf_file, Toast.LENGTH_SHORT).show();
     }
 
-    private static String getAllMessages(List<ChatMessage> messages) {
+    private static String getAllMessages(Context context, List<ChatMessage> messages) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < messages.size() - 1; i++) {
             if (messages.get(i).getIsUserMessage()) {
-                stringBuilder.append("User: ").append(messages.get(i).getMessage()).append("\n\n");
+                stringBuilder.append(context.getString(R.string.user)).append(messages.get(i).getMessage()).append("\n\n");
             } else {
-                stringBuilder.append("Doctor: ").append(messages.get(i).getMessage()).append("\n\n");
+                stringBuilder.append(context.getString(R.string.doctor)).append(messages.get(i).getMessage()).append("\n\n");
             }
         }
-        stringBuilder.append("Doctor: Your diagnosis: ").append(messages.get(messages.size() - 1).getMessage()).append("\n\n");
+        stringBuilder.append(context.getString(R.string.doctor_your_diagnosis)).append(messages.get(messages.size() - 1).getMessage()).append("\n\n");
         return stringBuilder.toString();
     }
 
-    private static String getDiagnose() {
+    private static String getDiagnose(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Diagnose: \n");
+        stringBuilder.append(context.getString(R.string.diagnose_with_white_space));
         try {
             JSONArray conditions = new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray());
             for (int i = 0; i < conditions.length(); i++) {
-                stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
-                stringBuilder.append("Probability: ").append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
+                stringBuilder.append(R.string.name).append(conditions.getJSONObject(i).getString("common_name")).append("\n");
+                stringBuilder.append(R.string.probability).append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
                 stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
             }
         } catch (JSONException e) {
@@ -77,16 +81,16 @@ public class PdfProducer {
         return stringBuilder.toString();
     }
 
-    private static String getAllNames() {
+    private static String getAllNames(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Symptoms: \n");
+        stringBuilder.append(context.getString(R.string.symptoms));
         JSONArray jsonArray = RequestUtil.getInstance().getEvidenceArray();
         StringBuilder stringBuilderPresent = new StringBuilder();
-        stringBuilderPresent.append("Present: \n");
+        stringBuilderPresent.append(context.getString(R.string.present));
         StringBuilder stringBuilderAbsent = new StringBuilder();
-        stringBuilderAbsent.append("Absent: \n");
+        stringBuilderAbsent.append(context.getString(R.string.absent));
         StringBuilder stringBuilderNotKnow = new StringBuilder();
-        stringBuilderNotKnow.append("Not know: \n");
+        stringBuilderNotKnow.append(context.getString(R.string.unknown));
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 if (jsonArray.getJSONObject(i).getString("choice_id").equals("present")) {

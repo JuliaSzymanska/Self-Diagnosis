@@ -43,4 +43,13 @@
     <string name="export_to_pdf">EXPORT TO PDF</string>
     <string name="name">Name: \u0020</string>
     <string name="probability">Probability: \u0020</string>
+    <string name="exported_to_pdf_file">Exported to PDF file</string>
+    <string name="user">User: \u0020</string>
+    <string name="doctor">e-Doctor: \u0020</string>
+    <string name="doctor_your_diagnosis">Doctor: Your diagnosis: \u0020</string>
+    <string name="diagnose_with_white_space">Diagnose: \u0020</string>
+    <string name="symptoms">Symptoms: \u0020</string>
+    <string name="present">Present: \u0020</string>
+    <string name="absent">Absent: \u0020</string>
+    <string name="unknown">Unknown: \u0020</string>
 </resources>

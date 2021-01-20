@@ -27,7 +27,6 @@ import java.util.Optional;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
-import tech.szymanskazdrzalik.self_diagnosis.api.MakeTranslatorRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
@@ -187,7 +186,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if (requestCode == 300) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
-                    PdfProducer.createPdfFile(SampleSQLiteDBHelper.getAllMessagesForChat(this, GlobalVariables.getInstance().getCurrentChat().get().getId()));
+                    PdfProducer.createPdfFile(this, SampleSQLiteDBHelper.getAllMessagesForChat(this,
+                            GlobalVariables.getInstance().getCurrentChat().get().getId()));
                 }
             }
         }
