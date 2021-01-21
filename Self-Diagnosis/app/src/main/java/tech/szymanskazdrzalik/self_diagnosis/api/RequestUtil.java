@@ -37,12 +37,29 @@ public class RequestUtil {
         User user = GlobalVariables.getInstance().getCurrentUser().get();
         try {
             jsonObject.put("sex", user.getFullGenderName());
-            JSONObject ageJson = new JSONObject();
-            ageJson.put("value", user.getAge());
-            jsonObject.put("age", ageJson);
         } catch (JSONException e) {
             throw new JSONException(e);
         }
+    }
+
+    public static void addAgeToJsonObjectForCovid(JSONObject jsonObject) throws JSONException {
+        if (!GlobalVariables.getInstance().getCurrentUser().isPresent()) {
+            // TODO: 16.12.2020 Change to user not found exception
+            throw new RuntimeException();
+        }
+        User user = GlobalVariables.getInstance().getCurrentUser().get();
+        jsonObject.put("age", user.getAge());
+    }
+
+    public static void addAgeToJsonObject(JSONObject jsonObject) throws JSONException {
+        if (!GlobalVariables.getInstance().getCurrentUser().isPresent()) {
+            // TODO: 16.12.2020 Change to user not found exception
+            throw new RuntimeException();
+        }
+        User user = GlobalVariables.getInstance().getCurrentUser().get();
+        JSONObject ageJson = new JSONObject();
+        ageJson.put("value", user.getAge());
+        jsonObject.put("age", ageJson);
     }
 
     public static Map<String, String> getDefaultHeaders(Context context) {

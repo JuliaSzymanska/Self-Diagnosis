@@ -51,10 +51,12 @@ public abstract class DiagnoseRequest {
 
     public DiagnoseRequest(ChatActivity chatActivity) {
         this(chatActivity, null);
+        System.out.println("DiagnoseRequest po");
     }
 
     public DiagnoseRequest(ChatActivity chatActivity, @Nullable String userAnswer) {
         this.errorListener = error -> {
+            System.out.println(error);
             chatActivity.onRequestFailure();
         };
         listener = chatActivity;
@@ -86,6 +88,8 @@ public abstract class DiagnoseRequest {
         if (userAnswer != null) {
             listener.addUserMessage(userAnswer);
         }
+
+        System.out.println("Json" + this.requestBody);
     }
 
     protected Response.Listener<JSONObject> getSuccessListener() {
