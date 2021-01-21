@@ -52,4 +52,6 @@
     <string name="present">Present: \u0020</string>
     <string name="absent">Absent: \u0020</string>
     <string name="unknown">Unknown: \u0020</string>
+    <string name="notification_title">Is everything alright?</string>
+    <string name="notification_message">You didn\'t diagnose lately</string>
 </resources>

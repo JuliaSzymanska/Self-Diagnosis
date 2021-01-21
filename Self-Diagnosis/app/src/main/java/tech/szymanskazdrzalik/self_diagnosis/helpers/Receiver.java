@@ -27,10 +27,10 @@ public class Receiver extends BroadcastReceiver {
         PendingIntent pi = PendingIntent.getActivity(context, NotificationHelper.REQUEST_CODE, intent, 0);
         createNotificationChannel(context);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.doctor)
-                .setContentTitle("Title")
+                .setSmallIcon(R.drawable.stethoscope)
+                .setContentTitle(context.getString(R.string.notification_title))
                 .setChannelId(NOTIFICATION_CHANNEL_ID)
-                .setContentText("Some text");
+                .setContentText(context.getString(R.string.notification_message));
         mBuilder.setContentIntent(pi);
         mBuilder.setDefaults(Notification.DEFAULT_SOUND);
         mBuilder.setAutoCancel(true);
