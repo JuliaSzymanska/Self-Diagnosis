@@ -79,6 +79,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     }
 
     public void openCovid(View v){
+        GlobalVariables.getInstance().setCurrentChat(null);
         Intent intent = new Intent(Menu.this, ChatActivity.class);
         intent.putExtra(getString(R.string.is_covid), true);
         startActivity(intent);

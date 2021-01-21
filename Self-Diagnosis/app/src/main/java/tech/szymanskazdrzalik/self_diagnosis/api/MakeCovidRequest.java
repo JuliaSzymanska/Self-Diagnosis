@@ -14,6 +14,7 @@ public class MakeCovidRequest extends DiagnoseRequest {
     }
 
     public MakeCovidRequest(ChatActivity chatActivity) {
-        super(chatActivity);
+        this(chatActivity, null);
+        System.out.println("Wszedles do MakeCovidRequest po super");
     }
 }
