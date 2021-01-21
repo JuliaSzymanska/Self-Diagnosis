@@ -39,6 +39,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
 // TODO: 17.01.2021 nie zapisywac pierwszej wiadomosci
 // TODO: 20.01.2021 zapytanie o zezwolenie na dostep rpzy odczycie obrazka
+// TODO: 21.01.2021 nie zapisywac diagnozy w ktorej nie zostalo wyslane zadne zapytanie
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 

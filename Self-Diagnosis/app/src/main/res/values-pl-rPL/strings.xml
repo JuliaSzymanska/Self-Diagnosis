@@ -26,11 +26,9 @@
     <string name="create_new_profile">Stwórz nowy profil</string>
     <string name="choose_profile">Wybierz profil</string>
     <string name="app_description">Twoja aplikacja do samo diagnozy</string>
-    <string name="self_diagnosis" translatable="false">Samodiagnoza</string>
     <string name="error_messsage_response_doctor">Przepraszam, nie zrozumiałem Twojej wiadomości, mógłbyś powtórzyć?</string>
     <string name="finish_diagnose_question">Wierzę, że znam Twoją diagnozę. \nCzy chcesz zakończyć?</string>
     <string name="most_likely_condition">Najprawdopodobniej dolega Ci:</string>
-    <string name="app_name" translatable="false">SamoDiagnoza</string>
     <string name="export_to_pdf">Eksport do PDF</string>
     <string name="name">"Nazwa: \u0020"</string>
     <string name="probability">"Prawdopodobieństwo: \u0020"</string>
@@ -42,4 +40,7 @@
     <string name="present">Występujące: \u0020</string>
     <string name="absent">Niewystępujące: \u0020</string>
     <string name="unknown">Niepotwierdzone: \u0020</string>
+    <string name="exported_to_pdf_file">Eksportuj do pliku PDF</string>
+    <string name="notification_title">Czy wszystko u Ciebie w porządku?</string>
+    <string name="notification_message">Dawno już się nie diagnozowałeś</string>
 </resources>
