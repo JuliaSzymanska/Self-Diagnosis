@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import tech.szymanskazdrzalik.self_diagnosis.api.MakeCovidRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
@@ -298,7 +299,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             jsonObject.put("choice_id", choice);
             jsonObject.put("name", name);
             RequestUtil.getInstance().addToEvidenceArray(jsonObject);
-            new MakeDiagnoseRequest(this, userMessage);
+            if (this.isCovid) {
+                new MakeCovidRequest(this, userMessage);
+            } else {
+                new MakeDiagnoseRequest(this, userMessage);
+            }
             binding.inputLayout.inputsContainer.removeAllViews();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -356,7 +361,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         Button buttonNo = (Button) View.inflate(this, R.layout.answer_button, null);
         buttonNo.setText(R.string.no);
         buttonNo.setOnClickListener(v -> {
-            new MakeDiagnoseRequest(this, getString(R.string.no));
+            if (this.isCovid) {
+                new MakeCovidRequest(this, getString(R.string.no));
+            } else {
+                new MakeDiagnoseRequest(this, getString(R.string.no));
+            }
         });
 
         binding.inputLayout.inputsContainer.addView(buttonYes);
