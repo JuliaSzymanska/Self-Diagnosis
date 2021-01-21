@@ -1,16 +1,16 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.icu.util.Calendar;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +18,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
+import tech.szymanskazdrzalik.self_diagnosis.db.DbBitmapUtility;
 import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
@@ -39,106 +39,126 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link AddProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddProfileFragment extends Fragment {
+    // TODO: 16.01.2021
+    //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
 
-    // TODO: 02.11.2020 - koniecznie przed prezentacją
-    //  Menu po cofnięciu się w czacie z botem - Zmiana użytkownika, dodanie nowego użytkownika, historia leczenia użytkownika
-    //  Dodać pokazowe przyciski do odpowiedzi do bota (nie powiązane z api, na rzecz prezentacji)
-
-    // TODO: 02.11.2020 Mieszane odczucia co do kiedy
-    //  Pierwsze uruchomienie aplikacj - utworzenie uzytkownika ewentualnie pokaz możliwości aplikacji
-
-    // TODO: 02.11.2020 - raczej po prezentacji
-    //  Baza danych - dodać tabelę z czatami, powiązane z id użytkownika
-    //  Baza danych - zapisywać rozmowę - diagnoza, zapisujemy jednynie ukonczone diagnozy
-    //  Interakcja z api
-    //  Dodawanie zdj profilowego (dodać do bazy danych)
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private final Calendar myCalendar = Calendar.getInstance();
     private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    GlobalVariables globalVariables = GlobalVariables.getInstance();
     private FragmentAddProfileBinding binding;
-    private boolean isNewUser = false;
-    private String userName;
-    private Date userBirthDate;
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
-        // TODO Auto-generated method stub
-        myCalendar.set(Calendar.YEAR, year);
-        myCalendar.set(Calendar.MONTH, monthOfYear);
-        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
     };
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
-            v -> new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-
+            v -> new DatePickerDialog(getContext(), R.style.CalendarTheme, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+    private boolean isNewUser = false;
     private String userGender;
-    private Bitmap userPicture;
-    GlobalVariables globalVariables;
+    private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userGender = getString(R.string.female_sign);
+            binding.female.clearColorFilter();
+            binding.male.setColorFilter(getBlackAndWhiteFilter());
+        }
+    };
+    private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userGender = getString(R.string.male_sign);
+            binding.male.clearColorFilter();
+            binding.female.setColorFilter(getBlackAndWhiteFilter());
+        }
+    };
+    private AddProfileFragmentListener mListener;
     private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: 04.11.2020 ustawiać ID
-            // TODO: 04.11.2020 sprawdzieć czy username jest pusty, czy gender byl ustawiony itp itd
-            userName = binding.editProfileName.getText().toString();
-            int id = 0;
-            User user = new User(id, userName, userBirthDate, userGender, userPicture);
+            if (areInputsEmpty()) {
+                return;
+            }
+
+            String userName = binding.editProfileName.getText().toString();
+            Date userBirthDate = myCalendar.getTime();
+
+            Bitmap userPicture = DbBitmapUtility.getBitmapFromDrawable(binding.addUserImage.getDrawable());
+            if (userPicture == null || userPicture.sameAs(getDefaultImage(getString(R.string.female_sign))) || userPicture.sameAs(getDefaultImage(getString(R.string.male_sign)))) {
+                userPicture = getDefaultImage(userGender);
+            }
+
+            int currentID;
+
+            if (isNewUser) {
+                currentID = SampleSQLiteDBHelper.getNextUserIdAvailable(getContext());
+            } else {
+                currentID = globalVariables.getCurrentUser().get().getId();
+            }
+
+            User user = new User(currentID, userName, userBirthDate, userGender, userPicture);
             GlobalVariables.getInstance().setCurrentUser(user);
             SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
-            SharedPreferencesHelper.saveUserId(getContext(), id);
+            SharedPreferencesHelper.saveUserId(getContext(), currentID);
+
             // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
+            if (mListener != null) {
+                mListener.callback(getString(R.string.reload));
+            }
             getActivity().onBackPressed();
         }
     };
 
     public AddProfileFragment() {
-        // Required empty public constructor
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment AddProfile.
      */
-    // TODO: Rename and change types and number of parameters
-    public static AddProfileFragment newInstance(String param1, String param2) {
+    public static AddProfileFragment newInstance() {
         AddProfileFragment fragment = new AddProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void setCalendarDate(int year, int monthOfYear, int dayOfMonth) {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    }
+
+    private boolean areInputsEmpty() {
+        String userName = binding.editProfileName.getText().toString();
+        Date userBirthDate = myCalendar.getTime();
+        if (userName == null || userBirthDate == null || userGender == null) {
+            Toast.makeText(getContext(), getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
+    private Bitmap getDefaultImage(String gender) {
+        if (gender.equals(getString(R.string.female_sign))) {
+            return DbBitmapUtility.getBitmapFromDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.female));
+        }
+        return DbBitmapUtility.getBitmapFromDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.male));
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (AddProfileFragmentListener) context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
-
-    private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            userGender = "F";
-            binding.female.clearColorFilter();
-            binding.male.setColorFilter(getBlackAndWhiteFilter());
-        }
-    };
 
     private ColorMatrixColorFilter getBlackAndWhiteFilter() {
         ColorMatrix matrix = new ColorMatrix();
@@ -146,55 +166,74 @@ public class AddProfileFragment extends Fragment {
         return new ColorMatrixColorFilter(matrix);
     }
 
-    private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            userGender = "M";
-            binding.male.clearColorFilter();
-            binding.female.setColorFilter(getBlackAndWhiteFilter());
-        }
-    };
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentAddProfileBinding.inflate(inflater, container, false);
+        binding.female.setColorFilter(getBlackAndWhiteFilter());
+        binding.male.setColorFilter(getBlackAndWhiteFilter());
+
+        getArgumentsFromBundle();
+
+
+        if (!this.isNewUser) {
+            setInputsToCurrentUser();
+        }
+
+        setListeners();
+
+        return binding.getRoot();
+    }
+
+    private void setListeners() {
         binding.addUserImage.setOnClickListener(this.addProfileImageListener);
         binding.male.setOnClickListener(genderMaleOnClick);
         binding.female.setOnClickListener(genderFemaleOnClick);
         binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
         binding.fgAddButton.setOnClickListener(addButtonOnClick);
-        Bundle bundle = this.getArguments();
-        binding.female.setColorFilter(getBlackAndWhiteFilter());
-        binding.male.setColorFilter(getBlackAndWhiteFilter());
-        if (bundle != null) {
-            this.isNewUser = bundle.getBoolean("is_new_user");
-        }
-        globalVariables = GlobalVariables.getInstance();
-        if (!this.isNewUser) {
-            setCurrentUser();
-        }
-        ((Menu) getActivity()).setPicture();
-        return binding.getRoot();
     }
 
-    private void setCurrentUser(){
-        if (globalVariables.getCurrentUser() != null) {
-            userName = globalVariables.getCurrentUser().getName();
-            binding.editProfileName.setText(userName);
-            userBirthDate = globalVariables.getCurrentUser().getBirthDate();
-            String birthString = new SimpleDateFormat("yyyy-MM-dd").format(userBirthDate);
+    private void getArgumentsFromBundle() {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            this.isNewUser = bundle.getBoolean(getString(R.string.is_new_user));
+            if (!globalVariables.getCurrentUser().isPresent()) {
+                this.isNewUser = true;
+            }
+        }
+    }
+
+    private void setInputsToCurrentUser() {
+        if (globalVariables.getCurrentUser().isPresent()) {
+            setFieldsFromGlobalVariable();
+
+            binding.editProfileName.setText(globalVariables.getCurrentUser().get().getName());
+
+            String birthString = new SimpleDateFormat(getString(R.string.yyyy_mm_dd)).format(globalVariables.getCurrentUser().get().getBirthDate());
             binding.dateEditTextFragmentAddProfile.setText(birthString);
-            userGender = globalVariables.getCurrentUser().getGender();
-            System.out.println(userGender);
-            if (userGender.equals("M")) {
+
+            if (userGender.equals(getString(R.string.male_sign))) {
                 binding.male.clearColorFilter();
-            } else if (userGender.equals("F")) {
+            } else if (userGender.equals(getString(R.string.female_sign))) {
                 binding.female.clearColorFilter();
             }
-            binding.fgAddButton.setText("Update");
+            binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().get().getPicture());
+            binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
+            binding.fgAddButton.setText(getString(R.string.update_string));
         }
+    }
+
+    private void setFieldsFromGlobalVariable() {
+        // TODO: 16.12.2020 Test
+        if (!globalVariables.getCurrentUser().isPresent()) {
+            return;
+        }
+        this.userGender = globalVariables.getCurrentUser().get().getGender();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(globalVariables.getCurrentUser().get().getBirthDate());
+        setCalendarDate(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     private void openImagePicker() {
@@ -207,19 +246,13 @@ public class AddProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             Uri selected = Objects.requireNonNull(data).getData();
-            try {
-                userPicture = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), selected);
-            } catch (IOException e) {
-                // TODO: 04.11.2020
-                e.printStackTrace();
-            }
             binding.addUserImage.setImageURI(selected);
+            binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
     private void updateLabel() {
-        binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_FORMAT.format(myCalendar.getTime()));
-        this.userBirthDate = myCalendar.getTime();
+        binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_USER_FORMAT.format(myCalendar.getTime()));
     }
 
     @Override
@@ -228,8 +261,12 @@ public class AddProfileFragment extends Fragment {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openImagePicker();
             } else {
-                Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public interface AddProfileFragmentListener {
+        void callback(String result);
     }
 }

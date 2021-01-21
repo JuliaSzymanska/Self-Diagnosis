@@ -8,13 +8,17 @@ android {
 
     defaultConfig {
         applicationId "tech.szymanskazdrzalik.self_diagnosis"
-        // todo: bylo 21, potrzebuje do kalendarza
-        minSdkVersion 24
+        minSdkVersion 27
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/INDEX.LIST'
     }
 
     buildFeatures {
@@ -33,12 +37,17 @@ android {
 }
 
 dependencies {
-
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation platform('com.google.cloud:libraries-bom:16.2.1')
+    implementation 'com.google.cloud:google-cloud-translate'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    implementation 'com.google.http-client:google-http-client-gson:1.38.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

@@ -4,43 +4,63 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImage"
         android:layout_width="50dp"
+        android:background="@android:color/transparent"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
         android:onClick="onProfilePictureClick"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/female" />
+        android:src="@drawable/female"
+        app:civ_border_color="@color/orange_dark"
+        app:civ_border_width="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/addNewProfileButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/profileImage"
+        android:background="@drawable/add_user_black"
+        android:onClick="onCreateNewProfileClick" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
         android:layout_centerVertical="true"
-        android:text="@string/diagnosis"
+        android:text="@string/history"
+        android:fontFamily="sans-serif-medium"
         android:textSize="24sp" />
-
-    <Button
-        android:id="@+id/addNewProfileButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="5dp"
-        android:onClick="onCreateNewProfileClick"
-        android:background="@drawable/add_user_black" />
 
     <Button
         android:id="@+id/changeProfileButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
+       android:layout_toStartOf="@id/createNewConversationButton"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="65dp"
-        android:background="@drawable/change_user" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/change_user"
+        android:onClick="onChangeProfileClick" />
+
+    <Button
+        android:id="@+id/createNewConversationButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+       android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/add_new_chat"
+        android:onClick="newChatButtonOnClick" />
 
 </RelativeLayout>

@@ -4,15 +4,52 @@
     <string name="create_new_profile">Create new profile</string>
     <string name="choose_profile">Choose profile</string>
     <string name="let_s_diagnose">Diagnose</string>
-    <string name="hello_tom">Hello Tom!</string>
     <string name="edoctor">eDoctor</string>
     <string name="profile_name">Profile name:</string>
     <string name="sex">Sex:</string>
     <string name="birth_date">Birth date:</string>
-    <string name="yyyy_mm_dd">YYYY-MM-DD</string>
+    <string name="yyyy_mm_dd" translatable="false">YYYY-MM-DD</string>
     <string name="add">Add</string>
     <string name="diagnosis">Diagnosis</string>
-    <string name="type_your_symptoms">Type Your symptoms...</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="type_your_symptoms">Type Your symptoms…</string>
+    <string name="is_first_run" translatable="false">isFirstRun</string>
+    <string name="update_string">Update</string>
+    <string name="choose_you_profile">Choose you profile</string>
+    <string name="reload" translatable="false">reload</string>
+    <string name="default_message_delete_me" translatable="false">I feel pain in my knee.</string>
+    <string name="app_description">Your disease self diagnosis chat app</string>
+    <string name="openChat" translatable="false">open_chat</string>
+    <string name="create_new_conversation">Create new conversation</string>
+    <string name="history">History</string>
+    <string name="error_messsage_response_doctor">Sorry, I was unable to understand your message, could you repeat it?</string>
+    <string name="finish">Finish</string>
+    <string name="how_can_i_help_you">\nHow can I help you today?</string>
+    <string name="hallo_only">Hello \u0020</string>
+    <string name="hello_with_exclamation_mark">Hello! \u0020</string>
+    <string name="input_can_not_be_empty">Input can not be empty.</string>
+    <string name="finish_diagnose_question">I believe I know your diagnose. \nDo you want to finish?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="is_new_user" translatable="false">is_new_user</string>
+    <string name="female_sign" translatable="false">F</string>
+    <string name="male_sign" translatable="false">M</string>
+    <string name="fill_all_inputs">Fill all the inputs</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="user_settings" translatable="false">user_settings</string>
+    <string name="user_id" translatable="false">user_id</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
+    <string name="most_likely_condition">Your condition is most likely:</string>
+    <string name="export_to_pdf">EXPORT TO PDF</string>
+    <string name="name">Name: \u0020</string>
+    <string name="probability">Probability: \u0020</string>
+    <string name="exported_to_pdf_file">Exported to PDF file</string>
+    <string name="user">User: \u0020</string>
+    <string name="doctor">e-Doctor: \u0020</string>
+    <string name="doctor_your_diagnosis">Doctor: Your diagnosis: \u0020</string>
+    <string name="diagnose_with_white_space">Diagnose: \u0020</string>
+    <string name="symptoms">Symptoms: \u0020</string>
+    <string name="present">Present: \u0020</string>
+    <string name="absent">Absent: \u0020</string>
+    <string name="unknown">Unknown: \u0020</string>
 </resources>

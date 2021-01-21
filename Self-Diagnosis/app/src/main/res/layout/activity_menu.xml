@@ -1,81 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Menu">
 
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/layoutToBeReplacedWithFragmentInMenu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/layoutToBeReplacedWithFragmentInMenu">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/menuTop1Bar"
-            layout="@layout/menu_top_bar" />
-
-        <LinearLayout
+            layout="@layout/menu_top_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp">
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:padding="5dp"
-                android:orientation="vertical">
+        <ListView
+            android:id="@+id/chatList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/menuTop1Bar"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="5dp"
+            android:dividerHeight="6.0sp"
+            android:orientation="horizontal"
+            android:padding="5dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:text="28.11.2019"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:text="17:11"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/border"
-                android:padding="5dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:text="15.10.2019"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/light_orange"
-                    android:text="12:47"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </FrameLayout>
+    </RelativeLayout>
 </RelativeLayout>
