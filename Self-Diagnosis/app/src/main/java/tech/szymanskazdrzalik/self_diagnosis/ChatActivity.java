@@ -27,7 +27,6 @@ import java.util.Optional;
 
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeDiagnoseRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.MakeParseRequest;
-import tech.szymanskazdrzalik.self_diagnosis.api.MakeTranslatorRequest;
 import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
@@ -151,8 +150,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         try {
             JSONArray conditions = new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray());
             for (int i = 0; i < conditions.length(); i++) {
-                stringBuilder.append("Name: ").append(conditions.getJSONObject(i).getString("common_name")).append("\n");
-                stringBuilder.append("Probability: ").append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
+                stringBuilder.append(getString(R.string.name)).append(conditions.getJSONObject(i).getString("common_name")).append("\n");
+                stringBuilder.append(getString(R.string.probability)).append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
                 stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
             }
             advancedTV.setText(stringBuilder.toString());
@@ -187,7 +186,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if (requestCode == 300) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
-                    PdfProducer.createPdfFile(SampleSQLiteDBHelper.getAllMessagesForChat(this, GlobalVariables.getInstance().getCurrentChat().get().getId()));
+                    PdfProducer.createPdfFile(this, SampleSQLiteDBHelper.getAllMessagesForChat(this,
+                            GlobalVariables.getInstance().getCurrentChat().get().getId()));
                 }
             }
         }
