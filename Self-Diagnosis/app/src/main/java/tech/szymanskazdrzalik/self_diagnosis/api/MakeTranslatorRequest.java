@@ -19,6 +19,5 @@ public class MakeTranslatorRequest {
         String apiLangTarget = "en";
         String googleApiUrl = TranslatorApiClass.getInstance(chatActivity).getUrl() + "?key=" + apiKey + "&source=" + apiLangSource + "&target=" + apiLangTarget + "&q=" + text;
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.GET, googleApiUrl, null, null, successListener, errorListener));
-        System.out.println("wyslano zapytanie");
     }
 }
