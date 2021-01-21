@@ -1,5 +1,7 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivitySplashScreenBinding;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.NotificationHelper;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.Receiver;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
+
+import static tech.szymanskazdrzalik.self_diagnosis.helpers.NotificationHelper.REQUEST_CODE;
 
 public class SplashActivity extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
 
@@ -72,6 +78,9 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
         binding.tvName.setAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_for_title));
         binding.tvDesc.setAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_for_description));
 
+        Intent intent = new Intent(SplashActivity.this, Receiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(SplashActivity.this, REQUEST_CODE, intent, 0);
+        NotificationHelper.setNotification(pendingIntent, getApplicationContext());
 
         this.loadThread = new Thread(this.loadRunnable);
         this.loadThread.start();
