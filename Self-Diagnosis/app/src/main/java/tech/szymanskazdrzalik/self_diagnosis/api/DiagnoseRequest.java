@@ -103,4 +103,12 @@ public abstract class DiagnoseRequest {
     protected JSONObject getRequestBody() {
         return requestBody;
     }
+
+    public interface Callable {
+        void call(JSONObject jsonObject);
+    }
+
+    protected void addAgeToRequestBody(Callable callable) {
+        callable.call(this.requestBody);
+    }
 }
