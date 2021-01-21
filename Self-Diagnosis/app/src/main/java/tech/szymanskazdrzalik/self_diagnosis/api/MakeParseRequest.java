@@ -38,7 +38,7 @@ public class MakeParseRequest {
         this.context = chatActivity;
         this.infermedicaApiClass = InfermedicaApiClass.getInstance(context);
         this.apiRequestQueue = ApiRequestQueue.getInstance(context);
-        this.url = this.infermedicaApiClass.getUrl() + "/parse";
+        this.url = this.infermedicaApiClass.getUrl() + "/v3" + "/parse";
         this.userMessage = text;
 
         this.errorListener = error -> {

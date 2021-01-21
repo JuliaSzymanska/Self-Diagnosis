@@ -16,7 +16,7 @@ public class InfermedicaApiClass {
 
     private static final InfermedicaApiClass INSTANCE = new InfermedicaApiClass();
 
-    private static final String url = "https://api.infermedica.com/v3";
+    private static final String url = "https://api.infermedica.com";
     private static String id;
     private static String key;
 
