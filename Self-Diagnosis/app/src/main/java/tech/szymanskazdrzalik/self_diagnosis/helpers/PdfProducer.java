@@ -68,11 +68,12 @@ public class PdfProducer {
     private static String getDiagnose(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(context.getString(R.string.diagnose_with_white_space));
+        stringBuilder.append("\n");
         try {
             JSONArray conditions = new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray());
             for (int i = 0; i < conditions.length(); i++) {
-                stringBuilder.append(R.string.name).append(conditions.getJSONObject(i).getString("common_name")).append("\n");
-                stringBuilder.append(R.string.probability).append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
+                stringBuilder.append(context.getString(R.string.name)).append(conditions.getJSONObject(i).getString("common_name")).append("\n");
+                stringBuilder.append(context.getString(R.string.probability)).append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
                 stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
             }
         } catch (JSONException e) {
