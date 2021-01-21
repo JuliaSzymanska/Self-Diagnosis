@@ -1,6 +1,7 @@
 package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -18,18 +19,31 @@ public class Receiver extends BroadcastReceiver {
         showNotification(context);
     }
 
+    private final static String NOTIFICATION_CHANNEL_NAME = "SelfDiagnosis_Notification_Channel";
+    private final static String NOTIFICATION_CHANNEL_ID = "SelfDiagnosis_Channel_01";
+
     public void showNotification(Context context) {
         Intent intent = new Intent(context, SplashActivity.class);
         PendingIntent pi = PendingIntent.getActivity(context, NotificationHelper.REQUEST_CODE, intent, 0);
+        createNotificationChannel(context);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.doctor)
                 .setContentTitle("Title")
+                .setChannelId(NOTIFICATION_CHANNEL_ID)
                 .setContentText("Some text");
         mBuilder.setContentIntent(pi);
         mBuilder.setDefaults(Notification.DEFAULT_SOUND);
         mBuilder.setAutoCancel(true);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(NotificationHelper.REQUEST_CODE, mBuilder.build());
+    }
+
+    private void createNotificationChannel(Context context) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        int importance = NotificationManager.IMPORTANCE_LOW;
+        NotificationChannel mChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance);
+        mChannel.enableLights(true);
+        mNotificationManager.createNotificationChannel(mChannel);
     }
 
 
