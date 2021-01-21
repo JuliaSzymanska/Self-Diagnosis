@@ -124,14 +124,18 @@ public class PdfProducer {
     private static String getAllNames(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(context.getString(R.string.symptoms));
-        stringBuilder.append(", \n");
+        stringBuilder.append("\n");
         JSONArray jsonArray = RequestUtil.getInstance().getEvidenceArray();
         StringBuilder stringBuilderPresent = new StringBuilder();
         stringBuilderPresent.append(context.getString(R.string.present));
+        stringBuilder.append("\n");
         StringBuilder stringBuilderAbsent = new StringBuilder();
         stringBuilderAbsent.append(context.getString(R.string.absent));
+        stringBuilder.append("\n");
         StringBuilder stringBuilderNotKnow = new StringBuilder();
         stringBuilderNotKnow.append(context.getString(R.string.unknown));
+        stringBuilder.append("\n");
+
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 if (jsonArray.getJSONObject(i).getString("choice_id").equals("present")) {
