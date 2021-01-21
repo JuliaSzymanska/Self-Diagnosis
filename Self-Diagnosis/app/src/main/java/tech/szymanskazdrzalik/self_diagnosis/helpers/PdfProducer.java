@@ -85,6 +85,7 @@ public class PdfProducer {
     private static String getAllNames(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(context.getString(R.string.symptoms));
+        stringBuilder.append(", \n");
         JSONArray jsonArray = RequestUtil.getInstance().getEvidenceArray();
         StringBuilder stringBuilderPresent = new StringBuilder();
         stringBuilderPresent.append(context.getString(R.string.present));
