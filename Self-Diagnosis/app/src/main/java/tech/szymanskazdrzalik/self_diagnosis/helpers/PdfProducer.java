@@ -2,6 +2,7 @@ package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.os.Environment;
 import android.widget.Toast;
@@ -22,23 +23,61 @@ public class PdfProducer {
 
     public static void createPdfFile(Context context, List<ChatMessage> messages) {
         PdfDocument myPdfDocument = new PdfDocument();
-        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(300, 600, 1).create();
+        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(1200, 2010, 1).create();
+        PdfDocument.PageInfo myPageInfo2 = new PdfDocument.PageInfo.Builder(1200, 2010, 1).create();
         PdfDocument.Page myPage = myPdfDocument.startPage(myPageInfo);
         Paint myPaint = new Paint();
+        myPaint.setTextSize(30);
+        Paint titlePaint = new Paint();
+        titlePaint.setTextAlign(Paint.Align.CENTER);
+        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        titlePaint.setTextSize(70);
+//        Bitmap bmp;
+//        bmp = BitmapFactory.decodeResource.getResources(),R.drawable.doctor)
+
+        myPage.getCanvas().drawText(context.getString(R.string.app_name), 1200/2, 100, titlePaint);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getDiagnose(context));
         stringBuilder.append("\n\n\n");
         stringBuilder.append(getAllNames(context));
         stringBuilder.append("\n\n\n");
-        stringBuilder.append(getAllMessages(context, messages));
 
-        int x = 10, y = 25;
+
+        int x = 30, y = 200;
         for (String line : stringBuilder.toString().split("\n")) {
             myPage.getCanvas().drawText(line, x, y, myPaint);
             y += myPaint.descent() - myPaint.ascent();
         }
 
         myPdfDocument.finishPage(myPage);
+        PdfDocument.Page myPage2 = myPdfDocument.startPage(myPageInfo2);
+        StringBuilder stringBuilder2 = new StringBuilder();
+        stringBuilder2.append(getAllMessages(context, messages));
+
+        y = 100;
+        int i = 0;
+        for (String line : stringBuilder2.toString().split("\n")) {
+//            if (y>1990) {
+//                myPdfDocument.finishPage(myPage2);
+//                PdfDocument.Page myPage3 = myPdfDocument.startPage(myPageInfo2);
+//
+//                myPage3.getCanvas().drawText(line, x, y, myPaint);
+//                y += myPaint.descent() - myPaint.ascent();
+//
+//                if (i++ == stringBuilder2.length() - 1)
+//                    myPdfDocument.finishPage(myPage3);
+//
+//            }
+//            else {
+                myPage2.getCanvas().drawText(line, x, y, myPaint);
+                y += myPaint.descent() - myPaint.ascent();
+//            }
+        }
+
+//        if (y<=1000)
+            myPdfDocument.finishPage(myPage2);
+
+
 
         String myFilePath = Environment.getExternalStorageDirectory().getPath() + "/Consultation_" + new Date() + ".pdf";
         File myFile = new File(myFilePath);
@@ -85,14 +124,18 @@ public class PdfProducer {
     private static String getAllNames(Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(context.getString(R.string.symptoms));
-        stringBuilder.append(", \n");
+        stringBuilder.append("\n");
         JSONArray jsonArray = RequestUtil.getInstance().getEvidenceArray();
         StringBuilder stringBuilderPresent = new StringBuilder();
         stringBuilderPresent.append(context.getString(R.string.present));
+        stringBuilderPresent.append("\n");
         StringBuilder stringBuilderAbsent = new StringBuilder();
         stringBuilderAbsent.append(context.getString(R.string.absent));
+        stringBuilderAbsent.append("\n");
         StringBuilder stringBuilderNotKnow = new StringBuilder();
         stringBuilderNotKnow.append(context.getString(R.string.unknown));
+        stringBuilderNotKnow.append("\n");
+
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 if (jsonArray.getJSONObject(i).getString("choice_id").equals("present")) {
