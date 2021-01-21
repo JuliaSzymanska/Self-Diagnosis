@@ -37,8 +37,9 @@
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:layout_centerVertical="true"
-        android:text="@string/history"
+        android:text="COVID"
         android:fontFamily="sans-serif-medium"
+        android:onClick="openCovid"
         android:textSize="24sp" />
 
     <Button

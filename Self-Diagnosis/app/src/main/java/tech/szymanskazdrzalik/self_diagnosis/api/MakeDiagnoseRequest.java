@@ -1,5 +1,7 @@
 package tech.szymanskazdrzalik.self_diagnosis.api;
 
+import androidx.annotation.Nullable;
+
 import com.android.volley.Response;
 
 import org.json.JSONArray;
@@ -43,39 +45,10 @@ public class MakeDiagnoseRequest {
             }
         }
     };
-    private Response.ErrorListener errorListener;
 
-    public MakeDiagnoseRequest(ChatActivity chatActivity, JSONArray jsonArray) {
+    private final Response.ErrorListener errorListener;
 
-        listener = chatActivity;
-
-        String url = InfermedicaApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
-
-        GlobalVariables globalVariables = GlobalVariables.getInstance();
-        if (!globalVariables.getCurrentUser().isPresent()) {
-            // TODO: 16.12.2020 dać tutaj wyjatek
-            System.out.println("User not found!");
-        }
-
-        Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
-
-        JSONObject jsonObject = new JSONObject();
-        try {
-
-            RequestUtil.addUserDataToJsonObject(jsonObject);
-            jsonObject.put("evidence", jsonArray);
-            JSONObject jsonObjectExtras = new JSONObject();
-            jsonObjectExtras.put("disable_groups", "true");
-            jsonObject.put("extras", jsonObjectExtras);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
-
-    }
-
-    public MakeDiagnoseRequest(ChatActivity chatActivity, String userAnswer) {
+    public MakeDiagnoseRequest(ChatActivity chatActivity, @Nullable String userAnswer) {
 
         this.errorListener = error -> {
             chatActivity.onRequestFailure();
@@ -96,6 +69,7 @@ public class MakeDiagnoseRequest {
         RequestUtil.addLanguageToInfermedicaHeaders(headers);
 
         JSONObject jsonObject = new JSONObject();
+
         try {
             JSONArray jsonArray = new JSONArray(RequestUtil.getInstance().getEvidenceArray().toString());
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -110,54 +84,14 @@ public class MakeDiagnoseRequest {
             e.printStackTrace();
         }
 
-        listener.addUserMessage(userAnswer);
+        if (userAnswer != null) {
+            listener.addUserMessage(userAnswer);
+        }
 
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
-
     }
 
     public MakeDiagnoseRequest(ChatActivity chatActivity) {
-
-        listener = chatActivity;
-
-        String url = InfermedicaApiClass.getInstance(chatActivity).getUrl() + "/diagnosis";
-
-        GlobalVariables globalVariables = GlobalVariables.getInstance();
-        if (!globalVariables.getCurrentUser().isPresent()) {
-            // TODO: 16.12.2020 dać tutaj wyjatek
-            System.out.println("User not found!");
-        }
-
-        this.errorListener = error -> {
-            chatActivity.onRequestFailure();
-            // TODO: 16.12.2020 Make show error message / show
-        };
-
-        Map<String, String> headers = RequestUtil.getDefaultHeaders(chatActivity);
-
-        RequestUtil.addLanguageToInfermedicaHeaders(headers);
-
-
-        JSONObject jsonObject = new JSONObject();
-
-
-        try {
-            JSONArray jsonArray = new JSONArray(RequestUtil.getInstance().getEvidenceArray().toString());
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonArray.getJSONObject(i).remove("name");
-            }
-            RequestUtil.addUserDataToJsonObject(jsonObject);
-            jsonObject.put("evidence", jsonArray);
-            JSONObject jsonObjectExtras = new JSONObject();
-            jsonObjectExtras.put("disable_groups", "true");
-            jsonObject.put("extras", jsonObjectExtras);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, headers, jsonObject, successListener, errorListener));
-
+        this(chatActivity, null);
     }
-
-    // TODO: 16.12.2020 Wyrzucić wspólne elementy wszystkich 3 metod do jednej metody
 }

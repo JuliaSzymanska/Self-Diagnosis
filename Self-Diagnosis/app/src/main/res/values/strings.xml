@@ -54,4 +54,5 @@
     <string name="unknown">Unknown: \u0020</string>
     <string name="notification_title">Is everything alright?</string>
     <string name="notification_message">You didn\'t diagnose lately</string>
+    <string name="is_covid" translatable="false">is_covid</string>
 </resources>

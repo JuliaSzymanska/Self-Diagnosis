@@ -78,6 +78,14 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         transaction.commit();
     }
 
+    public void openCovid(View v){
+        Intent intent = new Intent(Menu.this, ChatActivity.class);
+        intent.putExtra(getString(R.string.is_covid), true);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
+    }
+
     public void onChangeProfileClick(View v) {
         Fragment fragment = new ChangeProfile();
         Bundle bundle = new Bundle();

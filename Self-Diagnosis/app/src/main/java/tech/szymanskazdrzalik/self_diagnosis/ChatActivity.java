@@ -45,6 +45,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     Animation slide_out_messbox;
     String lastDoctorMessage = "";
+    Boolean isCovid;
     private ActivityChatBinding binding;
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
@@ -66,9 +67,25 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isCovid = getIntent().getBooleanExtra(getString(R.string.is_covid), false);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        setChatOnCreate();
+        slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
+        binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+            @Override
+            public void onChildViewAdded(View parent, View child) {
+                binding.scrollViewChat.post(() -> binding.scrollViewChat.fullScroll(View.FOCUS_DOWN));
+            }
+
+            @Override
+            public void onChildViewRemoved(View parent, View child) {
+            }
+        });
+    }
+
+    private void setChatOnCreate() {
         Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
         if (chat.isPresent()) {
             try {
@@ -86,17 +103,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         } else {
             this.createFirstMessageFromDoctor();
         }
-        slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
-        binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
-            @Override
-            public void onChildViewAdded(View parent, View child) {
-                binding.scrollViewChat.post(() -> binding.scrollViewChat.fullScroll(View.FOCUS_DOWN));
-            }
-
-            @Override
-            public void onChildViewRemoved(View parent, View child) {
-            }
-        });
     }
 
     private void setAllMessages(List<ChatMessage> messages) {
@@ -369,9 +375,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             String msg = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion();
             if (id != null && msg != null) {
                 try {
-                    this.onDoctorQuestionReceived(  GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId(),
-                                                    new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion()),
-                                                ""
+                    this.onDoctorQuestionReceived(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId(),
+                            new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion()),
+                            ""
                     );
                 } catch (JSONException e) {
                     e.printStackTrace();
