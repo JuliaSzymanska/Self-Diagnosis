@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -156,11 +157,12 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         valueTV.setText(text);
         TextView advancedTV = linearLayout.findViewById(R.id.advanced_info);
         StringBuilder stringBuilder = new StringBuilder();
+        DecimalFormat df2 = new DecimalFormat("##.##");
         try {
             JSONArray conditions = new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray());
             for (int i = 0; i < conditions.length(); i++) {
                 stringBuilder.append(getString(R.string.name)).append(conditions.getJSONObject(i).getString("common_name")).append("\n");
-                stringBuilder.append(getString(R.string.probability)).append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
+                stringBuilder.append(getString(R.string.probability)).append(df2.format(conditions.getJSONObject(i).getDouble("probability") * 100)).append("\n\n\n");
                 stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
             }
             advancedTV.setText(stringBuilder.toString());
