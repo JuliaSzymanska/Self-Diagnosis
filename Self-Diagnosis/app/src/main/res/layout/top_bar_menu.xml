@@ -24,34 +24,34 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:layout_marginStart="20dp"
+        android:layout_marginHorizontal="35dp"
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/profileImage"
+        android:layout_toStartOf="@id/changeProfileButton"
         android:background="@drawable/add_user_black"
         android:onClick="onCreateNewProfileClick" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="@android:color/transparent"
-        android:layout_centerVertical="true"
-        android:text="COVID"
-        android:fontFamily="sans-serif-medium"
-        android:onClick="openCovid"
-        android:textSize="24sp" />
 
     <Button
         android:id="@+id/changeProfileButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-       android:layout_toStartOf="@id/createNewConversationButton"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
         android:background="@drawable/change_user"
         android:onClick="onChangeProfileClick" />
+
+    <Button
+        android:id="@+id/textView"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_toStartOf="@id/createNewConversationButton"
+        android:layout_marginEnd="35dp"
+        android:layout_centerVertical="true"
+        android:fontFamily="sans-serif-medium"
+        android:background="@drawable/add_new_covid_chat"
+        android:onClick="openCovid"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/createNewConversationButton"
