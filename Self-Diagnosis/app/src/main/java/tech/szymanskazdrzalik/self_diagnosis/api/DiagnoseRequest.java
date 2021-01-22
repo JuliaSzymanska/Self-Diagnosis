@@ -18,6 +18,7 @@ public abstract class DiagnoseRequest {
     private final Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
+            System.out.println(response);
             boolean shouldStop = false;
             try {
                 try {
@@ -51,7 +52,6 @@ public abstract class DiagnoseRequest {
 
     public DiagnoseRequest(ChatActivity chatActivity) {
         this(chatActivity, null);
-        System.out.println("DiagnoseRequest po");
     }
 
     public DiagnoseRequest(ChatActivity chatActivity, @Nullable String userAnswer) {
@@ -88,8 +88,6 @@ public abstract class DiagnoseRequest {
         if (userAnswer != null) {
             listener.addUserMessage(userAnswer);
         }
-
-        System.out.println("Json" + this.requestBody);
     }
 
     protected Response.Listener<JSONObject> getSuccessListener() {
@@ -106,5 +104,13 @@ public abstract class DiagnoseRequest {
 
     protected JSONObject getRequestBody() {
         return requestBody;
+    }
+
+    protected interface Callable {
+        void call(JSONObject jsonObject) throws JSONException;
+    }
+
+    protected void addAgeToRequestBody(Callable callable) throws JSONException {
+        callable.call(this.requestBody);
     }
 }

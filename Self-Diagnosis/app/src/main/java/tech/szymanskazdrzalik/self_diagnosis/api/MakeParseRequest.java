@@ -74,7 +74,7 @@ public class MakeParseRequest {
                     chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
                     SampleSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, chat.get());
                 }
-                new MakeCovidRequest(chatActivity);
+                new MakeDiagnoseRequest(chatActivity);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -93,6 +93,7 @@ public class MakeParseRequest {
             try {
                 RequestUtil.addUserDataToJsonObject(jsonObject);
                 jsonObject.put("text", text);
+                RequestUtil.addAgeToJsonObject(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -106,6 +107,7 @@ public class MakeParseRequest {
                 try {
                     String newText = response.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("translatedText");
                     RequestUtil.addUserDataToJsonObject(jsonObject);
+                    RequestUtil.addAgeToJsonObject(jsonObject);
                     jsonObject.put("text", newText);
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -20,7 +20,11 @@ public class MakeDiagnoseRequest extends DiagnoseRequest{
         super(chatActivity, userAnswer);
 
         String url = InfermedicaApiClass.getInstance(chatActivity).getUrl() + "/v3" + "/diagnosis";
-
+        try {
+            this.addAgeToRequestBody(RequestUtil::addAgeToJsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, this.getHeaders(), this.getRequestBody(), this.getSuccessListener(), this.getErrorListener()));
     }
 

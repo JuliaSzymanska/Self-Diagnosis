@@ -22,6 +22,13 @@ public class JSONObjectRequestWithHeaders extends JsonObjectRequest {
     }
 
     @Override
+    public String toString() {
+        return "JSONObjectRequestWithHeaders{" +
+                "headers=" + headers +
+                "} " + super.toString();
+    }
+
+    @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         return super.parseNetworkResponse(response);
     }
