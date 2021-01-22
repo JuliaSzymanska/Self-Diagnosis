@@ -162,7 +162,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             JSONArray conditions = new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray());
             for (int i = 0; i < conditions.length(); i++) {
                 stringBuilder.append(getString(R.string.name)).append(conditions.getJSONObject(i).getString("common_name")).append("\n");
-                stringBuilder.append(getString(R.string.probability)).append(df2.format(conditions.getJSONObject(i).getDouble("probability") * 100)).append("\n\n\n");
+                stringBuilder.append(getString(R.string.probability)).append(df2.format(conditions.getJSONObject(i).getDouble("probability") * 100)).append("%").append("\n\n");
                 stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
             }
             advancedTV.setText(stringBuilder.toString());
