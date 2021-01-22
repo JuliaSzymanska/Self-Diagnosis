@@ -12,12 +12,12 @@
 <!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
 <!--        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>-->
 <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimary">@color/blue</item>
         <item name="colorOnPrimary">#FFF</item>
         <item name="colorPrimaryVariant">#121212</item>
-        <item name="colorSecondary">@color/orange_dark</item>
+        <item name="colorSecondary">@color/blue_dark</item>
         <item name="colorOnSecondary">#FFF</item>
-        <item name="colorSecondaryVariant">@color/orange</item>
+        <item name="colorSecondaryVariant">@color/blue</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:background">#121212</item>
 

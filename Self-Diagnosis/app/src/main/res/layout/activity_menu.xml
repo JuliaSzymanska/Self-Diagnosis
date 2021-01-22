@@ -12,7 +12,7 @@
 
         <include
             android:id="@+id/menuTop1Bar"
-            layout="@layout/menu_top_bar"
+            layout="@layout/top_bar_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

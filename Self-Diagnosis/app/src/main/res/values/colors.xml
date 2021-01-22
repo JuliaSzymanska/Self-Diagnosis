@@ -4,9 +4,10 @@
     <color name="white">#FFFFFF</color>
     <color name="background">#FFFFFF</color>
     <color name="background_top">#F4F4F4</color>
-    <color name="light_orange">#7cccec</color>
-    <color name="light_orange_border">#4cbce4</color>
+    <color name="light_blue">#7cccec</color>
+    <color name="light_blue_border">#4cbce4</color>
+    <color name="blue">#4cbce4</color>
+    <color name="blue_header_calendar">#0085B5</color>
+    <color name="blue_dark">#186066</color>
     <color name="text_color">#222</color>
-    <color name="orange">#4cbce4</color>
-    <color name="orange_dark">#186066</color>
 </resources>

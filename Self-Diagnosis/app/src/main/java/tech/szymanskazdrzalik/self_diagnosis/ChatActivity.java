@@ -37,7 +37,6 @@ import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
 
-// TODO: 16.12.2020 Jesli nie po angielsku to uzywamy https://medium.com/@yeksancansu/how-to-use-google-translate-api-in-android-studio-projects-7f09cae320c7 XD ZROBIC
 // TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
 // TODO: 17.01.2021 nie zapisywac pierwszej wiadomosci
 // TODO: 20.01.2021 zapytanie o zezwolenie na dostep rpzy odczycie obrazka
@@ -45,7 +44,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
-    Animation slide_out_messbox;
+    Animation slide_out_message_box;
     String lastDoctorMessage = "";
     Boolean isCovid;
     private ActivityChatBinding binding;
@@ -74,7 +73,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setChatOnCreate();
-        slide_out_messbox = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
+        slide_out_message_box = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View child) {
@@ -276,7 +275,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void hideMessageBox() {
-        slide_out_messbox.setAnimationListener(new Animation.AnimationListener() {
+        slide_out_message_box.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
             }
@@ -291,7 +290,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
             }
         });
-        binding.inputLayout.inputsContainer.setAnimation(slide_out_messbox);
+        binding.inputLayout.inputsContainer.setAnimation(slide_out_message_box);
     }
 
     private void questionButtonOnClick(String id, String choice, String userMessage, String name) {

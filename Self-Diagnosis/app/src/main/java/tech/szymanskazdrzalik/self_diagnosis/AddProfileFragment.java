@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.icu.util.Calendar;
+//import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -54,7 +55,7 @@ public class AddProfileFragment extends Fragment {
         updateLabel();
     };
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
-            v -> new DatePickerDialog(getContext(), R.style.CalendarTheme, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            v -> new DatePickerDialog(getContext(), R.style.MyDatePickerDialogStyle, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     private boolean isNewUser = false;
     private String userGender;
     private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {

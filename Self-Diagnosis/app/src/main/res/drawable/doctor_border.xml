@@ -6,10 +6,10 @@
             android:layout_height="wrap_content"
             android:shape="rectangle">
             <corners android:radius="5dp" />
-            <solid android:color="@color/light_orange" />
+            <solid android:color="@color/light_blue" />
             <stroke
                 android:width="1dip"
-                android:color="@color/light_orange_border" />
+                android:color="@color/light_blue_border" />
         </shape>
     </item>
 </layer-list>

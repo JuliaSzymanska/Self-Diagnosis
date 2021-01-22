@@ -36,7 +36,7 @@
 
             <include
                 android:id="@+id/topPanelChat"
-                layout="@layout/top_of_chat"
+                layout="@layout/top_bar_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

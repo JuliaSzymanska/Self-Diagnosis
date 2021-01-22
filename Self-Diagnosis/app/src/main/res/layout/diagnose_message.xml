@@ -23,14 +23,14 @@
             android:paddingTop="10sp"
             android:text="@string/diagnosis"
             android:textSize="22sp"
-            android:textColor="@color/orange_dark"
+            android:textColor="@color/blue_dark"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
-            android:background="@color/light_orange"
+            android:background="@color/light_blue"
             android:paddingTop="20sp"
             android:text="@string/most_likely_condition"
             android:textSize="16sp" />
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
-            android:background="@color/light_orange"
+            android:background="@color/light_blue"
             android:paddingTop="10sp"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -58,7 +58,7 @@
                 android:layout_marginHorizontal="15sp"
                 android:paddingTop="20dp"
                 android:layout_gravity="left"
-                android:textColor="@color/orange_dark"
+                android:textColor="@color/blue_dark"
                 android:background="@android:color/transparent"
                 android:text="@string/show_more" />
 
@@ -69,7 +69,7 @@
                 android:layout_marginHorizontal="15sp"
                 android:paddingTop="20dp"
                 android:layout_gravity="right"
-                android:textColor="@color/orange_dark"
+                android:textColor="@color/blue_dark"
                 android:background="@android:color/transparent"
                 android:text="@string/export_to_pdf"
                 android:onClick="onExportButtonClick"/>
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
-            android:background="@color/light_orange"
+            android:background="@color/light_blue"
             android:paddingTop="10sp"
             android:textSize="16sp"
             android:visibility="gone" />

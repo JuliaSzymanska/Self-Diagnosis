@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:onClick="onProfilePictureClick"
         android:src="@drawable/female"
-        app:civ_border_color="@color/orange_dark"
+        app:civ_border_color="@color/blue_dark"
         app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
