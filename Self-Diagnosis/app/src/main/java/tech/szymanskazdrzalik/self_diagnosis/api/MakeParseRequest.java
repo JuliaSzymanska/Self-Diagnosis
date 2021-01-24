@@ -74,7 +74,11 @@ public class MakeParseRequest {
                     chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
                     SampleSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, chat.get());
                 }
-                new MakeDiagnoseRequest(chatActivity);
+                if (chatActivity.getIsCovid()) {
+                    new MakeCovidRequest(chatActivity);
+                } else {
+                    new MakeDiagnoseRequest(chatActivity);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -14,7 +14,7 @@ import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public abstract class DiagnoseRequest {
-    private final RequestUtil.ChatRequestListener listener;
+    protected final RequestUtil.ChatRequestListener listener;
     private final Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {

@@ -46,7 +46,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     Animation slide_out_message_box;
     String lastDoctorMessage = "";
-    Boolean isCovid;
+    private Boolean isCovid;
     private ActivityChatBinding binding;
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
@@ -62,8 +62,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             e.printStackTrace();
         }
     };
-
     private boolean didAskForEndDiagnose = false;
+
+    public Boolean getIsCovid() {
+        return isCovid;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setChatOnCreate();
+        if (this.isCovid) {
+            new MakeCovidRequest(this);
+            binding.inputLayout.inputsContainer.removeAllViews();
+        }
         slide_out_message_box = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
@@ -128,11 +135,21 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     }
 
     private void createFirstMessageFromDoctor() {
-        if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-            generateNewDoctorMessageFromString(getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
-                    + "! " + getString(R.string.how_can_i_help_you));
-        else {
-            generateNewDoctorMessageFromString(getString(R.string.hello_with_exclamation_mark) + getString(R.string.how_can_i_help_you));
+        if (this.isCovid) {
+            if (GlobalVariables.getInstance().getCurrentUser().isPresent())
+                generateNewDoctorMessageFromString(getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
+                        + "! " + getString(R.string.select_all_statemenet_that_applay_to_you));
+            else {
+                generateNewDoctorMessageFromString(getString(R.string.hello_with_exclamation_mark)
+                        + getString(R.string.select_all_statemenet_that_applay_to_you));
+            }
+        } else {
+            if (GlobalVariables.getInstance().getCurrentUser().isPresent())
+                generateNewDoctorMessageFromString(getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
+                        + "! " + getString(R.string.how_can_i_help_you));
+            else {
+                generateNewDoctorMessageFromString(getString(R.string.hello_with_exclamation_mark) + getString(R.string.how_can_i_help_you));
+            }
         }
     }
 
