@@ -31,6 +31,10 @@ public class Chat {
         this.conditionsArray = conditionsArray;
     }
 
+    public boolean getIsFinished() {
+        return conditionsArray == null || conditionsArray.isEmpty();
+    }
+
     public static Builder builder(int id, int userId) {
         return new Builder(id, userId);
     }
@@ -157,9 +161,6 @@ public class Chat {
             if (lastDoctorQuestion == null || lastDoctorQuestionId == null) {
                 this.lastDoctorQuestion = null;
                 this.lastDoctorQuestionId = null;
-            }
-            if (conditionsArray == null) {
-                this.conditionsArray = null;
             }
             return new Chat(this.date, this.chatId, this.userId, this.lastRequest, this.lastDoctorQuestion, this.lastDoctorQuestionId, this.conditionsArray);
         }

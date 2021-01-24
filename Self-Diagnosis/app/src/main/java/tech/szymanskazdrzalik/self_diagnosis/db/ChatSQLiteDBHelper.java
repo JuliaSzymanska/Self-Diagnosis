@@ -74,6 +74,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
             return;
         }
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
+        database.execSQL("DELETE FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_CONDITIONS_ARRAY + " IS NULL");
         ContentValues contentValues = new ContentValues();
         contentValues.put(CHATS_COLUMN_ID, chat.getId());
         contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
@@ -92,6 +93,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
             return;
         }
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(MESSAGES_COLUMN_MESSAGE_ID, message.getId());
         contentValues.put(MESSAGES_COLUMN_CHAT_ID, message.getChatId());
