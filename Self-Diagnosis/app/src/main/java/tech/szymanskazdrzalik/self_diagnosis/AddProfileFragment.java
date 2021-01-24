@@ -28,7 +28,7 @@ import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.DbBitmapUtility;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
@@ -93,14 +93,14 @@ public class AddProfileFragment extends Fragment {
             int currentID;
 
             if (isNewUser) {
-                currentID = SampleSQLiteDBHelper.getNextUserIdAvailable(getContext());
+                currentID = ChatSQLiteDBHelper.getNextUserIdAvailable(getContext());
             } else {
                 currentID = globalVariables.getCurrentUser().get().getId();
             }
 
             User user = new User(currentID, userName, userBirthDate, userGender, userPicture);
             GlobalVariables.getInstance().setCurrentUser(user);
-            SampleSQLiteDBHelper.saveUserDataToDB(getContext(), user);
+            ChatSQLiteDBHelper.saveUserDataToDB(getContext(), user);
             SharedPreferencesHelper.saveUserId(getContext(), currentID);
 
             // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
@@ -253,7 +253,7 @@ public class AddProfileFragment extends Fragment {
     }
 
     private void updateLabel() {
-        binding.dateEditTextFragmentAddProfile.setText(SampleSQLiteDBHelper.DB_DATE_USER_FORMAT.format(myCalendar.getTime()));
+        binding.dateEditTextFragmentAddProfile.setText(ChatSQLiteDBHelper.DB_DATE_USER_FORMAT.format(myCalendar.getTime()));
     }
 
     @Override

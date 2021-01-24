@@ -14,13 +14,13 @@ import tech.szymanskazdrzalik.self_diagnosis.R;
 import tech.szymanskazdrzalik.self_diagnosis.SplashActivity;
 
 public class Receiver extends BroadcastReceiver {
+    private final static String NOTIFICATION_CHANNEL_NAME = "SelfDiagnosis_Notification_Channel";
+    private final static String NOTIFICATION_CHANNEL_ID = "SelfDiagnosis_Channel_01";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         showNotification(context);
     }
-
-    private final static String NOTIFICATION_CHANNEL_NAME = "SelfDiagnosis_Notification_Channel";
-    private final static String NOTIFICATION_CHANNEL_ID = "SelfDiagnosis_Channel_01";
 
     public void showNotification(Context context) {
         Intent intent = new Intent(context, SplashActivity.class);

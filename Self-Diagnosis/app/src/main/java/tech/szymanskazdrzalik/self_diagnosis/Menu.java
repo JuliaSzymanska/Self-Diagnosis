@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityMenuBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.ChatAdapter;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
@@ -78,7 +78,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         transaction.commit();
     }
 
-    public void openCovid(View v){
+    public void openCovid(View v) {
         GlobalVariables.getInstance().setCurrentChat(null);
         Intent intent = new Intent(Menu.this, ChatActivity.class);
         intent.putExtra(getString(R.string.is_covid), true);
@@ -99,7 +99,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     }
 
     private void loadChats() {
-        ArrayList<Chat> chatArrayList = (ArrayList<Chat>) SampleSQLiteDBHelper.getAllChatsForUserFromDB(this,
+        ArrayList<Chat> chatArrayList = (ArrayList<Chat>) ChatSQLiteDBHelper.getAllChatsForUserFromDB(this,
                 GlobalVariables.getInstance().getCurrentUser().get().getId());
         if (chatArrayList.size() != 0) {
             ChatAdapter chatAdapter = new ChatAdapter(this, chatArrayList);

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public class MakeParseRequest {
@@ -63,16 +63,16 @@ public class MakeParseRequest {
                 RequestUtil.getInstance().addToEvidenceArray(jsonArrayToRequest);
                 Optional<Chat> chat = GlobalVariables.getInstance().getCurrentChat();
                 if (!chat.isPresent()) {
-                    Chat currentChat = Chat.builder(SampleSQLiteDBHelper.getNextChatIdAvailable(context), GlobalVariables.getInstance().getCurrentUser().get().getId())
+                    Chat currentChat = Chat.builder(ChatSQLiteDBHelper.getNextChatIdAvailable(context), GlobalVariables.getInstance().getCurrentUser().get().getId())
                             .conditionArray(null)
                             .date(new Date())
                             .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                             .build();
                     GlobalVariables.getInstance().setCurrentChat(currentChat);
-                    SampleSQLiteDBHelper.saveChatDataToDB(context, currentChat);
+                    ChatSQLiteDBHelper.saveChatDataToDB(context, currentChat);
                 } else {
                     chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
-                    SampleSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, chat.get());
+                    ChatSQLiteDBHelper.saveChatDataToDB(MakeParseRequest.this.context, chat.get());
                 }
                 if (chatActivity.getIsCovid()) {
                     new MakeCovidRequest(chatActivity);

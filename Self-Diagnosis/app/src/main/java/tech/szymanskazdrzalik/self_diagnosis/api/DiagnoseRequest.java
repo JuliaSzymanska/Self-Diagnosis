@@ -106,11 +106,11 @@ public abstract class DiagnoseRequest {
         return requestBody;
     }
 
-    protected interface Callable {
-        void call(JSONObject jsonObject) throws JSONException;
-    }
-
     protected void addAgeToRequestBody(Callable callable) throws JSONException {
         callable.call(this.requestBody);
+    }
+
+    protected interface Callable {
+        void call(JSONObject jsonObject) throws JSONException;
     }
 }

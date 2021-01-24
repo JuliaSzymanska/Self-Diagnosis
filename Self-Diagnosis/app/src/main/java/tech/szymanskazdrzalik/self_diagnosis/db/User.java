@@ -16,7 +16,7 @@ public class User {
 
     public User(int id, String name, String birthDate, String gender, Bitmap picture) throws ParseException {
         this.id = id;
-        this.birthDate = SampleSQLiteDBHelper.DB_DATE_USER_FORMAT.parse(birthDate);
+        this.birthDate = ChatSQLiteDBHelper.DB_DATE_USER_FORMAT.parse(birthDate);
         this.gender = gender;
         this.name = name;
         this.picture = picture;

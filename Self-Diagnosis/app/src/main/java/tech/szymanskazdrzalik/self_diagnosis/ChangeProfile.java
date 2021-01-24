@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentChangeProfileBinding;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.UsersAdapter;
 
@@ -68,7 +68,7 @@ public class ChangeProfile extends Fragment {
     }
 
     private void loadUsers() {
-        ArrayList<User> usersList = (ArrayList<User>) SampleSQLiteDBHelper.getAllUsersFromDB(getContext());
+        ArrayList<User> usersList = (ArrayList<User>) ChatSQLiteDBHelper.getAllUsersFromDB(getContext());
         UsersAdapter usersAdapter = new UsersAdapter(getContext(), usersList);
         binding.usersList.setAdapter(usersAdapter);
     }

@@ -6,7 +6,6 @@ import com.android.volley.Response;
 import org.json.JSONObject;
 
 import java.util.Locale;
-import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 

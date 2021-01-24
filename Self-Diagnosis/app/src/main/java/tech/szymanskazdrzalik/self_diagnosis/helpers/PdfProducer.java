@@ -35,7 +35,7 @@ public class PdfProducer {
 //        Bitmap bmp;
 //        bmp = BitmapFactory.decodeResource.getResources(),R.drawable.doctor)
 
-        myPage.getCanvas().drawText(context.getString(R.string.app_name), 1200/2, 100, titlePaint);
+        myPage.getCanvas().drawText(context.getString(R.string.app_name), 1200 / 2, 100, titlePaint);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getDiagnose(context));
         stringBuilder.append("\n\n\n");
@@ -69,14 +69,13 @@ public class PdfProducer {
 //
 //            }
 //            else {
-                myPage2.getCanvas().drawText(line, x, y, myPaint);
-                y += myPaint.descent() - myPaint.ascent();
+            myPage2.getCanvas().drawText(line, x, y, myPaint);
+            y += myPaint.descent() - myPaint.ascent();
 //            }
         }
 
 //        if (y<=1000)
-            myPdfDocument.finishPage(myPage2);
-
+        myPdfDocument.finishPage(myPage2);
 
 
         String myFilePath = Environment.getExternalStorageDirectory().getPath() + "/Consultation_" + new Date() + ".pdf";

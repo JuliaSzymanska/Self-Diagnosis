@@ -2,18 +2,11 @@ package tech.szymanskazdrzalik.self_diagnosis.api;
 
 import androidx.annotation.Nullable;
 
-import com.android.volley.Response;
-
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
-import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
-public class MakeDiagnoseRequest extends DiagnoseRequest{
+public class MakeDiagnoseRequest extends DiagnoseRequest {
 
 
     public MakeDiagnoseRequest(ChatActivity chatActivity, @Nullable String userAnswer) {

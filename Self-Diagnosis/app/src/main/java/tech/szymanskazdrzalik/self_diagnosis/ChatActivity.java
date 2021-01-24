@@ -33,7 +33,7 @@ import tech.szymanskazdrzalik.self_diagnosis.api.RequestUtil;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivityChatBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
 import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
 
@@ -48,6 +48,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     String lastDoctorMessage = "";
     private Boolean isCovid;
     private ActivityChatBinding binding;
+    private boolean didAskForEndDiagnose = false;
+    private String firstDoctorMessage = "";
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
@@ -63,7 +65,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             e.printStackTrace();
         }
     };
-    private boolean didAskForEndDiagnose = false;
 
     public Boolean getIsCovid() {
         return isCovid;
@@ -99,7 +100,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if (chat.isPresent()) {
             try {
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
-                setAllMessages(SampleSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
+                setAllMessages(ChatSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
                 if (chat.get().getConditionsArray() == null) {
                     // FIXME: 20.01.2021 empty string
                     this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()), "");
@@ -138,23 +139,28 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private void createFirstMessageFromDoctor() {
         if (this.isCovid) {
             if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-                generateNewDoctorMessageFromString(getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
-                        + "! " + getString(R.string.select_all_statemenet_that_applay_to_you));
+                firstDoctorMessage = getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
+                        + "! " + getString(R.string.select_all_statemenet_that_applay_to_you);
             else {
-                generateNewDoctorMessageFromString(getString(R.string.hello_with_exclamation_mark)
-                        + getString(R.string.select_all_statemenet_that_applay_to_you));
+                firstDoctorMessage = getString(R.string.hello_with_exclamation_mark)
+                        + getString(R.string.select_all_statemenet_that_applay_to_you);
             }
         } else {
             if (GlobalVariables.getInstance().getCurrentUser().isPresent())
-                generateNewDoctorMessageFromString(getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
-                        + "! " + getString(R.string.how_can_i_help_you));
+                firstDoctorMessage = getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
+                        + "! " + getString(R.string.how_can_i_help_you);
             else {
-                generateNewDoctorMessageFromString(getString(R.string.hello_with_exclamation_mark) + getString(R.string.how_can_i_help_you));
+                firstDoctorMessage = getString(R.string.hello_with_exclamation_mark) + getString(R.string.how_can_i_help_you);
             }
         }
+        generateNewDoctorMessageFromStringWithoutSaving(firstDoctorMessage);
     }
 
     private void generateNewUserMessageFromString(String text) {
+        if (!this.firstDoctorMessage.equals("")) {
+            saveMessageToDB(this.firstDoctorMessage, false);
+            this.firstDoctorMessage = "";
+        }
         generateNewUserMessageFromStringWithoutSaving(text);
         saveMessageToDB(text, true);
     }
@@ -209,7 +215,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         requestPermissions(permissions, 300);
     }
 
-    private void makeCovidDiagnoseMessage(String condition, String recommendations){
+    private void makeCovidDiagnoseMessage(String condition, String recommendations) {
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.diagnose_message, null);
 
         TextView mostLikelyConditionsTV = linearLayout.findViewById(R.id.most_likely_conditions);
@@ -219,7 +225,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         valueTV.setText(recommendations);
 
         float scale = getResources().getDisplayMetrics().density;
-        int dpAsPixels = (int) (15*scale + 0.5f);
+        int dpAsPixels = (int) (15 * scale + 0.5f);
 
         valueTV.setPadding(valueTV.getPaddingLeft(), valueTV.getPaddingTop(), valueTV.getPaddingRight(), dpAsPixels);
 
@@ -237,7 +243,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if (requestCode == 300) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
-                    PdfProducer.createPdfFile(this, SampleSQLiteDBHelper.getAllMessagesForChat(this,
+                    PdfProducer.createPdfFile(this, ChatSQLiteDBHelper.getAllMessagesForChat(this,
                             GlobalVariables.getInstance().getCurrentChat().get().getId()));
                 }
             }
@@ -261,9 +267,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     private void saveMessageToDB(String text, boolean isUserMessage) {
         int chatId = saveOrUpdateChatToDB();
-        int id = SampleSQLiteDBHelper.getNextMessageIdAvailable(this, chatId);
+        int id = ChatSQLiteDBHelper.getNextMessageIdAvailable(this, chatId);
         ChatMessage message = new ChatMessage(id, chatId, text, isUserMessage);
-        SampleSQLiteDBHelper.saveMessageDataToDB(this, message);
+        ChatSQLiteDBHelper.saveMessageDataToDB(this, message);
     }
 
     private int saveOrUpdateChatToDB() {
@@ -274,18 +280,18 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         }
         int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
         chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
-        SampleSQLiteDBHelper.saveChatDataToDB(this, chat.get());
+        ChatSQLiteDBHelper.saveChatDataToDB(this, chat.get());
         return chatId;
     }
 
     private void createNewChatAndSaveToDB() {
-        Chat currentChat = Chat.builder(SampleSQLiteDBHelper.getNextChatIdAvailable(this), GlobalVariables.getInstance().getCurrentUser().get().getId())
+        Chat currentChat = Chat.builder(ChatSQLiteDBHelper.getNextChatIdAvailable(this), GlobalVariables.getInstance().getCurrentUser().get().getId())
                 .conditionArray(null)
                 .date(new Date())
                 .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                 .build();
         GlobalVariables.getInstance().setCurrentChat(currentChat);
-        SampleSQLiteDBHelper.saveChatDataToDB(this, currentChat);
+        ChatSQLiteDBHelper.saveChatDataToDB(this, currentChat);
     }
 
     public void backArrowOnClick(View v) {
@@ -380,7 +386,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 space.setLayoutParams(new LinearLayout.LayoutParams(12, 8));
                 binding.inputLayout.inputsContainer.addView(space);
             }
-            if(!this.isCovid) {
+            if (!this.isCovid) {
                 Button button = (Button) View.inflate(this, R.layout.answer_button, null);
                 button.setText(getString(R.string.finish));
                 button.setOnClickListener(onEndDiagnoseClick);

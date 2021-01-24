@@ -16,7 +16,7 @@ import tech.szymanskazdrzalik.self_diagnosis.AddProfileFragment;
 import tech.szymanskazdrzalik.self_diagnosis.Menu;
 import tech.szymanskazdrzalik.self_diagnosis.R;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
-import tech.szymanskazdrzalik.self_diagnosis.db.SampleSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 
 public class ChatAdapter extends ArrayAdapter<Chat> {
 
@@ -56,7 +56,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_chat, parent, false);
         }
         if (chat != null) {
-            String date = SampleSQLiteDBHelper.DB_DATE_MESSAGE_FORMAT.format(chat.getDate());
+            String date = ChatSQLiteDBHelper.DB_DATE_MESSAGE_FORMAT.format(chat.getDate());
             TextView tvChatDate = convertView.findViewById(R.id.chatDate);
             TextView tvChatTime = convertView.findViewById(R.id.chatTime);
             tvChatDate.setText(date.substring(0, 10));

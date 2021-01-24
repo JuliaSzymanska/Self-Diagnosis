@@ -1,6 +1,5 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
+public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
     public static final DateFormat DB_DATE_USER_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     public static final DateFormat DB_DATE_MESSAGE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public static final String DATABASE_NAME = "user_profiles";
@@ -40,12 +40,12 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION = "doc_message";
     public static final String CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID = "doc_question_id";
 
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 28;
 
     /**
      * {@inheritDoc}
      */
-    public SampleSQLiteDBHelper(Context context) {
+    public ChatSQLiteDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     }
@@ -57,7 +57,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
             updateUserDataToDB(context, user);
             return;
         }
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_ID, user.getId());
         contentValues.put(USER_COLUMN_NAME, user.getName());
@@ -73,7 +73,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
             updateChatDataToDB(context, chat);
             return;
         }
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CHATS_COLUMN_ID, chat.getId());
         contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
@@ -91,7 +91,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         if (isExist(context, message)) {
             return;
         }
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(MESSAGES_COLUMN_MESSAGE_ID, message.getId());
         contentValues.put(MESSAGES_COLUMN_CHAT_ID, message.getChatId());
@@ -104,7 +104,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     private static void updateUserDataToDB(Context context, User user) {
         // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_NAME, user.getName());
         String date = DB_DATE_USER_FORMAT.format(user.getBirthDate());
@@ -117,7 +117,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     private static void updateChatDataToDB(Context context, Chat chat) {
         // TODO: 05.11.2020 make not break with null date
         // TODO: 05.11.2020 sprawdzic
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CHATS_COLUMN_ID, chat.getId());
         contentValues.put(CHATS_COLUMN_USER_ID, chat.getUserId());
@@ -129,7 +129,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     private static boolean isExist(Context context, User user) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         String checkQuery = "SELECT " + USER_COLUMN_ID + " FROM " + USER_PROFILE_TABLE_NAME + " WHERE " + USER_COLUMN_ID + " = '" + user.getId() + "'";
         Cursor cursor = database.rawQuery(checkQuery, null);
         boolean exists = (cursor.getCount() > 0);
@@ -138,7 +138,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     private static boolean isExist(Context context, Chat chat) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         String checkQuery = "SELECT " + CHATS_COLUMN_ID + " FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_ID + " = '" + chat.getId() + "'";
         Cursor cursor = database.rawQuery(checkQuery, null);
         boolean exists = (cursor.getCount() > 0);
@@ -147,7 +147,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     private static boolean isExist(Context context, ChatMessage message) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         String checkQuery = "SELECT " + MESSAGES_COLUMN_MESSAGE_ID + " FROM " + MESSAGES_TABLE_NAME
                 + " WHERE " + MESSAGES_COLUMN_MESSAGE_ID + " = '" + message.getId() + "' AND "
                 + MESSAGES_COLUMN_CHAT_ID + " = '" + message.getChatId() + "'";
@@ -158,7 +158,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static List<User> getAllUsersFromDB(Context context) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 USER_COLUMN_ID,
                 USER_COLUMN_NAME,
@@ -168,7 +168,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
         };
 
         Cursor cursor = database.query(
-                SampleSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
+                ChatSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
                 projection,                                        // The columns to return
                 null,                                     // The columns for the WHERE clause
                 null,                                 // The values for the WHERE clause
@@ -198,7 +198,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static List<Chat> getAllChatsForUserFromDB(Context context, int userId) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM " + CHATS_TABLE_NAME + " WHERE " + CHATS_COLUMN_USER_ID + " = '" + userId + "' ORDER BY " + CHATS_COLUMN_ID + " DESC", null);
         List<Chat> chatList = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -228,7 +228,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static List<ChatMessage> getAllMessagesForChat(Context context, int chatId) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM " + MESSAGES_TABLE_NAME + " WHERE "
                 + MESSAGES_COLUMN_CHAT_ID + " = '" + chatId + "' ORDER BY " + MESSAGES_COLUMN_MESSAGE_ID + " ASC", null);
         List<ChatMessage> messageList = new ArrayList<>();
@@ -250,7 +250,7 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     // TODO: 05.11.2020 TEST ME
     public static User getUserByID(Context context, int id) {
         // TODO: 05.11.2020 make it not break when id not exists
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM " + USER_PROFILE_TABLE_NAME + " WHERE " + USER_COLUMN_ID + " = '" + id + "'", null);
         if (cursor.moveToFirst()) {
             int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
@@ -272,13 +272,13 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static int getNextUserIdAvailable(Context context) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 USER_COLUMN_ID
         };
 
         Cursor cursor = database.query(
-                SampleSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
+                ChatSQLiteDBHelper.USER_PROFILE_TABLE_NAME,      // The table to query
                 projection,                                        // The columns to return
                 null,                                     // The columns for the WHERE clause
                 null,                                 // The values for the WHERE clause
@@ -296,13 +296,13 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static int getNextChatIdAvailable(Context context) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 CHATS_COLUMN_ID
         };
 
         Cursor cursor = database.query(
-                SampleSQLiteDBHelper.CHATS_TABLE_NAME,      // The table to query
+                ChatSQLiteDBHelper.CHATS_TABLE_NAME,      // The table to query
                 projection,                                        // The columns to return
                 null,                                     // The columns for the WHERE clause
                 null,                                 // The values for the WHERE clause
@@ -320,13 +320,13 @@ public class SampleSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static int getNextMessageIdAvailable(Context context, int chatId) {
-        SQLiteDatabase database = new SampleSQLiteDBHelper(context).getReadableDatabase();
+        SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
         String[] projection = {
                 MESSAGES_COLUMN_MESSAGE_ID
         };
 
         Cursor cursor = database.query(
-                SampleSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
+                ChatSQLiteDBHelper.MESSAGES_TABLE_NAME,      // The table to query
                 projection,                                        // The columns to return
                 MESSAGES_COLUMN_CHAT_ID + " = " + chatId,  // The columns for the WHERE clause
                 null,                             // The values for the WHERE clause
