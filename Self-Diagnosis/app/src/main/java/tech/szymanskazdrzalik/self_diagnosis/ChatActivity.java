@@ -37,10 +37,7 @@ import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
 
-// TODO: 13.01.2021 usuwanie starszych nieukonczonych diagnoz
-// TODO: 17.01.2021 nie zapisywac pierwszej wiadomosci
 // TODO: 20.01.2021 zapytanie o zezwolenie na dostep rpzy odczycie obrazka
-// TODO: 21.01.2021 nie zapisywac diagnozy w ktorej nie zostalo wyslane zadne zapytanie
 
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
@@ -53,8 +50,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
-        System.out.println(RequestUtil.getInstance().getEvidenceArray());
-        System.out.println(conditions);
         GlobalVariables.getInstance().getCurrentChat().get().setConditionsArray(conditions.toString());
         saveOrUpdateChatToDB();
         addUserMessage(getResources().getString(R.string.finish));
@@ -161,8 +156,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             saveMessageToDB(this.firstDoctorMessage, false);
             this.firstDoctorMessage = "";
         }
-        generateNewUserMessageFromStringWithoutSaving(text);
         saveMessageToDB(text, true);
+
+        generateNewUserMessageFromStringWithoutSaving(text);
     }
 
     private void generateNewDoctorMessageFromString(String text) {
@@ -269,7 +265,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         int chatId = saveOrUpdateChatToDB();
         int id = ChatSQLiteDBHelper.getNextMessageIdAvailable(this, chatId);
         ChatMessage message = new ChatMessage(id, chatId, text, isUserMessage);
-        ChatSQLiteDBHelper.saveMessageDataToDB(this, message);
+        if (!this.isCovid) {
+            ChatSQLiteDBHelper.saveMessageDataToDB(this, message);
+        }
     }
 
     private int saveOrUpdateChatToDB() {
@@ -280,18 +278,26 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         }
         int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
         chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
-        ChatSQLiteDBHelper.saveChatDataToDB(this, chat.get());
+        if (!this.isCovid) {
+            ChatSQLiteDBHelper.saveChatDataToDB(this, chat.get());
+        }
         return chatId;
     }
 
-    private void createNewChatAndSaveToDB() {
+    private void createNewChat() {
         Chat currentChat = Chat.builder(ChatSQLiteDBHelper.getNextChatIdAvailable(this), GlobalVariables.getInstance().getCurrentUser().get().getId())
                 .conditionArray(null)
                 .date(new Date())
                 .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                 .build();
         GlobalVariables.getInstance().setCurrentChat(currentChat);
-        ChatSQLiteDBHelper.saveChatDataToDB(this, currentChat);
+    }
+
+    private void createNewChatAndSaveToDB() {
+        this.createNewChat();
+        if (!this.isCovid) {
+            ChatSQLiteDBHelper.saveChatDataToDB(this, GlobalVariables.getInstance().getCurrentChat().get());
+        }
     }
 
     public void backArrowOnClick(View v) {
