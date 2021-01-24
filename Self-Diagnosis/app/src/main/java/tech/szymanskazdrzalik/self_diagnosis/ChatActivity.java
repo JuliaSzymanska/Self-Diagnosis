@@ -211,17 +211,23 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     private void makeCovidDiagnoseMessage(String condition, String recommendations){
         LinearLayout linearLayout = (LinearLayout) View.inflate(this, R.layout.diagnose_message, null);
+
         TextView mostLikelyConditionsTV = linearLayout.findViewById(R.id.most_likely_conditions);
         mostLikelyConditionsTV.setText(condition);
+
         TextView valueTV = linearLayout.findViewById(R.id.standard_info);
         valueTV.setText(recommendations);
+
         float scale = getResources().getDisplayMetrics().density;
-        int dpAsPixels = (int) (10*scale + 0.5f);
+        int dpAsPixels = (int) (15*scale + 0.5f);
+
         valueTV.setPadding(valueTV.getPaddingLeft(), valueTV.getPaddingTop(), valueTV.getPaddingRight(), dpAsPixels);
+
         Button advancedInfoButton = linearLayout.findViewById(R.id.advanced_info_button);
         Button exportToPDFFile = linearLayout.findViewById(R.id.export_to_pdf_button);
         advancedInfoButton.setVisibility(View.GONE);
         exportToPDFFile.setVisibility(View.GONE);
+
         binding.chatLayout.addView(linearLayout);
         this.lastDoctorMessage = condition;
     }
@@ -374,10 +380,12 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 space.setLayoutParams(new LinearLayout.LayoutParams(12, 8));
                 binding.inputLayout.inputsContainer.addView(space);
             }
-            Button button = (Button) View.inflate(this, R.layout.answer_button, null);
-            button.setText(getString(R.string.finish));
-            button.setOnClickListener(onEndDiagnoseClick);
-            binding.inputLayout.inputsContainer.addView(button);
+            if(!this.isCovid) {
+                Button button = (Button) View.inflate(this, R.layout.answer_button, null);
+                button.setText(getString(R.string.finish));
+                button.setOnClickListener(onEndDiagnoseClick);
+                binding.inputLayout.inputsContainer.addView(button);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
