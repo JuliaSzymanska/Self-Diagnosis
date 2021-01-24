@@ -32,7 +32,7 @@ public class MakeCovidRequest extends DiagnoseRequest {
     @Override
     protected Response.Listener<JSONObject> getSuccessListener() {
         return response -> {
-            System.out.println(response);
+            System.out.println("Odpowiedz" + response);
             boolean shouldStop = false;
             try {
                 try {
@@ -60,5 +60,20 @@ public class MakeCovidRequest extends DiagnoseRequest {
             }
         };
     }
+
+    private void makeTriageRequest(){
+        super(chatActivity, userAnswer);
+
+        String url = InfermedicaApiClass.getInstance(chatActivity).getUrl() + "/covid19" + "/diagnosis";
+        try {
+            this.addAgeToRequestBody(RequestUtil::addAgeToJsonObjectForCovid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(1, url, this.getHeaders(),
+                this.getRequestBody(), this.getSuccessListener(), this.getErrorListener()));
+    }
+
 }
 

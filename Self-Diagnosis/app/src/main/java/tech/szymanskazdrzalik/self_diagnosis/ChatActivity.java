@@ -52,6 +52,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
         System.out.println(RequestUtil.getInstance().getEvidenceArray());
+        System.out.println(conditions);
         GlobalVariables.getInstance().getCurrentChat().get().setConditionsArray(conditions.toString());
         saveOrUpdateChatToDB();
         addUserMessage(getResources().getString(R.string.finish));
