@@ -128,6 +128,8 @@ public class RequestUtil {
 
         boolean finishDiagnose();
 
+        void finishCovidDiagnose();
+
         void onRequestFailure();
     }
 }

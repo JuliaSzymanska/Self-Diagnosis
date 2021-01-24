@@ -20,18 +20,19 @@
             android:layout_marginHorizontal="15sp"
             android:background="@android:color/transparent"
             android:layout_gravity="center"
-            android:paddingTop="10sp"
+            android:paddingTop="10dp"
             android:text="@string/diagnosis"
             android:textSize="22sp"
             android:textColor="@color/blue_dark"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/most_likely_conditions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
             android:background="@color/light_blue"
-            android:paddingTop="20sp"
+            android:paddingTop="20dp"
             android:text="@string/most_likely_condition"
             android:textSize="16sp" />
 
@@ -41,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15sp"
             android:background="@color/light_blue"
-            android:paddingTop="10sp"
+            android:paddingTop="10dp"
             android:textSize="16sp"
             android:textStyle="bold" />
 
