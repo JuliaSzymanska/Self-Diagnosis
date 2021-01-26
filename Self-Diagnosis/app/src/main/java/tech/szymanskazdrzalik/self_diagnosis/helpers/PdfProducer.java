@@ -27,6 +27,8 @@ public class PdfProducer {
     private static final int PAGE_HEIGHT = 891;
     private static final int LOGO_SIZE = 120;
     private static final int SPACE = 15;
+    private static final int GENERAL_TEXT_WIDTH = SPACE * 4;
+    private static final int GENERAL_TEXT_HEIGHT = LOGO_SIZE + (4 * SPACE);
 
     public static void createPdfFile(Context context, List<ChatMessage> messages) {
 
@@ -51,40 +53,42 @@ public class PdfProducer {
         stringBuilder.append(getAllNames(context));
         stringBuilder.append("\n\n\n");
 
-
-        int x = SPACE * 4, y = LOGO_SIZE + (4 * SPACE);
+        int i = 0;
+        int x = GENERAL_TEXT_WIDTH, y = GENERAL_TEXT_HEIGHT;
         for (String line : stringBuilder.toString().split("\n")) {
             myPage.getCanvas().drawText(line, x, y, myPaint);
             y += myPaint.descent() - myPaint.ascent();
+            if (y > PAGE_HEIGHT - (SPACE * 2)) {
+                myPdfDocument.finishPage(myPage);
+                myPage = myPdfDocument.startPage(myPageInfo);
+                setPageStyle(context, myPage, titlePaint, myPaint);
+                myPage.getCanvas().drawText(line, x, y, myPaint);
+                y += myPaint.descent() - myPaint.ascent();
+            } else {
+                myPage.getCanvas().drawText(line, x, y, myPaint);
+                y += myPaint.descent() - myPaint.ascent();
+            }
         }
 
-        myPdfDocument.finishPage(myPage);
-        myPage = myPdfDocument.startPage(myPageInfo2);
-        setPageStyle(context, myPage, titlePaint, myPaint);
         StringBuilder stringBuilder2 = new StringBuilder();
         stringBuilder2.append(getAllMessages(context, messages));
 
-        y = 100;
-        int i = 0;
+//        y = GENERAL_TEXT_HEIGHT;
+        i = 0;
         for (String line : stringBuilder2.toString().split("\n")) {
-//            if (y>1990) {
-//                myPdfDocument.finishPage(myPage2);
-//                PdfDocument.Page myPage3 = myPdfDocument.startPage(myPageInfo2);
-//
-//                myPage3.getCanvas().drawText(line, x, y, myPaint);
-//                y += myPaint.descent() - myPaint.ascent();
-//
-//                if (i++ == stringBuilder2.length() - 1)
-//                    myPdfDocument.finishPage(myPage3);
-//
-//            }
-//            else {
+            if (y > PAGE_HEIGHT - (SPACE * 2)) {
+                myPdfDocument.finishPage(myPage);
+                myPage = myPdfDocument.startPage(myPageInfo2);
+                myPage.getCanvas().drawText(line, x, y, myPaint);
+                y += myPaint.descent() - myPaint.ascent();
+                if (i++ == stringBuilder2.length() - 1)
+                    myPdfDocument.finishPage(myPage);
+            } else {
             myPage.getCanvas().drawText(line, x, y, myPaint);
             y += myPaint.descent() - myPaint.ascent();
-//            }
+            }
         }
 
-//        if (y<=1000)
         myPdfDocument.finishPage(myPage);
 
 
@@ -107,10 +111,10 @@ public class PdfProducer {
         Paint paint = new Paint();
         paint.setColor(context.getColor(R.color.blue_header_calendar_trasparent));
 
-        page.getCanvas().drawColor(context.getColor(R.color.light_blue_transparent));
-        page.getCanvas().drawRoundRect(0, 0, PAGE_WIDTH, LOGO_SIZE + (2 * SPACE), SPACE * 2, SPACE * 2, paint);
-        page.getCanvas().drawText(context.getString(R.string.app_name), (PAGE_WIDTH / 4) + (SPACE * 2), LOGO_SIZE - SPACE, titlePaint);
-        page.getCanvas().drawBitmap(scaledBitmap, (PAGE_WIDTH / 4) * 3, SPACE, myPaint);
+//        page.getCanvas().drawColor(context.getColor(R.color.light_blue_transparent));
+        page.getCanvas().drawRoundRect(0, 0, PAGE_WIDTH, LOGO_SIZE + SPACE, SPACE / 2, SPACE / 2, paint);
+        page.getCanvas().drawText(context.getString(R.string.app_name), (PAGE_WIDTH / 4) + (SPACE * 2), LOGO_SIZE - (SPACE), titlePaint);
+        page.getCanvas().drawBitmap(scaledBitmap, (PAGE_WIDTH / 4) * 3, SPACE / 2, myPaint);
     }
 
     private static String getAllMessages(Context context, List<ChatMessage> messages) {
