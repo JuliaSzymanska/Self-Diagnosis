@@ -100,6 +100,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(MESSAGES_COLUMN_MESSAGE, message.getMessage());
         contentValues.put(MESSAGES_COLUMN_IS_USER_MESSAGE, message.getIsUserMessage());
         database.insert(MESSAGES_TABLE_NAME, null, contentValues);
+        database.close();
     }
 
 
@@ -113,7 +114,8 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
         contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
-        database.update(USER_PROFILE_TABLE_NAME, contentValues, "? = ?", new String[]{USER_COLUMN_ID, String.valueOf(user.getId())});
+        database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID +" = ?", new String[]{String.valueOf(user.getId())});
+        database.close();
     }
 
     private static void updateChatDataToDB(Context context, Chat chat) {
@@ -127,47 +129,75 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_CONDITIONS_ARRAY, chat.getConditionsArray());
         contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestion());
         contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID, chat.getLastDoctorQuestionId());
-        database.update(CHATS_TABLE_NAME, contentValues, "? = ?", new String[]{CHATS_COLUMN_ID, String.valueOf(chat.getId())});
-    }
+        database.update(CHATS_TABLE_NAME, contentValues, CHATS_COLUMN_ID +" = ?", new String[]{String.valueOf(chat.getId())});
+        database.close();}
 
     private static boolean isExist(Context context, User user) {
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
-        Cursor cursor = database.rawQuery("SELECT ? FROM " + USER_PROFILE_TABLE_NAME + " WHERE ? = ?",
-                new String[]{
-                        USER_COLUMN_ID,
-                        USER_COLUMN_ID,
-                        String.valueOf(user.getId())});
+        String[] projection = {
+                USER_COLUMN_ID,
+        };
+
+        Cursor cursor = database.query(
+                ChatSQLiteDBHelper.USER_PROFILE_TABLE_NAME,
+                projection,
+                USER_COLUMN_ID + " = ?",
+                new String[]{String.valueOf(user.getId())},
+                null,
+                null,
+                null
+        );
+
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
+        database.close();
         return exists;
     }
 
     private static boolean isExist(Context context, Chat chat) {
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
-        String checkQuery = "SELECT ? FROM " + CHATS_TABLE_NAME + " WHERE ? = ?";
-        Cursor cursor = database.rawQuery(checkQuery,
-                new String[]{
-                        CHATS_COLUMN_ID,
-                        CHATS_COLUMN_ID,
-                        String.valueOf(chat.getId())});
+
+        String[] projection = {
+                CHATS_COLUMN_ID,
+        };
+
+        Cursor cursor = database.query(
+                ChatSQLiteDBHelper.CHATS_TABLE_NAME,
+                projection,
+                CHATS_COLUMN_ID + " = ?",
+                new String[]{String.valueOf(chat.getId())},
+                null,
+                null,
+                null
+        );
+
+
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
+        database.close();
         return exists;
     }
 
     private static boolean isExist(Context context, ChatMessage message) {
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
-        String checkQuery = "SELECT ? FROM " + MESSAGES_TABLE_NAME
-                + " WHERE ? = ? AND ? = ?";
-        Cursor cursor = database.rawQuery(checkQuery,
-                new String[]{
-                        MESSAGES_COLUMN_MESSAGE_ID,
-                        MESSAGES_COLUMN_MESSAGE_ID,
-                        String.valueOf(message.getId()),
-                        MESSAGES_COLUMN_CHAT_ID,
-                        String.valueOf(message.getChatId())});
+
+        String[] projection = {
+                MESSAGES_COLUMN_MESSAGE_ID,
+        };
+
+        Cursor cursor = database.query(
+                ChatSQLiteDBHelper.MESSAGES_TABLE_NAME,
+                projection,
+                CHATS_COLUMN_ID + " = ? AND " + MESSAGES_COLUMN_CHAT_ID + " = ?",
+                new String[]{String.valueOf(message.getId()), String.valueOf(message.getChatId())},
+                null,
+                null,
+                null
+        );
+
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
+        database.close();
         return exists;
     }
 
@@ -208,17 +238,27 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        database.close();
         return usersList;
     }
 
     public static List<Chat> getAllChatsForUserFromDB(Context context, int userId) {
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT ? FROM " + CHATS_TABLE_NAME + " WHERE ? = ? ORDER BY ? DESC",
-                new String[]{
-                        "*",
-                        CHATS_COLUMN_USER_ID,
-                        String.valueOf(userId),
-                        CHATS_COLUMN_ID});
+
+        String[] projection = {
+                "*"
+        };
+
+        Cursor cursor = database.query(
+                ChatSQLiteDBHelper.CHATS_TABLE_NAME,
+                projection,
+                CHATS_COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(userId)},
+                null,
+                null,
+                CHATS_COLUMN_ID + " DESC"
+        );
+
         List<Chat> chatList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -243,17 +283,27 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
             return chatList;
         }
         cursor.close();
+        database.close();
         return chatList;
     }
 
     public static List<ChatMessage> getAllMessagesForChat(Context context, int chatId) {
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT ? FROM " + MESSAGES_TABLE_NAME + " WHERE ? = ? ORDER BY ? ASC",
-                new String[]{
-                        "*",
-                        MESSAGES_COLUMN_CHAT_ID,
-                        String.valueOf(chatId),
-                        MESSAGES_COLUMN_MESSAGE_ID});
+
+        String[] projection = {
+                "*"
+        };
+
+        Cursor cursor = database.query(
+                ChatSQLiteDBHelper.MESSAGES_TABLE_NAME,
+                projection,
+                MESSAGES_COLUMN_CHAT_ID + " = ?",
+                new String[]{String.valueOf(chatId)},
+                null,
+                null,
+                MESSAGES_COLUMN_MESSAGE_ID + " ASC"
+        );
+
         List<ChatMessage> messageList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -263,9 +313,11 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
 
                 messageList.add(new ChatMessage(retId, chatId, text, isUserMessage));
             } while (cursor.moveToNext());
+            database.close();
             cursor.close();
             return messageList;
         }
+        database.close();
         cursor.close();
         return null;
     }
@@ -274,11 +326,21 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
     public static User getUserByID(Context context, int id) {
         // TODO: 05.11.2020 make it not break when id not exists
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT ? FROM " + USER_PROFILE_TABLE_NAME + " WHERE ? = ?",
-                new String[]{
-                        "*",
-                        USER_COLUMN_ID,
-                        String.valueOf(id)});
+
+        String[] projection = {
+                "*"
+        };
+
+        Cursor cursor = database.query(
+                ChatSQLiteDBHelper.USER_PROFILE_TABLE_NAME,
+                projection,
+                USER_COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null
+        );
+
         if (cursor.moveToFirst()) {
             int retId = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID));
             String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
@@ -294,6 +356,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 return null;
             }
         }
+        database.close();
         cursor.close();
         return null;
     }
@@ -315,9 +378,11 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         );
         if (cursor.moveToFirst()) {
             int retint = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID)) + 1;
+            database.close();
             cursor.close();
             return retint;
         }
+        database.close();
         cursor.close();
         return 1000;
     }
@@ -339,9 +404,11 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         );
         if (cursor.moveToFirst()) {
             int retint = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_ID)) + 1;
+            database.close();
             cursor.close();
             return retint;
         }
+        database.close();
         cursor.close();
         return 100;
     }
@@ -363,9 +430,11 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         );
         if (cursor.moveToFirst()) {
             int retint = cursor.getInt(cursor.getColumnIndex(MESSAGES_COLUMN_MESSAGE_ID)) + 1;
+            database.close();
             cursor.close();
             return retint;
         }
+        database.close();
         cursor.close();
         return 0;
     }
