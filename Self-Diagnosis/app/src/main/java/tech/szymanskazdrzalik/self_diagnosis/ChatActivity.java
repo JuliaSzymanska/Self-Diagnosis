@@ -60,6 +60,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             e.printStackTrace();
         }
     };
+    private Animate animate = new Animate();
 
     public Boolean getIsCovid() {
         return isCovid;
@@ -68,6 +69,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.animate = new Animate();
         isCovid = getIntent().getBooleanExtra(getString(R.string.is_covid), false);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -328,22 +330,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void hideMessageBox() {
-        slide_out_message_box.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                binding.inputLayout.inputsContainer.removeAllViews();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        binding.inputLayout.inputsContainer.setAnimation(slide_out_message_box);
+        this.animate.hideMessageBox();
     }
 
     private void questionButtonOnClick(String id, String choice, String userMessage, String name) {
@@ -453,7 +440,17 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
             String id = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId();
             String msg = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion();
-            if (id != null && msg != null) {
+
+            if (id == null || msg == null) {
+                // TODO: 14.01.2021 sprawdzic czemu animacja nie dziala
+                View view = View.inflate(this, R.layout.msg_input_bar_inner, null);
+                binding.inputLayout.inputsContainer.removeAllViews();
+                if (this.animate.isRunning()) {
+                    slide_out_message_box.setAnimationListener(null);
+                }
+                binding.inputLayout.inputsContainer.addView(view);
+
+            } else {
                 try {
                     this.onDoctorQuestionReceived(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId(),
                             new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion()),
@@ -462,12 +459,37 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else {
-                // TODO: 14.01.2021 sprawdzic czemu animacja nie dziala
-                View view = View.inflate(this, R.layout.msg_input_bar_inner, null);
-                binding.inputLayout.inputsContainer.removeAllViews();
-                binding.inputLayout.inputsContainer.addView(view);
             }
+        }
+    }
+
+    private class Animate {
+
+        private boolean isRunning = false;
+
+        public boolean isRunning() {
+            return isRunning;
+        }
+
+        public void hideMessageBox() {
+            slide_out_message_box.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    binding.inputLayout.inputsContainer.removeAllViews();
+                    Animate.this.isRunning = false;
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            this.isRunning = true;
+            binding.inputLayout.inputsContainer.setAnimation(slide_out_message_box);
         }
     }
 }

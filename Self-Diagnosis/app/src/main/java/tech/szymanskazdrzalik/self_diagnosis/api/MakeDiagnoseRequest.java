@@ -8,7 +8,6 @@ import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 
 public class MakeDiagnoseRequest extends DiagnoseRequest {
 
-
     public MakeDiagnoseRequest(ChatActivity chatActivity, @Nullable String userAnswer) {
         super(chatActivity, userAnswer);
 

@@ -19,24 +19,19 @@ public abstract class DiagnoseRequest {
         @Override
         public void onResponse(JSONObject response) {
             System.out.println(response);
-            boolean shouldStop = false;
+            boolean shouldStop;
             try {
-                try {
-                    shouldStop = response.getBoolean("should_stop");
-                    RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
-                    if (shouldStop) {
-                        if (!listener.finishDiagnose()) {
-                            shouldStop = false;
-                        }
+                shouldStop = response.getBoolean("should_stop");
+                RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
+                if (shouldStop) {
+                    if (!listener.finishDiagnose()) {
+                        shouldStop = false;
                     }
-                } catch (JSONException e) {
-                    // TODO: 16.12.2020 To znaczy że nie znaleziono pola should_stop, zrobić coś mądrego z tym
-                    e.printStackTrace();
                 }
                 if (!shouldStop) {
                     JSONObject jsonObjectQuestion = response.getJSONObject("question");
                     listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
-                    listener.hideMessageBox();
+//                    listener.hideMessageBox();
                     listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
                             jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"),
                             jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("name"));
