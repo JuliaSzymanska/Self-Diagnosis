@@ -35,7 +35,7 @@
     <string name="user">Użytkownik: \u0020</string>
     <string name="doctor">e-Lekarz: \u0020</string>
     <string name="doctor_your_diagnosis">e-Lekarz: Twoja diagnoza: \u0020</string>
-    <string name="diagnose_with_white_space">Diagnoza: \\u0020</string>
+    <string name="diagnose_with_white_space">Diagnoza: </string>
     <string name="symptoms">Symptomy: \u0020</string>
     <string name="present">Występujące: \u0020</string>
     <string name="absent">Niewystępujące: \u0020</string>

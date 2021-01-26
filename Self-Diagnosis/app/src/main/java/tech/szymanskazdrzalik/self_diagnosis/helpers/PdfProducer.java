@@ -23,22 +23,28 @@ import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
 
 public class PdfProducer {
 
+    private static final int PAGE_WIDTH = 630;
+    private static final int PAGE_HEIGHT = 891;
+    private static final int LOGO_SIZE = 120;
+    private static final int SPACE = 15;
+
     public static void createPdfFile(Context context, List<ChatMessage> messages) {
+
         PdfDocument myPdfDocument = new PdfDocument();
-        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(1200, 2010, 1).create();
-        PdfDocument.PageInfo myPageInfo2 = new PdfDocument.PageInfo.Builder(1200, 2010, 1).create();
+        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, 1).create();
+        PdfDocument.PageInfo myPageInfo2 = new PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, 1).create();
         PdfDocument.Page myPage = myPdfDocument.startPage(myPageInfo);
+
         Paint myPaint = new Paint();
-        myPaint.setTextSize(30);
+        myPaint.setTextSize(15);
+
         Paint titlePaint = new Paint();
         titlePaint.setTextAlign(Paint.Align.CENTER);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        titlePaint.setTextSize(70);
-        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.doctor);
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, 1200 / 2, 100, false);
+        titlePaint.setTextSize(35);
 
-        myPage.getCanvas().drawText(context.getString(R.string.app_name), 1200 / 2, 100, titlePaint);
-        myPage.getCanvas().drawBitmap(scaledBitmap, 30, 30, myPaint);
+        setPageStyle(context, myPage, titlePaint, myPaint);
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getDiagnose(context));
         stringBuilder.append("\n\n\n");
@@ -46,14 +52,15 @@ public class PdfProducer {
         stringBuilder.append("\n\n\n");
 
 
-        int x = 30, y = 200;
+        int x = SPACE * 4, y = LOGO_SIZE + (4 * SPACE);
         for (String line : stringBuilder.toString().split("\n")) {
             myPage.getCanvas().drawText(line, x, y, myPaint);
             y += myPaint.descent() - myPaint.ascent();
         }
 
         myPdfDocument.finishPage(myPage);
-        PdfDocument.Page myPage2 = myPdfDocument.startPage(myPageInfo2);
+        myPage = myPdfDocument.startPage(myPageInfo2);
+        setPageStyle(context, myPage, titlePaint, myPaint);
         StringBuilder stringBuilder2 = new StringBuilder();
         stringBuilder2.append(getAllMessages(context, messages));
 
@@ -72,13 +79,13 @@ public class PdfProducer {
 //
 //            }
 //            else {
-            myPage2.getCanvas().drawText(line, x, y, myPaint);
+            myPage.getCanvas().drawText(line, x, y, myPaint);
             y += myPaint.descent() - myPaint.ascent();
 //            }
         }
 
 //        if (y<=1000)
-        myPdfDocument.finishPage(myPage2);
+        myPdfDocument.finishPage(myPage);
 
 
         String myFilePath = Environment.getExternalStorageDirectory().getPath() + "/Consultation_" + new Date() + ".pdf";
@@ -91,6 +98,19 @@ public class PdfProducer {
 
         myPdfDocument.close();
         Toast.makeText(context, R.string.exported_to_pdf_file, Toast.LENGTH_SHORT).show();
+    }
+
+    private static void setPageStyle(Context context, PdfDocument.Page page, Paint titlePaint, Paint myPaint){
+        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.doctor_bigger);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, LOGO_SIZE, LOGO_SIZE, false);
+
+        Paint paint = new Paint();
+        paint.setColor(context.getColor(R.color.blue_header_calendar_trasparent));
+
+        page.getCanvas().drawColor(context.getColor(R.color.light_blue_transparent));
+        page.getCanvas().drawRoundRect(0, 0, PAGE_WIDTH, LOGO_SIZE + (2 * SPACE), SPACE * 2, SPACE * 2, paint);
+        page.getCanvas().drawText(context.getString(R.string.app_name), (PAGE_WIDTH / 4) + (SPACE * 2), LOGO_SIZE - SPACE, titlePaint);
+        page.getCanvas().drawBitmap(scaledBitmap, (PAGE_WIDTH / 4) * 3, SPACE, myPaint);
     }
 
     private static String getAllMessages(Context context, List<ChatMessage> messages) {
@@ -141,17 +161,17 @@ public class PdfProducer {
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 if (jsonArray.getJSONObject(i).getString("choice_id").equals("present")) {
-                    stringBuilderPresent.append("   *");
+                    stringBuilderPresent.append("   * ");
                     stringBuilderPresent.append(jsonArray.getJSONObject(i).getString("name"));
-                    stringBuilderPresent.append(", \n");
+                    stringBuilderPresent.append("\n");
                 } else if (jsonArray.getJSONObject(i).getString("choice_id").equals("absent")) {
-                    stringBuilderAbsent.append("    *");
+                    stringBuilderAbsent.append("    * ");
                     stringBuilderAbsent.append(jsonArray.getJSONObject(i).getString("name"));
-                    stringBuilderAbsent.append(", \n");
+                    stringBuilderAbsent.append("\n");
                 } else {
-                    stringBuilderNotKnow.append("    *");
+                    stringBuilderNotKnow.append("    * ");
                     stringBuilderNotKnow.append(jsonArray.getJSONObject(i).getString("name"));
-                    stringBuilderNotKnow.append(", \n");
+                    stringBuilderNotKnow.append("\n");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

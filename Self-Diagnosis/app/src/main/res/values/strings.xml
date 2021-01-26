@@ -47,7 +47,7 @@
     <string name="user">User: \u0020</string>
     <string name="doctor">e-Doctor: \u0020</string>
     <string name="doctor_your_diagnosis">Doctor: Your diagnosis: \u0020</string>
-    <string name="diagnose_with_white_space">Diagnose: \u0020</string>
+    <string name="diagnose_with_white_space">Diagnose: </string>
     <string name="symptoms">Symptoms: \u0020</string>
     <string name="present">Present: \u0020</string>
     <string name="absent">Absent: \u0020</string>
