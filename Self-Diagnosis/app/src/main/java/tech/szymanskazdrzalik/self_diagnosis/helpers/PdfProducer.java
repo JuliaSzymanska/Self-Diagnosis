@@ -53,17 +53,14 @@ public class PdfProducer {
         stringBuilder.append(getAllNames(context));
         stringBuilder.append("\n\n\n");
 
-        int i = 0;
         int x = GENERAL_TEXT_WIDTH, y = GENERAL_TEXT_HEIGHT;
         for (String line : stringBuilder.toString().split("\n")) {
-            myPage.getCanvas().drawText(line, x, y, myPaint);
-            y += myPaint.descent() - myPaint.ascent();
             if (y > PAGE_HEIGHT - (SPACE * 2)) {
                 myPdfDocument.finishPage(myPage);
                 myPage = myPdfDocument.startPage(myPageInfo);
                 setPageStyle(context, myPage, titlePaint, myPaint);
                 myPage.getCanvas().drawText(line, x, y, myPaint);
-                y += myPaint.descent() - myPaint.ascent();
+                y = GENERAL_TEXT_HEIGHT;
             } else {
                 myPage.getCanvas().drawText(line, x, y, myPaint);
                 y += myPaint.descent() - myPaint.ascent();
@@ -71,18 +68,15 @@ public class PdfProducer {
         }
 
         StringBuilder stringBuilder2 = new StringBuilder();
+        stringBuilder2.append("\n\n\n");
         stringBuilder2.append(getAllMessages(context, messages));
 
-//        y = GENERAL_TEXT_HEIGHT;
-        i = 0;
         for (String line : stringBuilder2.toString().split("\n")) {
             if (y > PAGE_HEIGHT - (SPACE * 2)) {
                 myPdfDocument.finishPage(myPage);
                 myPage = myPdfDocument.startPage(myPageInfo2);
                 myPage.getCanvas().drawText(line, x, y, myPaint);
-                y += myPaint.descent() - myPaint.ascent();
-                if (i++ == stringBuilder2.length() - 1)
-                    myPdfDocument.finishPage(myPage);
+                y = GENERAL_TEXT_HEIGHT;
             } else {
             myPage.getCanvas().drawText(line, x, y, myPaint);
             y += myPaint.descent() - myPaint.ascent();
@@ -111,7 +105,6 @@ public class PdfProducer {
         Paint paint = new Paint();
         paint.setColor(context.getColor(R.color.blue_header_calendar_trasparent));
 
-//        page.getCanvas().drawColor(context.getColor(R.color.light_blue_transparent));
         page.getCanvas().drawRoundRect(0, 0, PAGE_WIDTH, LOGO_SIZE + SPACE, SPACE / 2, SPACE / 2, paint);
         page.getCanvas().drawText(context.getString(R.string.app_name), (PAGE_WIDTH / 4) + (SPACE * 2), LOGO_SIZE - (SPACE), titlePaint);
         page.getCanvas().drawBitmap(scaledBitmap, (PAGE_WIDTH / 4) * 3, SPACE / 2, myPaint);
@@ -119,6 +112,8 @@ public class PdfProducer {
 
     private static String getAllMessages(Context context, List<ChatMessage> messages) {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(context.getString(R.string.conversation));
+        stringBuilder.append("\n");
         for (int i = 0; i < messages.size() - 1; i++) {
             if (messages.get(i).getIsUserMessage()) {
                 stringBuilder.append(context.getString(R.string.user)).append(messages.get(i).getMessage()).append("\n\n");

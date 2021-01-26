@@ -44,4 +44,5 @@
     <string name="notification_title">Czy wszystko u Ciebie w porządku?</string>
     <string name="notification_message">Dawno już się nie diagnozowałeś</string>
     <string name="select_all_statemenet_that_applay_to_you">Wybierz wszystkie stwirdzenia, które do Ciebie pasują</string>
+    <string name="conversation">Konwersacja:</string>
 </resources>

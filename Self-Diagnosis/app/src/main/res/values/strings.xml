@@ -56,4 +56,5 @@
     <string name="notification_message">You didn\'t diagnose lately</string>
     <string name="is_covid" translatable="false">is_covid</string>
     <string name="select_all_statemenet_that_applay_to_you">Please select all statements that apply to you</string>
+    <string name="conversation">Conversation:</string>
 </resources>
