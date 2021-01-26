@@ -73,6 +73,8 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+//        System.out.println(System.currentTimeMillis());
+
         binding.ivLogo.setAnimation(AnimationUtils.loadAnimation(this, R.anim.from_top_animation));
         binding.tvName.setAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_for_title));
         binding.tvDesc.setAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_for_description));

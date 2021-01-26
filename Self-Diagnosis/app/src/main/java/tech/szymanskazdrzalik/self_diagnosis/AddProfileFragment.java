@@ -39,13 +39,15 @@ public class AddProfileFragment extends Fragment {
 
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
+    private static final long DEFAULT_DATE = System.currentTimeMillis() - 410280000000L;
     private final Calendar myCalendar = Calendar.getInstance();
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
         setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
     };
+    private DatePickerDialog datePickerDialog;
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
-            v -> new DatePickerDialog(getContext(), R.style.MyDatePickerDialogStyle, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            v -> datePickerDialog.show();
     GlobalVariables globalVariables = GlobalVariables.getInstance();
     private FragmentAddProfileBinding binding;
     private boolean isNewUser = false;
@@ -101,6 +103,8 @@ public class AddProfileFragment extends Fragment {
             if (mListener != null) {
                 mListener.callback(getString(R.string.reload));
             }
+
+            System.out.println(user.getAge());
             getActivity().onBackPressed();
         }
     };
@@ -176,6 +180,8 @@ public class AddProfileFragment extends Fragment {
         }
 
         setListeners();
+        datePickerDialog = new DatePickerDialog(getContext(), R.style.MyDatePickerDialogStyle, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMaxDate(DEFAULT_DATE);
 
         return binding.getRoot();
     }
