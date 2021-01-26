@@ -9,6 +9,7 @@ import android.graphics.pdf.PdfDocument;
 import android.os.Environment;
 import android.widget.Toast;
 
+import org.apache.http.cookie.SM;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -37,15 +38,16 @@ public class PdfProducer {
         PdfDocument.PageInfo myPageInfo2 = new PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, 1).create();
         PdfDocument.Page myPage = myPdfDocument.startPage(myPageInfo);
 
-        Paint myPaint = new Paint();
-        myPaint.setTextSize(15);
+        Paint customPaintRegularText = new Paint();
+        customPaintRegularText.setTextSize(15);
+        customPaintRegularText.setTypeface(Typeface.create("Calibri",Typeface.NORMAL));
 
         Paint titlePaint = new Paint();
         titlePaint.setTextAlign(Paint.Align.CENTER);
-        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        titlePaint.setTypeface(Typeface.create("Calibri",Typeface.BOLD));
         titlePaint.setTextSize(35);
 
-        setPageStyle(context, myPage, titlePaint, myPaint);
+        setPageStyle(context, myPage, titlePaint, customPaintRegularText);
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getDiagnose(context));
@@ -55,15 +57,15 @@ public class PdfProducer {
 
         int x = GENERAL_TEXT_WIDTH, y = GENERAL_TEXT_HEIGHT;
         for (String line : stringBuilder.toString().split("\n")) {
-            if (y > PAGE_HEIGHT - (SPACE * 2)) {
+            if (y > PAGE_HEIGHT - (SPACE * 4)) {
                 myPdfDocument.finishPage(myPage);
                 myPage = myPdfDocument.startPage(myPageInfo);
-                setPageStyle(context, myPage, titlePaint, myPaint);
-                myPage.getCanvas().drawText(line, x, y, myPaint);
+                setPageStyle(context, myPage, titlePaint, customPaintRegularText);
+                myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
                 y = GENERAL_TEXT_HEIGHT;
             } else {
-                myPage.getCanvas().drawText(line, x, y, myPaint);
-                y += myPaint.descent() - myPaint.ascent();
+                myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
+                y += customPaintRegularText.descent() - customPaintRegularText.ascent();
             }
         }
 
@@ -72,15 +74,15 @@ public class PdfProducer {
         stringBuilder2.append(getAllMessages(context, messages));
 
         for (String line : stringBuilder2.toString().split("\n")) {
-            if (y > PAGE_HEIGHT - (SPACE * 2)) {
+            if (y > PAGE_HEIGHT - (SPACE * 4)) {
                 myPdfDocument.finishPage(myPage);
                 myPage = myPdfDocument.startPage(myPageInfo2);
-                setPageStyle(context, myPage, titlePaint, myPaint);
-                myPage.getCanvas().drawText(line, x, y, myPaint);
+                setPageStyle(context, myPage, titlePaint, customPaintRegularText);
+                myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
                 y = GENERAL_TEXT_HEIGHT;
             } else {
-            myPage.getCanvas().drawText(line, x, y, myPaint);
-            y += myPaint.descent() - myPaint.ascent();
+            myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
+            y += customPaintRegularText.descent() - customPaintRegularText.ascent();
             }
         }
 
@@ -108,7 +110,6 @@ public class PdfProducer {
 
         page.getCanvas().drawRoundRect(0, 0, PAGE_WIDTH, LOGO_SIZE + SPACE, SPACE / 2, SPACE / 2, paint);
         page.getCanvas().drawText(context.getString(R.string.app_name), (PAGE_WIDTH / 4) + (SPACE * 2), LOGO_SIZE - (SPACE), titlePaint);
-        page.getCanvas().drawBitmap(scaledBitmap, (PAGE_WIDTH / 4) * 3, SPACE / 2, myPaint);
     }
 
     private static String getAllMessages(Context context, List<ChatMessage> messages) {
