@@ -135,9 +135,9 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         if (this.isCovid) {
             if (GlobalVariables.getInstance().getCurrentUser().isPresent())
                 firstDoctorMessage = getString(R.string.hallo_only) + GlobalVariables.getInstance().getCurrentUser().get().getName()
-                        + "! " + getString(R.string.select_all_statemenet_that_applay_to_you);
+                        + "! \n" + getString(R.string.select_all_statemenet_that_applay_to_you);
             else {
-                firstDoctorMessage = getString(R.string.hello_with_exclamation_mark)
+                firstDoctorMessage = getString(R.string.hello_with_exclamation_mark) + "\n"
                         + getString(R.string.select_all_statemenet_that_applay_to_you);
             }
         } else {

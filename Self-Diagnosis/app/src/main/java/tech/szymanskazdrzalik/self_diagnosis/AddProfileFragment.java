@@ -2,14 +2,10 @@ package tech.szymanskazdrzalik.self_diagnosis;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-//import android.icu.util.Calendar;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -27,13 +22,11 @@ import java.util.Date;
 import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
-import tech.szymanskazdrzalik.self_diagnosis.db.DbBitmapUtility;
 import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
+import tech.szymanskazdrzalik.self_diagnosis.db.DbBitmapUtility;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,23 +40,26 @@ public class AddProfileFragment extends Fragment {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private final Calendar myCalendar = Calendar.getInstance();
-    private final View.OnClickListener addProfileImageListener = v -> openImagePicker();
-    GlobalVariables globalVariables = GlobalVariables.getInstance();
-    private FragmentAddProfileBinding binding;
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
         setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
     };
     private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
             v -> new DatePickerDialog(getContext(), R.style.MyDatePickerDialogStyle, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+    GlobalVariables globalVariables = GlobalVariables.getInstance();
+    private FragmentAddProfileBinding binding;
     private boolean isNewUser = false;
     private String userGender;
+    private Bitmap userPicture;
     private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             userGender = getString(R.string.female_sign);
             binding.female.clearColorFilter();
             binding.male.setColorFilter(getBlackAndWhiteFilter());
+            userPicture = getDefaultImage(userGender);
+            binding.addUserImage.setImageBitmap(userPicture);
+            binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
         }
     };
     private final View.OnClickListener genderMaleOnClick = new View.OnClickListener() {
@@ -72,6 +68,9 @@ public class AddProfileFragment extends Fragment {
             userGender = getString(R.string.male_sign);
             binding.male.clearColorFilter();
             binding.female.setColorFilter(getBlackAndWhiteFilter());
+            userPicture = getDefaultImage(userGender);
+            binding.addUserImage.setImageBitmap(userPicture);
+            binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
         }
     };
     private AddProfileFragmentListener mListener;
@@ -84,11 +83,6 @@ public class AddProfileFragment extends Fragment {
 
             String userName = binding.editProfileName.getText().toString();
             Date userBirthDate = myCalendar.getTime();
-
-            Bitmap userPicture = DbBitmapUtility.getBitmapFromDrawable(binding.addUserImage.getDrawable());
-            if (userPicture == null || userPicture.sameAs(getDefaultImage(getString(R.string.female_sign))) || userPicture.sameAs(getDefaultImage(getString(R.string.male_sign)))) {
-                userPicture = getDefaultImage(userGender);
-            }
 
             int currentID;
 
@@ -187,7 +181,6 @@ public class AddProfileFragment extends Fragment {
     }
 
     private void setListeners() {
-        binding.addUserImage.setOnClickListener(this.addProfileImageListener);
         binding.male.setOnClickListener(genderMaleOnClick);
         binding.female.setOnClickListener(genderFemaleOnClick);
         binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
@@ -237,34 +230,8 @@ public class AddProfileFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    private void openImagePicker() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, IMAGE_PICK_CODE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            Uri selected = Objects.requireNonNull(data).getData();
-            binding.addUserImage.setImageURI(selected);
-            binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
-        }
-    }
-
     private void updateLabel() {
         binding.dateEditTextFragmentAddProfile.setText(ChatSQLiteDBHelper.DB_DATE_USER_FORMAT.format(myCalendar.getTime()));
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImagePicker();
-            } else {
-                Toast.makeText(getContext(), getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     public interface AddProfileFragmentListener {
