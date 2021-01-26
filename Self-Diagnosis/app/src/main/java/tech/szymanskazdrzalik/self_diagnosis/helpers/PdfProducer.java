@@ -110,6 +110,7 @@ public class PdfProducer {
 
         page.getCanvas().drawRoundRect(0, 0, PAGE_WIDTH, LOGO_SIZE + SPACE, SPACE / 2, SPACE / 2, paint);
         page.getCanvas().drawText(context.getString(R.string.app_name), (PAGE_WIDTH / 4) + (SPACE * 2), LOGO_SIZE - (SPACE), titlePaint);
+        page.getCanvas().drawBitmap(scaledBitmap, (PAGE_WIDTH / 4) * 3, SPACE / 2, myPaint);
     }
 
     private static String getAllMessages(Context context, List<ChatMessage> messages) {
