@@ -29,8 +29,7 @@
             android:lines="4"
             android:maxLines="6"
             android:minLines="2"
-            android:scrollbars="vertical"
-            android:text="@string/default_message_delete_me"/>
+            android:scrollbars="vertical" />
 
         <Button
             android:id="@+id/sendSymptoms"
