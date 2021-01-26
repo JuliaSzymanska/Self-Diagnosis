@@ -91,8 +91,8 @@ public class MakeParseRequest {
         }
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(context);
-
-        if (Locale.getDefault().getLanguage().equals("en")) {
+        // TODO: 26.01.2021 Tutaj lista obsługiwanych języków innych niż angielski 
+        if (!Locale.getDefault().getLanguage().equals("pl")) {
             JSONObject jsonObject = new JSONObject();
             try {
                 RequestUtil.addUserDataToJsonObject(jsonObject);
