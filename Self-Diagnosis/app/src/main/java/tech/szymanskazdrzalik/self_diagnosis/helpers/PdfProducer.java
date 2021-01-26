@@ -75,6 +75,7 @@ public class PdfProducer {
             if (y > PAGE_HEIGHT - (SPACE * 2)) {
                 myPdfDocument.finishPage(myPage);
                 myPage = myPdfDocument.startPage(myPageInfo2);
+                setPageStyle(context, myPage, titlePaint, myPaint);
                 myPage.getCanvas().drawText(line, x, y, myPaint);
                 y = GENERAL_TEXT_HEIGHT;
             } else {
