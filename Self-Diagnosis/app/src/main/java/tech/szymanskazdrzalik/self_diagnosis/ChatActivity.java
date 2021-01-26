@@ -437,6 +437,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     public void onRequestFailure() {
         this.generateNewDoctorMessageFromString(getString(R.string.error_messsage_response_doctor));
+        if (this.isCovid) {
+            // FIXME: 26.01.2021
+            return;
+        }
         if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
             String id = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestionId();
             String msg = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion();
