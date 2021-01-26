@@ -254,7 +254,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(userId)},
                 null,
                 null,
-                CHATS_COLUMN_ID + "DESC"
+                CHATS_COLUMN_ID + " DESC"
         );
 
         List<Chat> chatList = new ArrayList<>();
@@ -299,7 +299,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(chatId)},
                 null,
                 null,
-                MESSAGES_COLUMN_MESSAGE_ID + "ASC"
+                MESSAGES_COLUMN_MESSAGE_ID + " ASC"
         );
 
         List<ChatMessage> messageList = new ArrayList<>();
