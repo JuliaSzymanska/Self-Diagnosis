@@ -100,6 +100,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(MESSAGES_COLUMN_MESSAGE, message.getMessage());
         contentValues.put(MESSAGES_COLUMN_IS_USER_MESSAGE, message.getIsUserMessage());
         database.insert(MESSAGES_TABLE_NAME, null, contentValues);
+        database.close();
     }
 
 
@@ -114,6 +115,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
         contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
         database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID +" = ?", new String[]{String.valueOf(user.getId())});
+        database.close();
     }
 
     private static void updateChatDataToDB(Context context, Chat chat) {
@@ -128,7 +130,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestion());
         contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID, chat.getLastDoctorQuestionId());
         database.update(CHATS_TABLE_NAME, contentValues, CHATS_COLUMN_ID +" = ?", new String[]{String.valueOf(chat.getId())});
-    }
+        database.close();}
 
     private static boolean isExist(Context context, User user) {
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
@@ -354,6 +356,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 return null;
             }
         }
+        database.close();
         cursor.close();
         return null;
     }
@@ -375,9 +378,11 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         );
         if (cursor.moveToFirst()) {
             int retint = cursor.getInt(cursor.getColumnIndex(USER_COLUMN_ID)) + 1;
+            database.close();
             cursor.close();
             return retint;
         }
+        database.close();
         cursor.close();
         return 1000;
     }
@@ -399,9 +404,11 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         );
         if (cursor.moveToFirst()) {
             int retint = cursor.getInt(cursor.getColumnIndex(CHATS_COLUMN_ID)) + 1;
+            database.close();
             cursor.close();
             return retint;
         }
+        database.close();
         cursor.close();
         return 100;
     }
@@ -423,9 +430,11 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         );
         if (cursor.moveToFirst()) {
             int retint = cursor.getInt(cursor.getColumnIndex(MESSAGES_COLUMN_MESSAGE_ID)) + 1;
+            database.close();
             cursor.close();
             return retint;
         }
+        database.close();
         cursor.close();
         return 0;
     }
