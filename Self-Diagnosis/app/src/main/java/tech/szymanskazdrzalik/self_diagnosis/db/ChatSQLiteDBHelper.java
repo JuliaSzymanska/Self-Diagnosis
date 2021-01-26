@@ -40,7 +40,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION = "doc_message";
     public static final String CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID = "doc_question_id";
 
-    private static final int DATABASE_VERSION = 30;
+    private static final int DATABASE_VERSION = 31;
 
     /**
      * {@inheritDoc}
@@ -387,7 +387,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 CHATS_COLUMN_USER_ID + " INTEGER," +
                 CHATS_COLUMN_NEWEST_REQUEST + " VARCHAR(8192)," +
                 CHATS_COLUMN_DATETIME + " DATETIME," +
-                CHATS_COLUMN_CONDITIONS_ARRAY + " INTEGER," +
+                CHATS_COLUMN_CONDITIONS_ARRAY + " VARCHAR(8192)," +
                 CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION + " VARCHAR(8192)," +
                 CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID + " VARCHAR(32)," +
                 " FOREIGN KEY (" + CHATS_COLUMN_USER_ID + ") REFERENCES " + USER_PROFILE_TABLE_NAME + "(" + USER_COLUMN_ID + ")" + ")"

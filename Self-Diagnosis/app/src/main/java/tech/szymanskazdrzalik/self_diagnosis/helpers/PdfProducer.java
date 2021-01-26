@@ -1,6 +1,8 @@
 package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -32,10 +34,11 @@ public class PdfProducer {
         titlePaint.setTextAlign(Paint.Align.CENTER);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextSize(70);
-//        Bitmap bmp;
-//        bmp = BitmapFactory.decodeResource.getResources(),R.drawable.doctor)
+        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.doctor);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, 1200 / 2, 100, false);
 
         myPage.getCanvas().drawText(context.getString(R.string.app_name), 1200 / 2, 100, titlePaint);
+        myPage.getCanvas().drawBitmap(scaledBitmap, 30, 30, myPaint);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getDiagnose(context));
         stringBuilder.append("\n\n\n");
