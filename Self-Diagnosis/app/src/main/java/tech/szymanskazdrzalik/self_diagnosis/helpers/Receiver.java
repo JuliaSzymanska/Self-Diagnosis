@@ -43,7 +43,9 @@ public class Receiver extends BroadcastReceiver {
         int importance = NotificationManager.IMPORTANCE_LOW;
         NotificationChannel mChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance);
         mChannel.enableLights(true);
-        mNotificationManager.createNotificationChannel(mChannel);
+        if (mNotificationManager != null) {
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
     }
 
 

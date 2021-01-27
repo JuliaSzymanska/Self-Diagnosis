@@ -9,7 +9,6 @@ import android.graphics.pdf.PdfDocument;
 import android.os.Environment;
 import android.widget.Toast;
 
-import org.apache.http.cookie.SM;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -41,11 +40,11 @@ public class PdfProducer {
 
         Paint customPaintRegularText = new Paint();
         customPaintRegularText.setTextSize(15);
-        customPaintRegularText.setTypeface(Typeface.create("Calibri",Typeface.NORMAL));
+        customPaintRegularText.setTypeface(Typeface.create("Calibri", Typeface.NORMAL));
 
         Paint titlePaint = new Paint();
         titlePaint.setTextAlign(Paint.Align.CENTER);
-        titlePaint.setTypeface(Typeface.create("Calibri",Typeface.BOLD));
+        titlePaint.setTypeface(Typeface.create("Calibri", Typeface.BOLD));
         titlePaint.setTextSize(35);
 
         setPageStyle(context, myPage, titlePaint, customPaintRegularText);
@@ -82,8 +81,8 @@ public class PdfProducer {
                 myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
                 y = GENERAL_TEXT_HEIGHT;
             } else {
-            myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
-            y += customPaintRegularText.descent() - customPaintRegularText.ascent();
+                myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
+                y += customPaintRegularText.descent() - customPaintRegularText.ascent();
             }
         }
 
@@ -102,8 +101,8 @@ public class PdfProducer {
         Toast.makeText(context, R.string.exported_to_pdf_file, Toast.LENGTH_SHORT).show();
     }
 
-    private static void setPageStyle(Context context, PdfDocument.Page page, Paint titlePaint, Paint myPaint){
-        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.doctor_bigger);
+    private static void setPageStyle(Context context, PdfDocument.Page page, Paint titlePaint, Paint myPaint) {
+        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.doctor_bigger);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, LOGO_SIZE, LOGO_SIZE, false);
 
         Paint paint = new Paint();

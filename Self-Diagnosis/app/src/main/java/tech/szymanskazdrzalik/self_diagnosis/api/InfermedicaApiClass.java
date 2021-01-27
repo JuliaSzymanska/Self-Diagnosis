@@ -39,7 +39,7 @@ public class InfermedicaApiClass {
     }
 
     private static String loadJSONFromAsset(Context context) {
-        String jsonString = "";
+        String jsonString;
         try {
             InputStream is = context.getResources().openRawResource(R.raw.api_info);
             int size = is.available();

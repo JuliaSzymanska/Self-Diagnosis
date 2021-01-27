@@ -38,6 +38,13 @@ public class User {
         MALE_PICTURE = BitmapFactory.decodeResource(context.getResources(), R.drawable.male);
     }
 
+    public static Bitmap getPictureBasedOnGender(String gender) {
+        if (gender.equals("M")) {
+            return MALE_PICTURE;
+        }
+        return FEMALE_PICTURE;
+    }
+
     public int getId() {
         return id;
     }
@@ -52,13 +59,6 @@ public class User {
 
     public Bitmap getPicture() {
         return getPictureBasedOnGender(this.gender);
-    }
-
-    public static Bitmap getPictureBasedOnGender(String gender) {
-        if (gender.equals("M")) {
-            return MALE_PICTURE;
-        }
-        return FEMALE_PICTURE;
     }
 
     public String getGender() {

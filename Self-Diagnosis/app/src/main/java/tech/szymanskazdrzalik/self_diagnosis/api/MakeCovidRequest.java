@@ -32,7 +32,6 @@ public class MakeCovidRequest extends DiagnoseRequest {
                 if (!shouldStop) {
                     JSONObject jsonObjectQuestion = response.getJSONObject("question");
                     listener.onDoctorMessage(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("name"));
-//                    listener.hideMessageBox();
                     listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
                             jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"),
                             jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("name"));

@@ -16,7 +16,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.UsersAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChangeProfile#newInstance} factory method to
+ * Use the factory method to
  * create an instance of this fragment.
  */
 public class ChangeProfile extends Fragment {

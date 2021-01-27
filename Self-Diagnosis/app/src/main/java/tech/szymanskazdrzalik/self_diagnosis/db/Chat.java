@@ -3,9 +3,6 @@ package tech.szymanskazdrzalik.self_diagnosis.db;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Date;
 
 public class Chat {

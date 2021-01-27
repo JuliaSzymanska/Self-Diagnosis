@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -106,7 +105,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         String date = DB_DATE_USER_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
-        database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID +" = ?", new String[]{String.valueOf(user.getId())});
+        database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID + " = ?", new String[]{String.valueOf(user.getId())});
         database.close();
     }
 
@@ -119,8 +118,9 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put(CHATS_COLUMN_CONDITIONS_ARRAY, chat.getConditionsArray());
         contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION, chat.getLastDoctorQuestion());
         contentValues.put(CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID, chat.getLastDoctorQuestionId());
-        database.update(CHATS_TABLE_NAME, contentValues, CHATS_COLUMN_ID +" = ?", new String[]{String.valueOf(chat.getId())});
-        database.close();}
+        database.update(CHATS_TABLE_NAME, contentValues, CHATS_COLUMN_ID + " = ?", new String[]{String.valueOf(chat.getId())});
+        database.close();
+    }
 
     private static boolean isExist(Context context, User user) {
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();

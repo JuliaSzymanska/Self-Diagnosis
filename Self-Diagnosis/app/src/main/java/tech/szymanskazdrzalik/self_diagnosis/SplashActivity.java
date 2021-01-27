@@ -92,7 +92,6 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
     public void onBackPressed() {
         if (GlobalVariables.getInstance().getCurrentUser().isPresent()) {
             startChatActivity();
-        } else {
         }
     }
 

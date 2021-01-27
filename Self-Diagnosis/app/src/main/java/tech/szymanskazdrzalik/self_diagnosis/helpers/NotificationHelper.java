@@ -12,7 +12,10 @@ public class NotificationHelper {
 
     public static void setNotification(PendingIntent pendingIntent, Context context) {
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY * DAYS_NOTIFICATION_DELAY, pendingIntent);
+        if (am != null) {
+            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                    AlarmManager.INTERVAL_DAY * DAYS_NOTIFICATION_DELAY, pendingIntent);
+        }
 
     }
 
