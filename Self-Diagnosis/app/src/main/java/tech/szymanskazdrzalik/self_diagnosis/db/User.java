@@ -51,10 +51,7 @@ public class User {
     }
 
     public Bitmap getPicture() {
-        if (gender.equals("M")) {
-            return MALE_PICTURE;
-        }
-        return FEMALE_PICTURE;
+        return getPictureBasedOnGender(this.gender);
     }
 
     public static Bitmap getPictureBasedOnGender(String gender) {
