@@ -11,7 +11,6 @@ import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 
 public class MakeTranslatorRequest {
 
-
     public MakeTranslatorRequest(ChatActivity chatActivity, String text, Response.Listener<JSONObject> successListener, Response.ErrorListener errorListener) {
         String apiKey = TranslatorApiClass.getInstance(chatActivity).getKey();
         String apiLangSource = Locale.getDefault().getLanguage();
