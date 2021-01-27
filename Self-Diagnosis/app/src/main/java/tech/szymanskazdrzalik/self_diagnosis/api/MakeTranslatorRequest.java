@@ -1,5 +1,7 @@
 package tech.szymanskazdrzalik.self_diagnosis.api;
 
+import android.content.Context;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 
@@ -11,11 +13,11 @@ import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
 
 public class MakeTranslatorRequest {
 
-    public MakeTranslatorRequest(ChatActivity chatActivity, String text, Response.Listener<JSONObject> successListener, Response.ErrorListener errorListener) {
-        String apiKey = TranslatorApiClass.getInstance(chatActivity).getKey();
+    public MakeTranslatorRequest(Context context, String text, Response.Listener<JSONObject> successListener, Response.ErrorListener errorListener) {
+        String apiKey = TranslatorApiClass.getInstance(context).getKey();
         String apiLangSource = Locale.getDefault().getLanguage();
         String apiLangTarget = "en";
-        String googleApiUrl = TranslatorApiClass.getInstance(chatActivity).getUrl() + "?key=" + apiKey + "&source=" + apiLangSource + "&target=" + apiLangTarget + "&q=" + text;
-        ApiRequestQueue.getInstance(chatActivity).addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.GET, googleApiUrl, null, null, successListener, errorListener));
+        String googleApiUrl = TranslatorApiClass.getInstance(context).getUrl() + "?key=" + apiKey + "&source=" + apiLangSource + "&target=" + apiLangTarget + "&q=" + text;
+        ApiRequestQueue.getInstance(context).addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.GET, googleApiUrl, null, null, successListener, errorListener));
     }
 }
