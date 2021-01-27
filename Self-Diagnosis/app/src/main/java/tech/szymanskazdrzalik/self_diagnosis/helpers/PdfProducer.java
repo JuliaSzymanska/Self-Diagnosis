@@ -61,8 +61,8 @@ public class PdfProducer {
                 myPdfDocument.finishPage(myPage);
                 myPage = myPdfDocument.startPage(myPageInfo);
                 setPageStyle(context, myPage, titlePaint, customPaintRegularText);
-                myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
                 y = GENERAL_TEXT_HEIGHT;
+                myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
             } else {
                 myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
                 y += customPaintRegularText.descent() - customPaintRegularText.ascent();
@@ -78,8 +78,8 @@ public class PdfProducer {
                 myPdfDocument.finishPage(myPage);
                 myPage = myPdfDocument.startPage(myPageInfo2);
                 setPageStyle(context, myPage, titlePaint, customPaintRegularText);
-                myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
                 y = GENERAL_TEXT_HEIGHT;
+                myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
             } else {
                 myPage.getCanvas().drawText(line, x, y, customPaintRegularText);
                 y += customPaintRegularText.descent() - customPaintRegularText.ascent();
