@@ -83,13 +83,17 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View child) {
-                binding.scrollViewChat.post(() -> binding.scrollViewChat.fullScroll(View.FOCUS_DOWN));
+                ChatActivity.this.scrollChat();
             }
 
             @Override
             public void onChildViewRemoved(View parent, View child) {
             }
         });
+    }
+
+    private void scrollChat() {
+        binding.scrollViewChat.post(() -> binding.scrollViewChat.fullScroll(View.FOCUS_DOWN));
     }
 
     private void setChatOnCreate() {
@@ -192,9 +196,11 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 if (advancedTV.getVisibility() == View.GONE) {
                     advancedTV.setVisibility(View.VISIBLE);
                     advanced_info_button.setText(R.string.show_less);
+                    ChatActivity.this.scrollChat();
                 } else {
                     advancedTV.setVisibility(View.GONE);
                     advanced_info_button.setText(R.string.show_more);
+                    ChatActivity.this.scrollChat();
                 }
             });
         } catch (JSONException e) {
@@ -470,6 +476,18 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!this.isCovid) {
+            super.onBackPressed();
+        } else {
+            Intent intent = new Intent(ChatActivity.this, Menu.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            finish();
+        }
+    }
+
     private class Animate {
 
         private boolean isRunning = false;
@@ -497,18 +515,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             });
             this.isRunning = true;
             binding.inputLayout.inputsContainer.setAnimation(slide_out_message_box);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(!this.isCovid) {
-            super.onBackPressed();
-        } else{
-            Intent intent = new Intent(ChatActivity.this, Menu.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            finish();
         }
     }
 }
