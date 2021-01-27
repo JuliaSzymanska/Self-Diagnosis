@@ -74,12 +74,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        setChatOnCreate();
-        if (this.isCovid) {
-            new MakeCovidRequest(this);
-            binding.inputLayout.inputsContainer.removeAllViews();
-        }
-        slide_out_message_box = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
         binding.chatLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View child) {
@@ -90,6 +84,12 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             public void onChildViewRemoved(View parent, View child) {
             }
         });
+        setChatOnCreate();
+        if (this.isCovid) {
+            new MakeCovidRequest(this);
+            binding.inputLayout.inputsContainer.removeAllViews();
+        }
+        slide_out_message_box = AnimationUtils.loadAnimation(this, R.anim.slide_out_messbox);
     }
 
     private void scrollChat() {
