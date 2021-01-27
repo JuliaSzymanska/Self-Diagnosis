@@ -29,8 +29,6 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
  * create an instance of this fragment.
  */
 public class AddProfileFragment extends Fragment {
-    // TODO: 16.01.2021
-    //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
 
     private static final long DEFAULT_DATE = System.currentTimeMillis() - 410280000000L;
     private final Calendar myCalendar = Calendar.getInstance();
@@ -89,7 +87,6 @@ public class AddProfileFragment extends Fragment {
             ChatSQLiteDBHelper.saveUserDataToDB(getContext(), user);
             SharedPreferencesHelper.saveUserId(getContext(), currentID);
 
-            // TODO: 04.11.2020 SWITCH to  getActivity().getFragmentManager().popBackStack(); (doesnt work for now)
             if (mListener != null) {
                 mListener.callback(getString(R.string.reload));
             }
@@ -210,7 +207,6 @@ public class AddProfileFragment extends Fragment {
     }
 
     private void setFieldsFromGlobalVariable() {
-        // TODO: 16.12.2020 Test
         if (!globalVariables.getCurrentUser().isPresent()) {
             return;
         }

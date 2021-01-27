@@ -103,11 +103,6 @@ public class Chat {
         this.lastRequest = lastRequest;
     }
 
-    // TODO: 11.01.2021 TEST
-    public JSONObject getLastRequestJSONObject() throws JSONException {
-        return new JSONObject(lastRequest);
-    }
-
     public static final class Builder {
         private final int chatId;
         private final int userId;

@@ -53,7 +53,6 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
     private void startChatActivity() {
         Intent intent = new Intent(SplashActivity.this, ChatActivity.class);
         startActivity(intent);
-        // TODO: 16.12.2020 Override transition
         finish();
     }
 
@@ -94,12 +93,10 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
         if (GlobalVariables.getInstance().getCurrentUser().isPresent()) {
             startChatActivity();
         } else {
-            // TODO: 16.12.2020 "moze jakies powiadomienie ze zle i powtórzyć?"
         }
     }
 
     @Override
     public void callback(String result) {
-        // TODO: 16.12.2020
     }
 }

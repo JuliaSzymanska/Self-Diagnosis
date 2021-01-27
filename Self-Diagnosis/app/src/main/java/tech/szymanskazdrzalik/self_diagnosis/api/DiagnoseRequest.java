@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import tech.szymanskazdrzalik.self_diagnosis.ChatActivity;
@@ -50,13 +51,12 @@ public abstract class DiagnoseRequest {
             }
         };
         this.errorListener = error -> {
-            System.out.println(error);
+            System.out.println("HEADERS " + error.networkResponse.headers + "\r\n" + "BODY " + Arrays.toString(error.networkResponse.data));
             chatActivity.onRequestFailure();
         };
         listener = chatActivity;
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         if (!globalVariables.getCurrentUser().isPresent()) {
-            // TODO: 16.12.2020 dać tutaj wyjatek
             System.out.println("User not found!");
         }
         this.headers = RequestUtil.getDefaultHeaders(chatActivity);

@@ -50,8 +50,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static void saveUserDataToDB(Context context, User user) {
-        // TODO: 05.11.2020 make not break with null date
-        // TODO: 05.11.2020 sprawdzic
         if (isExist(context, user)) {
             updateUserDataToDB(context, user);
             return;
@@ -86,7 +84,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public static void saveMessageDataToDB(Context context, ChatMessage message) {
-        // TODO: 13.01.2021 throw ex
         if (isExist(context, message)) {
             return;
         }
@@ -103,8 +100,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
 
 
     private static void updateUserDataToDB(Context context, User user) {
-        // TODO: 05.11.2020 make not break with null date
-        // TODO: 05.11.2020 sprawdzic
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COLUMN_NAME, user.getName());
@@ -116,8 +111,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     private static void updateChatDataToDB(Context context, Chat chat) {
-        // TODO: 05.11.2020 make not break with null date
-        // TODO: 05.11.2020 sprawdzic
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CHATS_COLUMN_ID, chat.getId());
@@ -228,7 +221,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                     usersList.add(new User(retId, retName, retBirthDate, retGender));
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    // FIXME: 05.11.2020
                 }
             } while (cursor.moveToNext());
         }
@@ -317,9 +309,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    // TODO: 05.11.2020 TEST ME
     public static User getUserByID(Context context, int id) {
-        // TODO: 05.11.2020 make it not break when id not exists
         SQLiteDatabase database = new ChatSQLiteDBHelper(context).getReadableDatabase();
 
         String[] projection = {
@@ -346,7 +336,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 return new User(retId, retName, retBirthDate, retGender);
             } catch (ParseException e) {
                 e.printStackTrace();
-                // FIXME: 05.11.2020
                 return null;
             }
         }

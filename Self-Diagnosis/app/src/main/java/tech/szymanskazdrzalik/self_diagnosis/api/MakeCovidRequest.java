@@ -27,7 +27,6 @@ public class MakeCovidRequest extends DiagnoseRequest {
                         new CovidTriageRequest(chatActivity);
                     }
                 } catch (JSONException e) {
-                    // TODO: 16.12.2020 To znaczy że nie znaleziono pola should_stop, zrobić coś mądrego z tym
                     e.printStackTrace();
                 }
                 if (!shouldStop) {
@@ -40,6 +39,7 @@ public class MakeCovidRequest extends DiagnoseRequest {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                listener.onRequestFailure();
             }
         };
         String url = InfermedicaApiClass.getInstance(chatActivity).getUrl() + "/covid19" + "/diagnosis";

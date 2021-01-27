@@ -37,8 +37,6 @@ import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.PdfProducer;
 
-// TODO: 20.01.2021 zapytanie o zezwolenie na dostep rpzy odczycie obrazka
-
 public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatRequestListener {
 
     Animation slide_out_message_box;
@@ -47,7 +45,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     private ActivityChatBinding binding;
     private boolean didAskForEndDiagnose = false;
     private String firstDoctorMessage = "";
-    // TODO: 14.01.2021 Wykorzystać do wczytywania odpowiedzi
     private final View.OnClickListener onEndDiagnoseClick = v -> {
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
         GlobalVariables.getInstance().getCurrentChat().get().setConditionsArray(conditions.toString());
@@ -103,7 +100,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 RequestUtil.getInstance().setEvidenceArrayFromString(chat.get().getLastRequest());
                 setAllMessages(ChatSQLiteDBHelper.getAllMessagesForChat(this, chat.get().getId()));
                 if (chat.get().getConditionsArray() == null) {
-                    // FIXME: 20.01.2021 empty string
                     this.onDoctorQuestionReceived(chat.get().getLastDoctorQuestionId(), new JSONArray(chat.get().getLastDoctorQuestion()), "");
                 } else {
                     binding.inputLayout.inputsContainer.removeAllViews();
@@ -442,7 +438,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void onRequestFailure() {
         this.generateNewDoctorMessageFromString(getString(R.string.error_messsage_response_doctor));
         if (this.isCovid) {
-            // FIXME: 26.01.2021
             return;
         }
         if (GlobalVariables.getInstance().getCurrentChat().isPresent()) {
@@ -450,7 +445,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             String msg = GlobalVariables.getInstance().getCurrentChat().get().getLastDoctorQuestion();
 
             if (id == null || msg == null) {
-                // TODO: 14.01.2021 sprawdzic czemu animacja nie dziala
                 View view = View.inflate(this, R.layout.msg_input_bar_inner, null);
                 binding.inputLayout.inputsContainer.removeAllViews();
                 if (this.animate.isRunning()) {

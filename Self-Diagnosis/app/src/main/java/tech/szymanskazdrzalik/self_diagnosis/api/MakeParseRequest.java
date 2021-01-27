@@ -87,12 +87,11 @@ public class MakeParseRequest {
 
         GlobalVariables globalVariables = GlobalVariables.getInstance();
         if (!globalVariables.getCurrentUser().isPresent()) {
-            // TODO: 16.12.2020 Add user not found exception
             System.out.println("User not found");
         }
 
         Map<String, String> headers = RequestUtil.getDefaultHeaders(context);
-        // TODO: 26.01.2021 Tutaj lista obsługiwanych języków innych niż angielski 
+        // Tutaj lista obsługiwanych języków innych niż angielski
         if (!Locale.getDefault().getLanguage().equals("pl")) {
             JSONObject jsonObject = new JSONObject();
             try {

@@ -31,7 +31,6 @@ public class RequestUtil {
 
     public static void addUserDataToJsonObject(JSONObject jsonObject) throws JSONException {
         if (!GlobalVariables.getInstance().getCurrentUser().isPresent()) {
-            // TODO: 16.12.2020 Change to user not found exception
             throw new RuntimeException();
         }
         User user = GlobalVariables.getInstance().getCurrentUser().get();
@@ -44,7 +43,6 @@ public class RequestUtil {
 
     public static void addAgeToJsonObjectForCovid(JSONObject jsonObject) throws JSONException {
         if (!GlobalVariables.getInstance().getCurrentUser().isPresent()) {
-            // TODO: 16.12.2020 Change to user not found exception
             throw new RuntimeException();
         }
         User user = GlobalVariables.getInstance().getCurrentUser().get();
@@ -53,7 +51,6 @@ public class RequestUtil {
 
     public static void addAgeToJsonObject(JSONObject jsonObject) throws JSONException {
         if (!GlobalVariables.getInstance().getCurrentUser().isPresent()) {
-            // TODO: 16.12.2020 Change to user not found exception
             throw new RuntimeException();
         }
         User user = GlobalVariables.getInstance().getCurrentUser().get();
