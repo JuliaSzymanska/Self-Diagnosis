@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.ActivitySplashScreenBinding;
+import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.NotificationHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.Receiver;
@@ -24,7 +25,7 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
     private final static int SPLASH_TIME_OUT = 1500;
     private final Runnable loadRunnable = () -> {
         SharedPreferencesHelper.loadUser(SplashActivity.this);
-        // TODO: 16.12.2020 Jesli cos ladujemy to tutaj
+        User.loadBitmaps(SplashActivity.this);
     };
 
     ActivitySplashScreenBinding binding;
@@ -72,8 +73,6 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
         super.onCreate(savedInstanceState);
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-//        System.out.println(System.currentTimeMillis());
 
         binding.ivLogo.setAnimation(AnimationUtils.loadAnimation(this, R.anim.from_top_animation));
         binding.tvName.setAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_for_title));

@@ -23,7 +23,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String USER_COLUMN_GENDER = "gender";
     public static final String USER_COLUMN_BIRTH_DATE = "birth_date";
     public static final String USER_COLUMN_NAME = "user_name";
-    public static final String USER_COLUMN_PICTURE = "user_picture";
 
     public static final String MESSAGES_TABLE_NAME = "messages";
     public static final String MESSAGES_COLUMN_CHAT_ID = "chat_id";
@@ -40,7 +39,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
     public static final String CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION = "doc_message";
     public static final String CHATS_COLUMN_PREVIOUS_DOCTOR_QUESTION_ID = "doc_question_id";
 
-    private static final int DATABASE_VERSION = 31;
+    private static final int DATABASE_VERSION = 32;
 
     /**
      * {@inheritDoc}
@@ -64,7 +63,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         String date = DB_DATE_USER_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
-        contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
         database.insert(USER_PROFILE_TABLE_NAME, null, contentValues);
     }
 
@@ -113,7 +111,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
         String date = DB_DATE_USER_FORMAT.format(user.getBirthDate());
         contentValues.put(USER_COLUMN_BIRTH_DATE, date);
         contentValues.put(USER_COLUMN_GENDER, user.getGender());
-        contentValues.put(USER_COLUMN_PICTURE, DbBitmapUtility.getBytes(user.getPicture()));
         database.update(USER_PROFILE_TABLE_NAME, contentValues, USER_COLUMN_ID +" = ?", new String[]{String.valueOf(user.getId())});
         database.close();
     }
@@ -207,8 +204,7 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_ID,
                 USER_COLUMN_NAME,
                 USER_COLUMN_BIRTH_DATE,
-                USER_COLUMN_GENDER,
-                USER_COLUMN_PICTURE
+                USER_COLUMN_GENDER
         };
 
         Cursor cursor = database.query(
@@ -228,9 +224,8 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
                 String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
                 String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
-                Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
                 try {
-                    usersList.add(new User(retId, retName, retBirthDate, retGender, retBitmap));
+                    usersList.add(new User(retId, retName, retBirthDate, retGender));
                 } catch (ParseException e) {
                     e.printStackTrace();
                     // FIXME: 05.11.2020
@@ -346,10 +341,9 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
             String retName = cursor.getString(cursor.getColumnIndex(USER_COLUMN_NAME));
             String retBirthDate = cursor.getString(cursor.getColumnIndex(USER_COLUMN_BIRTH_DATE));
             String retGender = cursor.getString(cursor.getColumnIndex(USER_COLUMN_GENDER));
-            Bitmap retBitmap = DbBitmapUtility.getImage(cursor.getBlob(cursor.getColumnIndex(USER_COLUMN_PICTURE)));
             cursor.close();
             try {
-                return new User(retId, retName, retBirthDate, retGender, retBitmap);
+                return new User(retId, retName, retBirthDate, retGender);
             } catch (ParseException e) {
                 e.printStackTrace();
                 // FIXME: 05.11.2020
@@ -448,7 +442,6 @@ public class ChatSQLiteDBHelper extends SQLiteOpenHelper {
                 USER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 USER_COLUMN_NAME + " TEXT," +
                 USER_COLUMN_BIRTH_DATE + " DATE," +
-                USER_COLUMN_PICTURE + " BLOB," +
                 USER_COLUMN_GENDER + " TEXT check(" + USER_COLUMN_GENDER + " in ('M', 'm', 'F', 'f'))" + ")");
 
         db.execSQL("CREATE TABLE " + CHATS_TABLE_NAME + " (" +

@@ -16,7 +16,6 @@ import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
 import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.ChatAdapter;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
-import tech.szymanskazdrzalik.self_diagnosis.helpers.Receiver;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
 
 public class Menu extends AppCompatActivity implements AddProfileFragment.AddProfileFragmentListener {
@@ -29,7 +28,6 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setPicture();
-//        initCurrentDiagnosisTextDateHour();
     }
 
     @Override
@@ -44,15 +42,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
         }
 
         if (GlobalVariables.getInstance().getCurrentUser().isPresent()) {
-            if (GlobalVariables.getInstance().getCurrentUser().get().getPicture() != null) {
-                binding.menuTop1Bar.profileImage.setImageBitmap(GlobalVariables.getInstance().getCurrentUser().get().getPicture());
-            } else {
-                if (GlobalVariables.getInstance().getCurrentUser().get().getGender().equals("M")) {
-                    binding.menuTop1Bar.profileImage.setImageResource(R.drawable.male);
-                } else {
-                    binding.menuTop1Bar.profileImage.setImageResource(R.drawable.female);
-                }
-            }
+            binding.menuTop1Bar.profileImage.setImageBitmap(GlobalVariables.getInstance().getCurrentUser().get().getPicture());
         }
     }
 

@@ -1,33 +1,41 @@
 package tech.szymanskazdrzalik.self_diagnosis.db;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import tech.szymanskazdrzalik.self_diagnosis.R;
+
 public class User {
+    private static Bitmap FEMALE_PICTURE;
+    private static Bitmap MALE_PICTURE;
     private final int id;
     private final Date birthDate;
     private final String name;
     private final String gender;
-    private final Bitmap picture;
 
-    public User(int id, String name, String birthDate, String gender, Bitmap picture) throws ParseException {
+    public User(int id, String name, String birthDate, String gender) throws ParseException {
         this.id = id;
         this.birthDate = ChatSQLiteDBHelper.DB_DATE_USER_FORMAT.parse(birthDate);
         this.gender = gender;
         this.name = name;
-        this.picture = picture;
     }
 
-    public User(int id, String name, Date birthDate, String gender, Bitmap picture) {
+    public User(int id, String name, Date birthDate, String gender) {
         this.id = id;
         this.birthDate = birthDate;
         this.name = name;
         this.gender = gender;
-        this.picture = picture;
+    }
+
+    public static void loadBitmaps(Context context) {
+        FEMALE_PICTURE = BitmapFactory.decodeResource(context.getResources(), R.drawable.female);
+        MALE_PICTURE = BitmapFactory.decodeResource(context.getResources(), R.drawable.male);
     }
 
     public int getId() {
@@ -43,7 +51,17 @@ public class User {
     }
 
     public Bitmap getPicture() {
-        return picture;
+        if (gender.equals("M")) {
+            return MALE_PICTURE;
+        }
+        return FEMALE_PICTURE;
+    }
+
+    public static Bitmap getPictureBasedOnGender(String gender) {
+        if (gender.equals("M")) {
+            return MALE_PICTURE;
+        }
+        return FEMALE_PICTURE;
     }
 
     public String getGender() {

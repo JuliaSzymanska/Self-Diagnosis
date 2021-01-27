@@ -2,7 +2,6 @@ package tech.szymanskazdrzalik.self_diagnosis;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -13,17 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.databinding.FragmentAddProfileBinding;
 import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
-import tech.szymanskazdrzalik.self_diagnosis.db.DbBitmapUtility;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
@@ -37,30 +32,26 @@ public class AddProfileFragment extends Fragment {
     // TODO: 16.01.2021
     //  zrobic pytanie o pozwolenie na dostep do danych przy wybieraniu obrazka
 
-    private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1001;
     private static final long DEFAULT_DATE = System.currentTimeMillis() - 410280000000L;
     private final Calendar myCalendar = Calendar.getInstance();
+    GlobalVariables globalVariables = GlobalVariables.getInstance();
+    private DatePickerDialog datePickerDialog;
+    private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
+            v -> datePickerDialog.show();
+    private FragmentAddProfileBinding binding;
     private final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
         setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
     };
-    private DatePickerDialog datePickerDialog;
-    private final View.OnClickListener dateEditTextFragmentAddProfileOnClick =
-            v -> datePickerDialog.show();
-    GlobalVariables globalVariables = GlobalVariables.getInstance();
-    private FragmentAddProfileBinding binding;
     private boolean isNewUser = false;
     private String userGender;
-    private Bitmap userPicture;
     private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             userGender = getString(R.string.female_sign);
             binding.female.clearColorFilter();
             binding.male.setColorFilter(getBlackAndWhiteFilter());
-            userPicture = getDefaultImage(userGender);
-            binding.addUserImage.setImageBitmap(userPicture);
+            binding.addUserImage.setImageBitmap(User.getPictureBasedOnGender(userGender));
             binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
         }
     };
@@ -70,8 +61,7 @@ public class AddProfileFragment extends Fragment {
             userGender = getString(R.string.male_sign);
             binding.male.clearColorFilter();
             binding.female.setColorFilter(getBlackAndWhiteFilter());
-            userPicture = getDefaultImage(userGender);
-            binding.addUserImage.setImageBitmap(userPicture);
+            binding.addUserImage.setImageBitmap(User.getPictureBasedOnGender(userGender));
             binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
         }
     };
@@ -94,7 +84,7 @@ public class AddProfileFragment extends Fragment {
                 currentID = globalVariables.getCurrentUser().get().getId();
             }
 
-            User user = new User(currentID, userName, userBirthDate, userGender, userPicture);
+            User user = new User(currentID, userName, userBirthDate, userGender);
             GlobalVariables.getInstance().setCurrentUser(user);
             ChatSQLiteDBHelper.saveUserDataToDB(getContext(), user);
             SharedPreferencesHelper.saveUserId(getContext(), currentID);
@@ -139,13 +129,6 @@ public class AddProfileFragment extends Fragment {
             return true;
         }
         return false;
-    }
-
-    private Bitmap getDefaultImage(String gender) {
-        if (gender.equals(getString(R.string.female_sign))) {
-            return DbBitmapUtility.getBitmapFromDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.female));
-        }
-        return DbBitmapUtility.getBitmapFromDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.male));
     }
 
     @Override
@@ -220,15 +203,7 @@ public class AddProfileFragment extends Fragment {
 
 
             if (GlobalVariables.getInstance().getCurrentUser().isPresent()) {
-                if (GlobalVariables.getInstance().getCurrentUser().get().getPicture() != null) {
-                    binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().get().getPicture());
-                } else {
-                    if (GlobalVariables.getInstance().getCurrentUser().get().getGender().equals("M")) {
-                        binding.addUserImage.setImageResource(R.drawable.male);
-                    } else {
-                        binding.addUserImage.setImageResource(R.drawable.female);
-                    }
-                }
+                binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().get().getPicture());
             }
 
             binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
