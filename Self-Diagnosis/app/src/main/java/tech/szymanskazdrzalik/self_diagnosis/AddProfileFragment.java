@@ -217,7 +217,20 @@ public class AddProfileFragment extends Fragment {
             } else if (userGender.equals(getString(R.string.female_sign))) {
                 binding.female.clearColorFilter();
             }
-            binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().get().getPicture());
+
+
+            if (GlobalVariables.getInstance().getCurrentUser().isPresent()) {
+                if (GlobalVariables.getInstance().getCurrentUser().get().getPicture() != null) {
+                    binding.addUserImage.setImageBitmap(globalVariables.getCurrentUser().get().getPicture());
+                } else {
+                    if (GlobalVariables.getInstance().getCurrentUser().get().getGender().equals("M")) {
+                        binding.addUserImage.setImageResource(R.drawable.male);
+                    } else {
+                        binding.addUserImage.setImageResource(R.drawable.female);
+                    }
+                }
+            }
+
             binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
             binding.fgAddButton.setText(getString(R.string.update_string));
         }
