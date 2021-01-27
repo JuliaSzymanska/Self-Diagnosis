@@ -473,10 +473,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ChatActivity.this, Menu.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-        finish();
+        backArrowOnClick(null);
     }
 
     private class Animate {

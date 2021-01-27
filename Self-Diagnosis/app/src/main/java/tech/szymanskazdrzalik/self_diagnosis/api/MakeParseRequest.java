@@ -43,6 +43,7 @@ public class MakeParseRequest {
 
         this.errorListener = error -> {
             chatActivity.onRequestFailure();
+            System.out.println(error.networkResponse.toString());
         };
 
         this.successListener = response -> {
