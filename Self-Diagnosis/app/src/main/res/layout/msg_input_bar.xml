@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inputs_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/inputs_container"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:padding="5dp">
+
     <LinearLayout
         android:id="@+id/inputs_inner_container"
         android:layout_width="match_parent"

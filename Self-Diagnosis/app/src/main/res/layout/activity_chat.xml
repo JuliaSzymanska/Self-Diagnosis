@@ -31,7 +31,6 @@
                     android:scrollbars="vertical">
 
                 </LinearLayout>
-
             </ScrollView>
 
             <include
@@ -49,7 +48,5 @@
                 android:layout_marginBottom="3dp" />
 
         </RelativeLayout>
-
-
     </FrameLayout>
 </RelativeLayout>

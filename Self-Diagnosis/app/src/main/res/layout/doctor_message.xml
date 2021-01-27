@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15sp"
         android:background="@drawable/doctor_border"
-        android:textColor="@color/text_color"
         android:padding="18sp"
+        android:textColor="@color/text_color"
         android:textSize="16sp" />
 </LinearLayout>

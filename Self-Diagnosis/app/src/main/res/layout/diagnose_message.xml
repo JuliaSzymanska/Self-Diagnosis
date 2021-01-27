@@ -17,13 +17,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="15sp"
             android:background="@android:color/transparent"
-            android:layout_gravity="center"
             android:paddingTop="10dp"
             android:text="@string/diagnosis"
-            android:textSize="22sp"
             android:textColor="@color/blue_dark"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <TextView
@@ -53,27 +53,27 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/advanced_info_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/advanced_info_button"
-                android:layout_marginHorizontal="15sp"
-                android:paddingTop="20dp"
                 android:layout_gravity="left"
-                android:textColor="@color/blue_dark"
+                android:layout_marginHorizontal="15sp"
                 android:background="@android:color/transparent"
-                android:text="@string/show_more" />
+                android:paddingTop="20dp"
+                android:text="@string/show_more"
+                android:textColor="@color/blue_dark" />
 
             <Button
+                android:id="@+id/export_to_pdf_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/export_to_pdf_button"
-                android:layout_marginHorizontal="15sp"
-                android:paddingTop="20dp"
                 android:layout_gravity="right"
-                android:textColor="@color/blue_dark"
+                android:layout_marginHorizontal="15sp"
                 android:background="@android:color/transparent"
+                android:onClick="onExportButtonClick"
+                android:paddingTop="20dp"
                 android:text="@string/export_to_pdf"
-                android:onClick="onExportButtonClick"/>
+                android:textColor="@color/blue_dark" />
 
         </LinearLayout>
 
