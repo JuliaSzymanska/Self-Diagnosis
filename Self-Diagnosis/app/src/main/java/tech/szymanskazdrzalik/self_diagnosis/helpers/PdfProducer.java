@@ -164,21 +164,6 @@ public class PdfProducer {
 
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                if (Locale.getDefault().getLanguage().equals("pl")) {
-                    new MakeTranslatorRequest(chatActivity, jsonObject.getString("name"), new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                String newText = response.getJSONObject("data").getJSONArray("translations").getJSONObject(0).getString("translatedText");
-                                clearJsonObject.put("name", newText);
-                                jsonArrayToRequest.put(clearJsonObject);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, error -> System.out.println(error.networkResponse.toString()));
-                }
-
                 if (jsonArray.getJSONObject(i).getString("choice_id").equals("present")) {
                     stringBuilderPresent.append("   * ");
                     stringBuilderPresent.append(jsonArray.getJSONObject(i).getString("name"));

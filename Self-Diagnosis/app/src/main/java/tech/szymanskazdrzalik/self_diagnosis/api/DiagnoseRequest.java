@@ -15,31 +15,7 @@ import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 
 public abstract class DiagnoseRequest {
     protected final RequestUtil.ChatRequestListener listener;
-    private final Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
-        @Override
-        public void onResponse(JSONObject response) {
-            boolean shouldStop;
-            try {
-                shouldStop = response.getBoolean("should_stop");
-                RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
-                if (shouldStop) {
-                    if (!listener.finishDiagnose()) {
-                        shouldStop = false;
-                    }
-                }
-                if (!shouldStop) {
-                    JSONObject jsonObjectQuestion = response.getJSONObject("question");
-                    listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
-//                    listener.hideMessageBox();
-                    listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
-                            jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"),
-                            jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("name"));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    };
+    private final Response.Listener<JSONObject> successListener;
     private final Response.ErrorListener errorListener;
     private final Map<String, String> headers;
     private final JSONObject requestBody;
@@ -49,6 +25,30 @@ public abstract class DiagnoseRequest {
     }
 
     public DiagnoseRequest(ChatActivity chatActivity, @Nullable String userAnswer) {
+        this.successListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                boolean shouldStop;
+                try {
+                    shouldStop = response.getBoolean("should_stop");
+                    RequestUtil.getInstance().setConditionsArray(response.getJSONArray("conditions"));
+                    if (shouldStop) {
+                        if (!listener.finishDiagnose()) {
+                            shouldStop = false;
+                        }
+                    }
+                    if (!shouldStop) {
+                        JSONObject jsonObjectQuestion = response.getJSONObject("question");
+                        listener.onDoctorMessage(jsonObjectQuestion.getString("text"));
+                        listener.onDoctorQuestionReceived(jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("id"),
+                                jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getJSONArray("choices"),
+                                jsonObjectQuestion.getJSONArray("items").getJSONObject(0).getString("name"));
+                    }
+                } catch (JSONException e) {
+                    chatActivity.onRequestFailure();
+                }
+            }
+        };
         this.errorListener = error -> {
             System.out.println(error);
             chatActivity.onRequestFailure();
