@@ -102,7 +102,6 @@ public class MakeParseRequest {
                 e.printStackTrace();
             }
             chatRequestListener.addUserMessage(text);
-            System.out.println(this.url);
             this.apiRequestQueue.addToRequestQueue(new JSONObjectRequestWithHeaders(Request.Method.POST, this.url, headers, jsonObject, this.successListener, this.errorListener));
         } else {
             new MakeTranslatorRequest(chatActivity, text, response -> {

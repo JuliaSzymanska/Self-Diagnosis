@@ -17,7 +17,6 @@ public class MakeCovidRequest extends DiagnoseRequest {
     public MakeCovidRequest(ChatActivity chatActivity, @Nullable String userAnswer) {
         super(chatActivity, userAnswer);
         this.succesListener = response -> {
-            System.out.println("Odpowiedz" + response);
             boolean shouldStop = false;
             try {
                 try {
@@ -56,7 +55,6 @@ public class MakeCovidRequest extends DiagnoseRequest {
 
     public MakeCovidRequest(ChatActivity chatActivity) {
         this(chatActivity, null);
-        System.out.println("Wszedles do MakeCovidRequest po super");
     }
 
     @Override
@@ -82,7 +80,6 @@ public class MakeCovidRequest extends DiagnoseRequest {
         @Override
         protected Response.Listener<JSONObject> getSuccessListener() {
             return response -> {
-                System.out.println("Odpowiedz" + response);
                 RequestUtil.getInstance().setConditionsArray(new JSONArray().put(response));
                 listener.finishCovidDiagnose();
             };

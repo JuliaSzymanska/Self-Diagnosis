@@ -93,8 +93,6 @@ public class AddProfileFragment extends Fragment {
             if (mListener != null) {
                 mListener.callback(getString(R.string.reload));
             }
-
-            System.out.println(user.getAge());
             getActivity().onBackPressed();
         }
     };
