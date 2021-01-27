@@ -278,8 +278,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             createNewChatAndSaveToDB();
             chat = GlobalVariables.getInstance().getCurrentChat();
         }
+        System.out.println("CHat przy update: " + chat);
         int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
         chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
+        System.out.println("Last request: " + RequestUtil.getInstance().getStringFromEvidenceArray());
         if (!this.isCovid) {
             ChatSQLiteDBHelper.saveChatDataToDB(this, chat.get());
         }
@@ -293,6 +295,7 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                 .build();
         GlobalVariables.getInstance().setCurrentChat(currentChat);
+        System.out.println("Curretn chat: " + currentChat);
     }
 
     private void createNewChatAndSaveToDB() {
@@ -494,6 +497,18 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             });
             this.isRunning = true;
             binding.inputLayout.inputsContainer.setAnimation(slide_out_message_box);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!this.isCovid) {
+            super.onBackPressed();
+        } else{
+            Intent intent = new Intent(ChatActivity.this, Menu.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            finish();
         }
     }
 }

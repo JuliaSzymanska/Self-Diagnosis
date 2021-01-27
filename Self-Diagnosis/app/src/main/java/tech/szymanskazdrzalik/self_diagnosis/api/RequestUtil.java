@@ -91,6 +91,10 @@ public class RequestUtil {
         this.conditionsArray = conditionsArray;
     }
 
+    public void resetConditionsArray() {
+        conditionsArray = new JSONArray();
+    }
+
     public JSONArray getEvidenceArray() {
         return evidenceArray;
     }
