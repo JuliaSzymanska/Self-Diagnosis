@@ -31,10 +31,6 @@ public class Chat {
         this.conditionsArray = conditionsArray;
     }
 
-    public boolean getIsFinished() {
-        return conditionsArray == null || conditionsArray.isEmpty();
-    }
-
     public static Builder builder(int id, int userId) {
         return new Builder(id, userId);
     }
@@ -43,7 +39,6 @@ public class Chat {
     public String getLastDoctorQuestion() {
         return lastDoctorQuestion;
     }
-
 
     public void setLastDoctorQuestion(@Nullable String lastDoctorQuestion) {
         this.lastDoctorQuestion = lastDoctorQuestion;
