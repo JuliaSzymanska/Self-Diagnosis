@@ -16,6 +16,7 @@ import tech.szymanskazdrzalik.self_diagnosis.AddProfileFragment;
 import tech.szymanskazdrzalik.self_diagnosis.Menu;
 import tech.szymanskazdrzalik.self_diagnosis.R;
 import tech.szymanskazdrzalik.self_diagnosis.db.Chat;
+import tech.szymanskazdrzalik.self_diagnosis.db.ChatMessage;
 import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 
 public class ChatAdapter extends ArrayAdapter<Chat> {
@@ -59,12 +60,20 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
             String date = ChatSQLiteDBHelper.DB_DATE_MESSAGE_FORMAT.format(chat.getDate());
             TextView tvChatDate = convertView.findViewById(R.id.chatDate);
             TextView tvChatTime = convertView.findViewById(R.id.chatTime);
-            tvChatDate.setText(date.substring(0, 10));
-            tvChatTime.setText(date.substring(11));
+            tvChatDate.setText(getFirstMessage(chat));
+            tvChatTime.setText(date.substring(0, 10) + "    " + date.substring(11));
             convertView.setTag(chat);
             convertView.setOnClickListener(openChatOnClickListener);
         }
         return convertView;
+    }
+
+    private String getFirstMessage(Chat chat) {
+        List<ChatMessage> messages = ChatSQLiteDBHelper.getAllMessagesForChat(this.context, chat.getId());
+        if (messages != null) {
+            return messages.get(1).getMessage();
+        }
+        return "";
     }
 
 }

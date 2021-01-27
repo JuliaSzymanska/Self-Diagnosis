@@ -15,6 +15,7 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -132,12 +133,13 @@ public class PdfProducer {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(context.getString(R.string.diagnose_with_white_space));
         stringBuilder.append("\n");
+        DecimalFormat df2 = new DecimalFormat("##.##");
         try {
             JSONArray conditions = new JSONArray(GlobalVariables.getInstance().getCurrentChat().get().getConditionsArray());
             for (int i = 0; i < conditions.length(); i++) {
                 stringBuilder.append(context.getString(R.string.name)).append(conditions.getJSONObject(i).getString("common_name")).append("\n");
-                stringBuilder.append(context.getString(R.string.probability)).append(conditions.getJSONObject(i).getString("probability")).append("\n\n");
-                stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length() - 1);
+                stringBuilder.append(context.getString(R.string.probability)).append(df2.format(conditions.getJSONObject(i).getDouble("probability") * 100));
+                stringBuilder.append("%").append("\n\n");
             }
         } catch (JSONException e) {
             e.printStackTrace();
