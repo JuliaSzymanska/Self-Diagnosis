@@ -231,7 +231,6 @@ public class AddProfileFragment extends Fragment {
         this.userGender = globalVariables.getCurrentUser().get().getGender();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(globalVariables.getCurrentUser().get().getBirthDate());
-        System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
         setCalendarDate(calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));

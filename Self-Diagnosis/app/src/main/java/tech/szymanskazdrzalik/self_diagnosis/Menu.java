@@ -101,10 +101,9 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     private void loadChats() {
         ArrayList<Chat> chatArrayList = (ArrayList<Chat>) ChatSQLiteDBHelper.getAllChatsForUserFromDB(this,
                 GlobalVariables.getInstance().getCurrentUser().get().getId());
-        if (chatArrayList.size() != 0) {
-            ChatAdapter chatAdapter = new ChatAdapter(this, chatArrayList);
-            binding.chatList.setAdapter(chatAdapter);
-        }
+        ChatAdapter chatAdapter = new ChatAdapter(this, chatArrayList);
+        binding.chatList.setAdapter(chatAdapter);
+
     }
 
     public void goToChatActivity() {
@@ -123,6 +122,7 @@ public class Menu extends AppCompatActivity implements AddProfileFragment.AddPro
     public void callback(String result) {
         if (result.equals(getString(R.string.reload))) {
             setPicture();
+            loadChats();
         } else if (result.equals(getString(R.string.openChat))) {
             goToChatActivity();
         }
