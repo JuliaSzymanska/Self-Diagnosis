@@ -18,7 +18,6 @@ public abstract class DiagnoseRequest {
     private final Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
-            System.out.println(response);
             boolean shouldStop;
             try {
                 shouldStop = response.getBoolean("should_stop");

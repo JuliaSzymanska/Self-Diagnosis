@@ -284,10 +284,8 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
             createNewChatAndSaveToDB();
             chat = GlobalVariables.getInstance().getCurrentChat();
         }
-        System.out.println("CHat przy update: " + chat);
         int chatId = GlobalVariables.getInstance().getCurrentChat().get().getId();
         chat.get().setLastRequest(RequestUtil.getInstance().getStringFromEvidenceArray());
-        System.out.println("Last request: " + RequestUtil.getInstance().getStringFromEvidenceArray());
         if (!this.isCovid) {
             ChatSQLiteDBHelper.saveChatDataToDB(this, chat.get());
         }
@@ -301,7 +299,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
                 .lastRequest(RequestUtil.getInstance().getStringFromEvidenceArray())
                 .build();
         GlobalVariables.getInstance().setCurrentChat(currentChat);
-        System.out.println("Curretn chat: " + currentChat);
     }
 
     private void createNewChatAndSaveToDB() {
@@ -364,7 +361,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     public void onDoctorQuestionReceived(String id, JSONArray msg, String name) {
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestionId(id);
         GlobalVariables.getInstance().getCurrentChat().get().setLastDoctorQuestion(msg.toString());
-        System.out.println(name);
         saveOrUpdateChatToDB();
         binding.inputLayout.inputsContainer.removeAllViews();
         binding.inputLayout.inputsContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_buttons));
@@ -431,7 +427,6 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
     @Override
     public void finishCovidDiagnose() {
         JSONArray conditions = RequestUtil.getInstance().getConditionsArray();
-        System.out.println(conditions);
         GlobalVariables.getInstance().getCurrentChat().get().setConditionsArray(conditions.toString());
         hideMessageBox();
         try {
