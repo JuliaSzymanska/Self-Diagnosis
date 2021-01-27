@@ -473,14 +473,10 @@ public class ChatActivity extends AppCompatActivity implements RequestUtil.ChatR
 
     @Override
     public void onBackPressed() {
-        if (!this.isCovid) {
-            super.onBackPressed();
-        } else {
-            Intent intent = new Intent(ChatActivity.this, Menu.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            finish();
-        }
+        Intent intent = new Intent(ChatActivity.this, Menu.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        finish();
     }
 
     private class Animate {
