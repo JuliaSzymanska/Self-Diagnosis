@@ -65,7 +65,7 @@ public class SplashActivity extends AppCompatActivity implements AddProfileFragm
                 .beginTransaction()
                 .replace(R.id.layoutToBeReplacedWithFragmentInMenu, fragment)
                 .addToBackStack(null);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     @Override
