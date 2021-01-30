@@ -80,10 +80,10 @@ public class AddProfileFragment extends Fragment {
             View dialoglayout = inflater.inflate(R.layout.warning_dialog, null);
             builder.setView(dialoglayout);
 
-             builder.setTitle(R.string.warning_title);
+//             builder.setTitle(R.string.warning_title);
 
-            builder.setMessage(R.string.warning_message)
-                    .setCancelable(false)
+//            builder.setMessage(R.string.warning_message)
+                    builder.setCancelable(false)
                     .setPositiveButton(R.string.warning_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             String userName = binding.editProfileName.getText().toString();

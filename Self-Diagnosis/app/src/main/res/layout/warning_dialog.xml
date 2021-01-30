@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_layout_root"
     android:orientation="vertical"
@@ -9,11 +9,37 @@
     >
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:id="@+id/ivWarning"
+
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/warning" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_alignParentRight="true"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:text="@string/warning_title" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentRight="true"
+        android:textAlignment="viewEnd"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:text="@string/warning_message"
+        android:textSize="18dp" />
+
+
+</RelativeLayout>
