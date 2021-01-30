@@ -1,5 +1,6 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -9,7 +10,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.content.DialogInterface;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -41,6 +45,7 @@ public class AddProfileFragment extends Fragment {
         setCalendarDate(year, monthOfYear, dayOfMonth);
         updateLabel();
     };
+
     private boolean isNewUser = false;
     private String userGender;
     private final View.OnClickListener genderFemaleOnClick = new View.OnClickListener() {
@@ -70,27 +75,45 @@ public class AddProfileFragment extends Fragment {
             if (areInputsEmpty()) {
                 return;
             }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getLayoutInflater();
+            View dialoglayout = inflater.inflate(R.layout.warning_dialog, null);
+            builder.setView(dialoglayout);
 
-            String userName = binding.editProfileName.getText().toString();
-            Date userBirthDate = myCalendar.getTime();
+             builder.setTitle(R.string.warning_title);
 
-            int currentID;
+            builder.setMessage(R.string.warning_message)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.warning_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            String userName = binding.editProfileName.getText().toString();
+                            Date userBirthDate = myCalendar.getTime();
 
-            if (isNewUser) {
-                currentID = ChatSQLiteDBHelper.getNextUserIdAvailable(getContext());
-            } else {
-                currentID = globalVariables.getCurrentUser().get().getId();
-            }
+                            int currentID;
 
-            User user = new User(currentID, userName, userBirthDate, userGender);
-            GlobalVariables.getInstance().setCurrentUser(user);
-            ChatSQLiteDBHelper.saveUserDataToDB(getContext(), user);
-            SharedPreferencesHelper.saveUserId(getContext(), currentID);
+                            if (isNewUser) {
+                                currentID = ChatSQLiteDBHelper.getNextUserIdAvailable(getContext());
+                            } else {
+                                currentID = globalVariables.getCurrentUser().get().getId();
+                            }
 
-            if (mListener != null) {
-                mListener.callback(getString(R.string.reload));
-            }
-            getActivity().onBackPressed();
+                            User user = new User(currentID, userName, userBirthDate, userGender);
+                            GlobalVariables.getInstance().setCurrentUser(user);
+                            ChatSQLiteDBHelper.saveUserDataToDB(getContext(), user);
+                            SharedPreferencesHelper.saveUserId(getContext(), currentID);
+
+                            if (mListener != null) {
+                                mListener.callback(getString(R.string.reload));
+                            }
+                            getActivity().onBackPressed();
+
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+
+
         }
     };
 
