@@ -60,5 +60,6 @@
     <string name="warning_title">Be careful</string>
     <string name="warning_message">The application can not replace a real doctor appointment</string>
     <string name="warning_button">Confirm</string>
+    <string name="ok">OK</string>
 
 </resources>

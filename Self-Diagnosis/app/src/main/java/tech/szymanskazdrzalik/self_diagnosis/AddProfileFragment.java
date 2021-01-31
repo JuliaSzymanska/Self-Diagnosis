@@ -1,6 +1,5 @@
 package tech.szymanskazdrzalik.self_diagnosis;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -10,10 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
-import android.content.DialogInterface;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,6 +22,7 @@ import tech.szymanskazdrzalik.self_diagnosis.db.ChatSQLiteDBHelper;
 import tech.szymanskazdrzalik.self_diagnosis.db.User;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.GlobalVariables;
 import tech.szymanskazdrzalik.self_diagnosis.helpers.SharedPreferencesHelper;
+import tech.szymanskazdrzalik.self_diagnosis.helpers.WarningDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,53 +65,24 @@ public class AddProfileFragment extends Fragment {
             binding.beforeAddUserImage.setBackgroundColor(Color.TRANSPARENT);
         }
     };
+
+    private WarningDialog warningDialog;
+
+
     private AddProfileFragmentListener mListener;
-    private final View.OnClickListener addButtonOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (areInputsEmpty()) {
-                return;
-            }
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            LayoutInflater inflater = getLayoutInflater();
-            View dialoglayout = inflater.inflate(R.layout.warning_dialog, null);
-            builder.setView(dialoglayout);
-
-//             builder.setTitle(R.string.warning_title);
-
-//            builder.setMessage(R.string.warning_message)
-                    builder.setCancelable(false)
-                    .setPositiveButton(R.string.warning_button, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            String userName = binding.editProfileName.getText().toString();
-                            Date userBirthDate = myCalendar.getTime();
-
-                            int currentID;
-
-                            if (isNewUser) {
-                                currentID = ChatSQLiteDBHelper.getNextUserIdAvailable(getContext());
-                            } else {
-                                currentID = globalVariables.getCurrentUser().get().getId();
-                            }
-
-                            User user = new User(currentID, userName, userBirthDate, userGender);
-                            GlobalVariables.getInstance().setCurrentUser(user);
-                            ChatSQLiteDBHelper.saveUserDataToDB(getContext(), user);
-                            SharedPreferencesHelper.saveUserId(getContext(), currentID);
-
-                            if (mListener != null) {
-                                mListener.callback(getString(R.string.reload));
-                            }
-                            getActivity().onBackPressed();
-
-                        }
-                    });
-
-            AlertDialog alert = builder.create();
-            alert.show();
-
-
+    private final View.OnClickListener addButtonOnClick = v -> {
+        if (areInputsEmpty()) {
+            Toast.makeText(getContext(), getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        if (isNewUser) {
+            AddProfileFragment.this.warningDialog.show();
+        } else {
+            AddProfileFragment.this.saveOrUpdateUser();
+        }
+
+
     };
 
     public AddProfileFragment() {
@@ -142,11 +110,7 @@ public class AddProfileFragment extends Fragment {
     private boolean areInputsEmpty() {
         String userName = binding.editProfileName.getText().toString();
         Date userBirthDate = myCalendar.getTime();
-        if (userName == null || userBirthDate == null || userGender == null) {
-            Toast.makeText(getContext(), getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return false;
+        return userName == null || userBirthDate == null || userGender == null;
     }
 
     @Override
@@ -169,9 +133,9 @@ public class AddProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentAddProfileBinding.inflate(inflater, container, false);
-        binding.female.setColorFilter(getBlackAndWhiteFilter());
-        binding.male.setColorFilter(getBlackAndWhiteFilter());
+        this.binding = FragmentAddProfileBinding.inflate(inflater, container, false);
+        this.binding.female.setColorFilter(getBlackAndWhiteFilter());
+        this.binding.male.setColorFilter(getBlackAndWhiteFilter());
 
         getArgumentsFromBundle();
 
@@ -180,18 +144,45 @@ public class AddProfileFragment extends Fragment {
             setInputsToCurrentUser();
         }
 
-        setListeners();
-        datePickerDialog = new DatePickerDialog(getContext(), R.style.MyDatePickerDialogStyle, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.getDatePicker().setMaxDate(DEFAULT_DATE);
+        this.warningDialog = new WarningDialog(this.getContext());
+
+        this.setListeners();
+        this.datePickerDialog = new DatePickerDialog(getContext(), R.style.MyDatePickerDialogStyle, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+        this.datePickerDialog.getDatePicker().setMaxDate(DEFAULT_DATE);
+
 
         return binding.getRoot();
     }
 
     private void setListeners() {
-        binding.male.setOnClickListener(genderMaleOnClick);
-        binding.female.setOnClickListener(genderFemaleOnClick);
-        binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
-        binding.fgAddButton.setOnClickListener(addButtonOnClick);
+        this.binding.male.setOnClickListener(genderMaleOnClick);
+        this.binding.female.setOnClickListener(genderFemaleOnClick);
+        this.binding.dateEditTextFragmentAddProfile.setOnClickListener(this.dateEditTextFragmentAddProfileOnClick);
+        this.binding.fgAddButton.setOnClickListener(addButtonOnClick);
+        this.warningDialog.setConfirmationListener(AddProfileFragment.this::saveOrUpdateUser);
+    }
+
+    private void saveOrUpdateUser() {
+        String userName = binding.editProfileName.getText().toString();
+        Date userBirthDate = myCalendar.getTime();
+
+        int currentID;
+
+        if (isNewUser) {
+            currentID = ChatSQLiteDBHelper.getNextUserIdAvailable(getContext());
+        } else {
+            currentID = globalVariables.getCurrentUser().get().getId();
+        }
+
+        User user = new User(currentID, userName, userBirthDate, userGender);
+        GlobalVariables.getInstance().setCurrentUser(user);
+        ChatSQLiteDBHelper.saveUserDataToDB(getContext(), user);
+        SharedPreferencesHelper.saveUserId(getContext(), currentID);
+
+        if (mListener != null) {
+            mListener.callback(getString(R.string.reload));
+        }
+        getActivity().onBackPressed();
     }
 
     private void getArgumentsFromBundle() {
