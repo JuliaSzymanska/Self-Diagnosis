@@ -2,11 +2,15 @@ package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 
 import androidx.annotation.NonNull;
+
+import java.util.Objects;
 
 import tech.szymanskazdrzalik.self_diagnosis.R;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.WarningDialogBinding;
@@ -17,7 +21,7 @@ public class WarningDialog extends Dialog {
     private WarningDialogBinding binding;
 
     public WarningDialog(@NonNull Context context) {
-        super(context, R.style.myDialog);
+        super(context);
     }
 
 
@@ -31,22 +35,8 @@ public class WarningDialog extends Dialog {
         this.binding = WarningDialogBinding.inflate(getLayoutInflater());
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(binding.getRoot());
+        Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.binding.confirmButton.setOnClickListener(this::confirmButtonOnClick);
-
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        setContentView(R.layout.warning_dialog);
-//        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.dialog_layout_root);
-//        DisplayMetrics displayMetrics = new DisplayMetrics();
-//        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-//        int widthLcl = (int) (displayMetrics.widthPixels * 0.9f);
-//        int heightLcl = (int) (displayMetrics.heightPixels * 0.9f);
-//        FrameLayout.LayoutParams paramsLcl = (FrameLayout.LayoutParams)
-//                relativeLayout.getLayoutParams();
-//        paramsLcl.width = widthLcl;
-//        paramsLcl.height = heightLcl;
-//        paramsLcl.gravity = Gravity.CENTER;
-//        show();
-//        relativeLayout.setLayoutParams(paramsLcl);
     }
 
     public void confirmButtonOnClick(View v) {
