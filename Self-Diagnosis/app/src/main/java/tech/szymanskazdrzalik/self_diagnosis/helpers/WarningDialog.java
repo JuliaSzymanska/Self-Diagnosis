@@ -2,6 +2,7 @@ package tech.szymanskazdrzalik.self_diagnosis.helpers;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
-import tech.szymanskazdrzalik.self_diagnosis.R;
 import tech.szymanskazdrzalik.self_diagnosis.databinding.WarningDialogBinding;
 
 public class WarningDialog extends Dialog {
@@ -34,12 +34,22 @@ public class WarningDialog extends Dialog {
         super.onCreate(savedInstanceState);
         this.binding = WarningDialogBinding.inflate(getLayoutInflater());
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.setCanceledOnTouchOutside(true);
         setContentView(binding.getRoot());
         Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.binding.confirmButton.setOnClickListener(this::confirmButtonOnClick);
+        this.setOnCancelListener(this::confirmButtonOnClick);
+    }
+
+    private void confirmButtonOnClick(DialogInterface dialogInterface) {
+        confirmButtonOnClick();
     }
 
     public void confirmButtonOnClick(View v) {
+        confirmButtonOnClick();
+    }
+
+    public void confirmButtonOnClick() {
         this.confirmationListener.onUserAccept();
         this.dismiss();
     }
