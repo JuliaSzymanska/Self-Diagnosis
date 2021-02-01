@@ -57,7 +57,7 @@
     <string name="is_covid" translatable="false">is_covid</string>
     <string name="select_all_statemenet_that_applay_to_you">Please select all statements that apply to you</string>
     <string name="conversation">Conversation:</string>
-    <string name="warning_title">Be careful</string>
+    <string name="warning_title">Be aware</string>
     <string name="warning_message">The application can not replace a real doctor appointment</string>
     <string name="warning_button">Confirm</string>
     <string name="ok">OK</string>
