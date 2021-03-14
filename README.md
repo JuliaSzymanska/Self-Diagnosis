@@ -27,10 +27,10 @@ Pseudo-medical application for online self-diagnosis with the chat-based interfa
 
 <table cellpadding="0" cellspacing="0" border="0">
     <tr>
-    <td><p align="center"></p></td>
-    <td><p align="center"></p></td>
-        <td><p align="center"></p></td>
-        <td><p align="center"></p></td>
+        <td><p align="center"> Profile Creation </p></td>
+        <td><p align="center"> Profile Selection </p></td>
+        <td><p align="center"> Chat with Doctor </p></td>
+        <td><p align="center"> Covid Mode </p></td>
     </tr>
   <tr>
       <td width="400"><img src="https://user-images.githubusercontent.com/57731778/111079888-59506c80-84fc-11eb-8fa2-b3b7f0ee1813.gif"alt=""/></td>
