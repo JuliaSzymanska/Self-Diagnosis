@@ -24,20 +24,20 @@
 ## 🧐 About <a name = "about"></a>
 
 Pseudo-medical application for online self-diagnosis with the chat-based interface
-
+<p align="center>
 <table cellpadding="0" cellspacing="0" border="0">
     <tr>
-    <td><p align="center">before</p></td>
-    <td><p align="center">after</p></td>
+    <td><p align="center"></p></td>
+    <td><p align="center"></p></td>
     </tr>
   <tr>
     <td><img src="https://user-images.githubusercontent.com/57731778/111079884-548bb880-84fc-11eb-8774-e471c6e657ea.gif"
      /></td>
     <td><img src="https://user-images.githubusercontent.com/57731778/111079886-56557c00-84fc-11eb-995c-53782b4cbbb6.gif"
-     alt="After Kohonen"/></td>
+     alt=""/></td>
   </tr>
  </table>
-
+</p>
 ![SVID_20210128_012600_1](https://user-images.githubusercontent.com/57731778/111079887-581f3f80-84fc-11eb-9b55-37c7c501bcb5.gif)
 ![SVID_20210128_012032_1](https://user-images.githubusercontent.com/57731778/111079888-59506c80-84fc-11eb-8fa2-b3b7f0ee1813.gif)
 
