@@ -1,6 +1,8 @@
 
-
-![video-output-FEFE740F-7D7B-46CC-9F40-BAEC551B0D4E](https://user-images.githubusercontent.com/57731778/111079894-5bb2c680-84fc-11eb-8871-a1ca7dd1c8cd.gif)
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/57731778/111080201-a84ad180-84fd-11eb-9449-d7b03d1c8c67.gif"
+     alt=""/>
+</p>
 
 
 <h1 align="center">Self-Diagnosis</h1>
