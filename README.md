@@ -42,7 +42,7 @@ Pseudo-medical application for online self-diagnosis with the chat-based interfa
 
 ## 🔑 Prerequisites <a name = "prerequisites"></a>
 
-In order run the application you will need to provide it with Infermedica and Google Translate API keys. Put the following files in the Self-Diagnosis\app\src\main\res\raw folder. 
+In order to run the application you will need to provide it with Infermedica and Google Translate API keys. Put the following files in the Self-Diagnosis\app\src\main\res\raw folder. 
 
 api_info.json
 ```JSON
