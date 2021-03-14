@@ -17,7 +17,6 @@
 
 - [About](#about)
 - [Prerequisites](#prerequisites)
-- [Usage](#usage)
 - [Built Using](#built_using)
 - [Authors](#authors)
 
@@ -59,12 +58,6 @@ translator_api_info.json
   "key": "example-key"
 }
 ```
-
-
-
-## 🎈 Usage <a name="usage"></a>
-
-
 
 
 ## ⛏️ Built Using <a name = "built_using"></a>
