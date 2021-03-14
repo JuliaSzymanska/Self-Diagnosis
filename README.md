@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://github.com/JuliaSzymanska/Self-Diagnosis/blob/master/.github/doctor_bigger.png" alt="Project logo"></a>
+ <img width=300px height=300px src="https://github.com/JuliaSzymanska/Self-Diagnosis/blob/master/.github/doctor_bigger.png" alt="Project logo"></a>
 </p>
 
 <h1 align="center">Self-Diagnosis</h1>
@@ -21,7 +21,7 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+Pseudo-medical application for online self-diagnosis with the chat-based interface
 
 ## 🔑 Prerequisites <a name = "prerequisites"></a>
 
