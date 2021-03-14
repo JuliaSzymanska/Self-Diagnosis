@@ -1,7 +1,7 @@
 
 <p align="center">
   <a href="" rel="noopener">
- <img width=300px height=300px src="https://github.com/JuliaSzymanska/Self-Diagnosis/blob/master/.github/doctor_bigger.png" alt="Project logo"></a>
+ <img width=250px height=250px src="https://github.com/JuliaSzymanska/Self-Diagnosis/blob/master/.github/doctor_bigger.png" alt="Project logo"></a>
 </p>
 
 <h1 align="center">Self-Diagnosis</h1>
