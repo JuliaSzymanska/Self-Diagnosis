@@ -3,7 +3,7 @@
  <img width=200px height=200px src="https://github.com/JuliaSzymanska/Self-Diagnosis/blob/master/.github/stethoscope.png" alt="Project logo"></a>
 </p>
 
-<h3 align="center">Self-Diagnosis</h3>
+<h1 align="center">Self-Diagnosis</h1>
 
 <div align="center">
 
