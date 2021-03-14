@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://github.com/JuliaSzymanska/Self-Diagnosis/blob/master/.github/stethoscope.png" alt="Project logo"></a>
+ <img width=200px height=200px src="https://github.com/JuliaSzymanska/Self-Diagnosis/blob/master/.github/doctor_bigger.png" alt="Project logo"></a>
 </p>
 
 <h1 align="center">Self-Diagnosis</h1>
