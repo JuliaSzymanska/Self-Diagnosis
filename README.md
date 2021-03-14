@@ -33,7 +33,7 @@ Pseudo-medical application for online self-diagnosis with the chat-based interfa
         <td><p align="center"></p></td>
     </tr>
   <tr>
-    <td ><img src="https://user-images.githubusercontent.com/57731778/111079884-548bb880-84fc-11eb-8774-e471c6e657ea.gif"
+    <td width="100" ><img src="https://user-images.githubusercontent.com/57731778/111079884-548bb880-84fc-11eb-8774-e471c6e657ea.gif"
      /></td>
     <td><img src="https://user-images.githubusercontent.com/57731778/111079886-56557c00-84fc-11eb-995c-53782b4cbbb6.gif"
      alt=""/></td>
